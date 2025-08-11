@@ -11,9 +11,20 @@ const AboutSection = () => {
       title: "About Athar Ruby",
       introduction: {
         title: "Our Story",
-        text: `Athar Ruby is not just a tourism company; it's a living gateway connecting people to the deep history of the Arabian Peninsula — through its forgotten stories, mysterious legends, and inspiring figures across time.
-
-We believe Saudi Arabia holds treasures far deeper than sand and mountains, and that its heritage rivals civilizations like Babylon, the Pharaohs, and the Greeks. Our goal is to introduce the world to this richness through cultural experiences and live storytelling that let visitors live the story — not just read it.`
+        sections: [
+          {
+            text: `Athar Ruby is not just a tourism company; it's a living gateway connecting people to the deep history of the Arabian Peninsula. Through its forgotten stories, mysterious legends, and inspiring figures across time.`,
+            design: 'primary'
+          },
+          {
+            text: `We believe Saudi Arabia holds treasures far deeper than sand and mountains. And that its heritage rivals civilizations like Babylon, the Pharaohs, and the Greeks.`,
+            design: 'secondary'
+          },
+          {
+            text: `Our goal is to introduce the world to this richness through cultural experiences and live storytelling that let visitors live the story — not just read it.`,
+            design: 'accent'
+          }
+        ]
       },
       symbolism: {
         title: "The Name & Symbolism",
@@ -43,17 +54,20 @@ Together, "Athar Ruby" means "Heritage Gems" — the precious traces of our ance
       title: "عن أثر روبي",
       introduction: {
         title: "القصة",
-        text: `"أثر روبي" ليست مجرد شركة سياحية، بل هي بوابة حيّة تربط الناس بتاريخ شبه الجزيرة العربية العميق.
-
-من خلال قصصها المنسية، وأساطيرها الغامضة، وشخصياتها الملهمة عبر الزمن.
-
-نحن نؤمن أن المملكة العربية السعودية غنية بما هو أعمق من الرمال والجبال.
-
-وأن تراثها يضاهي في قوته ما نعرفه عن حضارات بابل، والفراعنة، والإغريق.
-
-هدفنا هو أن نُعرّف العالم على هذا العمق من خلال تجارب ثقافية وسرد حيّ.
-
-يجعل الزائر يعيش القصة، لا يقرأها فقط.`
+        sections: [
+          {
+            text: `"أثر روبي" ليست مجرد شركة سياحية، بل هي بوابة حيّة تربط الناس بتاريخ شبه الجزيرة العربية العميق. من خلال قصصها المنسية، وأساطيرها الغامضة، وشخصياتها الملهمة عبر الزمن.`,
+            design: 'primary'
+          },
+          {
+            text: `نحن نؤمن أن المملكة العربية السعودية غنية بما هو أعمق من الرمال والجبال. وأن تراثها يضاهي في قوته ما نعرفه عن حضارات بابل، والفراعنة، والإغريق.`,
+            design: 'secondary'
+          },
+          {
+            text: `هدفنا هو أن نُعرّف العالم على هذا العمق من خلال تجارب ثقافية وسرد حيّ يجعل الزائر يعيش القصة، لا يقرأها فقط.`,
+            design: 'accent'
+          }
+        ]
       },
       symbolism: {
         title: "لماذا أثر روبي",
@@ -108,13 +122,50 @@ Together, "Athar Ruby" means "Heritage Gems" — the precious traces of our ance
 
         <div className="grid lg:grid-cols-2 gap-16 max-w-6xl mx-auto">
           {/* Introduction */}
-          <div className="card-premium animate-fade-in">
+          <div className="space-y-6">
             <h3 className={`text-large font-semibold text-primary mb-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].introduction.title}
             </h3>
-            <p className={`text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic text-right' : 'font-english'}`}>
-              {content[language].introduction.text}
-            </p>
+            
+            {language === 'ar' ? (
+              // Arabic sections with different designs
+              <div className="space-y-8">
+                {content[language].introduction.sections.map((section, idx) => (
+                  <div 
+                    key={idx} 
+                    className={`p-8 rounded-2xl transition-all duration-500 hover:scale-105 ${
+                      section.design === 'primary' ? 'bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-600 shadow-lg' :
+                      section.design === 'secondary' ? 'bg-gradient-to-r from-slate-50 to-slate-100 border-l-4 border-slate-600 shadow-lg' :
+                      section.design === 'accent' ? 'bg-gradient-to-r from-rose-50 to-rose-100 border-l-4 border-rose-600 shadow-lg' :
+                      'bg-gradient-to-r from-amber-50 to-amber-100 border-l-4 border-amber-600 shadow-lg'
+                    }`}
+                  >
+                    <p className={`text-body text-gray-800 leading-relaxed font-arabic text-right`}>
+                      {section.text}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              // English sections with different designs
+              <div className="space-y-8">
+                {content[language].introduction.sections.map((section, idx) => (
+                  <div 
+                    key={idx} 
+                    className={`p-8 rounded-2xl transition-all duration-500 hover:scale-105 ${
+                      section.design === 'primary' ? 'bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-600 shadow-lg' :
+                      section.design === 'secondary' ? 'bg-gradient-to-r from-slate-50 to-slate-100 border-l-4 border-slate-600 shadow-lg' :
+                      section.design === 'accent' ? 'bg-gradient-to-r from-rose-50 to-rose-100 border-l-4 border-rose-600 shadow-lg' :
+                      'bg-gradient-to-r from-amber-50 to-amber-100 border-l-4 border-amber-600 shadow-lg'
+                    }`}
+                  >
+                    <p className={`text-body text-gray-800 leading-relaxed font-english`}>
+                      {section.text}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Symbolism */}

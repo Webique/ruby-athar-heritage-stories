@@ -52,11 +52,20 @@ All colors MUST be HSL.
     --gradient-elegant: linear-gradient(180deg, hsl(var(--background)), hsl(40 20% 92%));
     /* Soft ruby wash for Contact section */
     --gradient-contact: linear-gradient(180deg, hsl(355 60% 98%), hsl(355 45% 95%));
+    
+    /* New gradients for Arabic story sections */
+    --gradient-secondary: linear-gradient(135deg, hsl(45 85% 55%), hsl(45 90% 65%));
+    --gradient-accent: linear-gradient(135deg, hsl(355 40% 35%), hsl(355 50% 45%));
+    --gradient-highlight: linear-gradient(135deg, hsl(40 60% 70%), hsl(45 70% 75%));
 
     /* Premium Shadows */
     --shadow-elegant: 0 10px 30px -10px hsl(355 60% 25% / 0.2);
     --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.3);
     --shadow-gold: 0 5px 20px hsl(45 85% 55% / 0.2);
+    
+    /* New shadows for Arabic story sections */
+    --shadow-accent: 0 5px 20px hsl(355 40% 35% / 0.2);
+    --shadow-highlight: 0 5px 20px hsl(40 60% 70% / 0.2);
 
     /* Typography Scale */
     --text-hero: 4.5rem;
@@ -207,6 +216,18 @@ All colors MUST be HSL.
     background: var(--gradient-contact);
   }
 
+  .bg-gradient-secondary {
+    background: var(--gradient-secondary);
+  }
+
+  .bg-gradient-accent {
+    background: var(--gradient-accent);
+  }
+
+  .bg-gradient-highlight {
+    background: var(--gradient-highlight);
+  }
+
   /* Custom Shadows */
   .shadow-elegant {
     box-shadow: var(--shadow-elegant);
@@ -218,6 +239,14 @@ All colors MUST be HSL.
 
   .shadow-gold {
     box-shadow: var(--shadow-gold);
+  }
+
+  .shadow-accent {
+    box-shadow: var(--shadow-accent);
+  }
+
+  .shadow-highlight {
+    box-shadow: var(--shadow-highlight);
   }
 
   /* Typography Utilities */
