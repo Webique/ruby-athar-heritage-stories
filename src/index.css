@@ -2,41 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* Athar Ruby Design System - Premium Cultural Tourism Brand
+Based on logo colors: Deep ruby reds, luxurious gold, elegant neutrals
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Brand Colors from Logo */
+    --background: 40 15% 96%; /* Warm cream background */
+    --foreground: 355 60% 15%; /* Deep ruby text */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 38 25% 98%;
+    --card-foreground: 355 60% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 38 25% 98%;
+    --popover-foreground: 355 60% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary Brand - Ruby Red */
+    --primary: 355 60% 25%; /* Deep ruby red from logo */
+    --primary-foreground: 40 15% 96%;
+    --primary-glow: 355 70% 35%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Luxurious Gold */
+    --secondary: 45 85% 55%; /* Luxurious gold */
+    --secondary-foreground: 355 60% 15%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted tones */
+    --muted: 40 20% 90%;
+    --muted-foreground: 355 30% 40%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - Warm gold highlight */
+    --accent: 45 85% 60%;
+    --accent-foreground: 355 60% 15%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 40 15% 96%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 40 25% 85%;
+    --input: 40 25% 92%;
+    --ring: 355 60% 25%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Luxury Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-gold: linear-gradient(135deg, hsl(var(--secondary)), hsl(45 90% 65%));
+    --gradient-hero: linear-gradient(135deg, hsl(355 60% 25% / 0.9), hsl(355 40% 35% / 0.8));
+    --gradient-elegant: linear-gradient(180deg, hsl(var(--background)), hsl(40 20% 92%));
+
+    /* Premium Shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(355 60% 25% / 0.2);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.3);
+    --shadow-gold: 0 5px 20px hsl(45 85% 55% / 0.2);
+
+    /* Typography Scale */
+    --text-hero: 4.5rem;
+    --text-section: 3rem;
+    --text-large: 1.5rem;
+    --text-body: 1.125rem;
+
+    /* Animations */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-elegant: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
     --sidebar-background: 0 0% 98%;
 
@@ -101,5 +129,109 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Typography */
+  .font-english {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .font-arabic {
+    font-family: 'Cairo', sans-serif;
+  }
+
+  /* RTL Support */
+  .rtl {
+    direction: rtl;
+    text-align: right;
+  }
+
+  .ltr {
+    direction: ltr;
+    text-align: left;
+  }
+}
+
+@layer components {
+  /* Premium Button Variants */
+  .btn-hero {
+    @apply bg-gradient-to-r from-primary to-primary-glow text-primary-foreground px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:shadow-glow hover:scale-105;
+  }
+
+  .btn-gold {
+    @apply bg-gradient-to-r from-secondary to-accent text-secondary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-gold hover:scale-105;
+  }
+
+  /* Premium Card Styles */
+  .card-premium {
+    @apply bg-card border border-border rounded-xl p-6 shadow-elegant transition-all duration-300 hover:shadow-glow hover:-translate-y-1;
+  }
+
+  /* Text Animations */
+  .text-reveal {
+    @apply opacity-0 transform translate-y-8 transition-all duration-700 ease-out;
+  }
+
+  .text-reveal.animate {
+    @apply opacity-100 transform translate-y-0;
+  }
+
+  /* Parallax Effect */
+  .parallax {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+}
+
+@layer utilities {
+  /* Custom Gradients */
+  .bg-gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .bg-gradient-gold {
+    background: var(--gradient-gold);
+  }
+
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .bg-gradient-elegant {
+    background: var(--gradient-elegant);
+  }
+
+  /* Custom Shadows */
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-gold {
+    box-shadow: var(--shadow-gold);
+  }
+
+  /* Typography Utilities */
+  .text-hero {
+    font-size: var(--text-hero);
+    line-height: 1.1;
+  }
+
+  .text-section {
+    font-size: var(--text-section);
+    line-height: 1.2;
+  }
+
+  .text-large {
+    font-size: var(--text-large);
+    line-height: 1.4;
+  }
+
+  .text-body {
+    font-size: var(--text-body);
+    line-height: 1.6;
   }
 }
