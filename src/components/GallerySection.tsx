@@ -111,9 +111,8 @@ const GallerySection = () => {
         {/* Mobile toggle button */}
         <div className="flex justify-center md:hidden mb-6">
           <Button
-            variant="outline"
             onClick={() => setIsGalleryOpenMobile((prev) => !prev)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-primary text-primary-foreground border border-primary hover:bg-primary/90 shadow-glow"
           >
             {isGalleryOpenMobile ? (
               <>
