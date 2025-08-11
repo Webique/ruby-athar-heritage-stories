@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { ChevronDown } from 'lucide-react';
 import heroBackground from '@/assets/hero-background.jpg';
 
 const HeroSection = () => {
@@ -18,14 +17,12 @@ const HeroSection = () => {
       subtitle: "of the Arabian Peninsula",
       description: "Journey through forgotten tales, mysterious legends, and inspiring figures that shaped Arabian culture.",
       cta: "Begin Your Journey",
-      scroll: "Explore Our Story"
     },
     ar: {
       tagline: "اكتشف القصص المخفية",
       subtitle: "لشبه الجزيرة العربية",
       description: "رحلة عبر الحكايات المنسية والأساطير الغامضة والشخصيات الملهمة التي شكلت الثقافة العربية.",
-      cta: "ابدأ رحلتك",
-      scroll: "استكشف قصتنا"
+      cta: "ابدأ رحلتك"
     }
   };
 
@@ -67,13 +64,7 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 ${isVisible ? 'text-reveal animate' : 'text-reveal'}`} style={{ animationDelay: '1s' }}>
-          <div className="flex flex-col items-center space-y-2 text-primary-foreground/80">
-            <span className="text-sm font-medium">{content[language].scroll}</span>
-            <ChevronDown className="h-6 w-6 animate-bounce" />
-          </div>
-        </div>
+        {/* Scroll indicator removed as requested */}
       </div>
     </section>
   );

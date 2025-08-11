@@ -26,7 +26,7 @@ const Header = () => {
             <img 
               src="/lovable-uploads/c7c366f7-aedb-4844-ae65-e0744224b58a.png" 
               alt="Athar Ruby Logo" 
-              className="h-12 w-auto"
+              className="h-16 w-auto"
             />
           </div>
 

@@ -31,7 +31,7 @@ const Footer = () => {
             <img 
               src="/lovable-uploads/c7c366f7-aedb-4844-ae65-e0744224b58a.png" 
               alt="Athar Ruby Logo" 
-              className="h-16 w-auto mx-auto lg:mx-0 mb-4 filter brightness-0 invert"
+              className="h-16 w-auto mx-auto lg:mx-0 mb-4"
             />
             <p className={`text-lg font-medium ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].tagline}
