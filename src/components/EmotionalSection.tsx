@@ -33,13 +33,7 @@ When you leave, you'll take with you not just memories, but a part of Arabia's s
     },
     ar: {
       title: "أثر رحلتك",
-      message: `عندما تعود من تجربة مع "أثر روبي"، لن تحمل فقط الصور والهدايا التذكارية. ستحمل شيئاً أثمن بكثير: ارتباطاً عميقاً بأرض وثقافة لم يفهمها الكثيرون حق الفهم.
-
-ستجد نفسك تدافع عن ثراء التراث العربي في المحادثات، وتشارك قصصاً تبهر أصدقاءك، والأهم من ذلك، ستكتسب منظوراً جديداً لما تعنيه الحضارة والحكمة والإرث الإنساني حقاً.
-
-هدفنا ليس فقط أن نُريك أماكن — بل أن نغير طريقة رؤيتك للعالم. أن نساعدك على فهم أن كل حجر، وكل تقليد، وكل قصة في هذه الأرض تحمل ثقل قرون من التجربة الإنسانية والحكمة والأحلام.
-
-عندما ترحل، ستأخذ معك ليس فقط الذكريات، بل جزءاً من روح العربية — وستترك خلفك جزءاً من روحك، مما يربطك إلى الأبد بهذه الأرض الخالدة.`,
+      message: "",
       metricsTitle: 'كيف تُحوّل الرحلات إدراكك',
       metrics: [
         { label: 'فهم ثقافي', value: 'أعمق', icon: 'Layers' },
@@ -47,13 +41,8 @@ When you leave, you'll take with you not just memories, but a part of Arabia's s
         { label: 'احترام للتراث', value: 'أعلى', icon: 'Shield' },
         { label: 'إلهام', value: 'مستمر', icon: 'Sparkles' },
       ],
-      timelineTitle: 'مسار الأثر',
-      timeline: [
-        { title: 'الوصول', desc: 'الفضول يلتقي بالمكان', icon: 'Map' },
-        { title: 'الاندماج', desc: 'القصص تنبض بالحياة', icon: 'Scroll' },
-        { title: 'التأمل', desc: 'المعنى يترسخ', icon: 'Flame' },
-        { title: 'السفير', desc: 'تحمل القصة للآخرين', icon: 'Flag' },
-      ]
+      timelineTitle: "",
+      timeline: []
     }
   };
 
@@ -73,9 +62,11 @@ When you leave, you'll take with you not just memories, but a part of Arabia's s
           </h2>
           
           <div className="space-y-8">
-            <p className={`text-large text-primary-foreground/90 leading-relaxed ${isRTL ? 'font-arabic text-right' : 'font-english'}`}>
-              {content[language].message}
-            </p>
+            {content[language].message && (
+              <p className={`text-large text-primary-foreground/90 leading-relaxed ${isRTL ? 'font-arabic text-right' : 'font-english'}`}>
+                {content[language].message}
+              </p>
+            )}
           </div>
         </div>
 
@@ -102,28 +93,30 @@ When you leave, you'll take with you not just memories, but a part of Arabia's s
           </div>
         </div>
 
-        {/* Timeline */}
-        <div className="max-w-6xl mx-auto mt-12">
-          <h3 className={`text-large font-semibold text-primary-foreground/95 mb-6 text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
-            {content[language].timelineTitle}
-          </h3>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {content[language].timeline?.map((step: any, i: number) => (
-              <Card key={i} className="bg-white/10 backdrop-blur border-white/20 hover:bg-white/15 transition-all duration-300 animate-slide-up">
-                <CardContent className={`p-6 text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                  <div className="mx-auto mb-3 inline-flex p-3 rounded-full bg-gradient-primary shadow-glow">
-                    {step.icon === 'Map' && <Map className="h-6 w-6 text-primary-foreground" />}
-                    {step.icon === 'Scroll' && <Scroll className="h-6 w-6 text-primary-foreground" />}
-                    {step.icon === 'Flame' && <Flame className="h-6 w-6 text-primary-foreground" />}
-                    {step.icon === 'Flag' && <Flag className="h-6 w-6 text-primary-foreground" />}
-                  </div>
-                  <div className="text-primary-foreground/95 font-semibold mb-1">{step.title}</div>
-                  <div className="text-primary-foreground/80 text-sm">{step.desc}</div>
-                </CardContent>
-              </Card>
-            ))}
+        {/* Timeline Row */}
+        {content[language].timelineTitle && content[language].timeline && (
+          <div className="max-w-6xl mx-auto mt-12">
+            <h3 className={`text-large font-semibold text-primary-foreground/95 mb-6 text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
+              {content[language].timelineTitle}
+            </h3>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {content[language].timeline?.map((step: any, i: number) => (
+                <Card key={i} className="bg-white/10 backdrop-blur border-white/20 hover:bg-white/15 transition-all duration-300 animate-slide-up">
+                  <CardContent className={`p-6 text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                    <div className="mx-auto mb-3 inline-flex p-3 rounded-full bg-gradient-primary shadow-glow">
+                      {step.icon === 'Map' && <Map className="h-6 w-6 text-primary-foreground" />}
+                      {step.icon === 'Scroll' && <Scroll className="h-6 w-6 text-primary-foreground" />}
+                      {step.icon === 'Flame' && <Flame className="h-6 w-6 text-primary-foreground" />}
+                      {step.icon === 'Flag' && <Flag className="h-6 w-6 text-primary-foreground" />}
+                    </div>
+                    <div className="text-primary-foreground/95 font-semibold mb-1">{step.title}</div>
+                    <div className="text-primary-foreground/80 text-sm">{step.desc}</div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

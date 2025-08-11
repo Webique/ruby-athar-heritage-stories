@@ -19,20 +19,22 @@ const ContactSection = () => {
       success: "Thank you! We'll contact you soon to plan your cultural journey."
     },
     ar: {
-      title: "ابدأ رحلتك الثقافية",
-      subtitle: "تواصل معنا لاكتشاف كنوز التراث العربي المخفية",
+      title: "ابدأ تجربتك",
+      subtitle: "",
       contact: {
         phone: "اتصل بنا",
         whatsapp: "واتساب",
         email: "راسلنا",
         location: "المملكة العربية السعودية"
       },
-      success: "شكراً لك! سنتواصل معك قريباً لتخطيط رحلتك الثقافية."
+      success: `شكراً لك! سنتواصل معك قريباً.
+
+لتخطيط رحلتك الثقافية.`
     }
   };
 
   const phoneNumber = '+966504333581';
-  const email = 'info@atharruby.com';
+  const email = 'atharruby@outlook.com';
 
   return (
     <section className="py-20 bg-gradient-contact">

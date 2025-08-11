@@ -68,8 +68,8 @@ const GallerySection = () => {
       hideGallery: "Hide Gallery",
     },
     ar: {
-      title: "معرض التجارب",
-      subtitle: "اكتشف جمال التراث العربي",
+      title: "اكتشف جمال التراث",
+      subtitle: "",
       close: "إغلاق",
       viewGallery: "عرض المعرض",
       hideGallery: "إخفاء المعرض",
@@ -129,7 +129,7 @@ const GallerySection = () => {
         </div>
 
         {/* Gallery Grid */}
-        <div className={`${isGalleryOpenMobile ? 'grid' : 'hidden'} grid-cols-2 md:grid md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto`}>
+        <div className={`${isGalleryOpenMobile ? 'grid' : 'hidden'} grid-cols-3 md:grid md:grid-cols-4 lg:grid-cols-6 gap-3 max-w-6xl mx-auto`}>
           {galleryImages.map((image, index) => (
             <Card 
               key={index}
@@ -146,6 +146,39 @@ const GallerySection = () => {
               </div>
             </Card>
           ))}
+        </div>
+
+        {/* Carousel Navigation */}
+        <div className="flex justify-center items-center gap-4 mt-8">
+          <Button
+            variant="outline"
+            size="sm"
+            className="p-2 rounded-full"
+            onClick={() => {
+              const gallery = document.querySelector('.grid');
+              if (gallery) {
+                gallery.scrollBy({ left: -300, behavior: 'smooth' });
+              }
+            }}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          <span className="text-sm text-muted-foreground">
+            {galleryImages.length} صورة
+          </span>
+          <Button
+            variant="outline"
+            size="sm"
+            className="p-2 rounded-full"
+            onClick={() => {
+              const gallery = document.querySelector('.grid');
+              if (gallery) {
+                gallery.scrollBy({ left: 300, behavior: 'smooth' });
+              }
+            }}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
         </div>
 
         {/* Lightbox */}
