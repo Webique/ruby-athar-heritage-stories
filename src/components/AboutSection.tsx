@@ -28,11 +28,16 @@ const AboutSection = () => {
       },
       symbolism: {
         title: "The Name & Symbolism",
-        text: `The name "Athar Ruby" carries double symbolism that reflects our deep mission. "Athar" means "traces" or "heritage" in Arabic — the marks left by those who came before us, the stories carved into stone and memory, the legacy that shapes who we are today.
-
-"Ruby," the precious gemstone, represents the rare and valuable treasures we uncover — not gold or silver, but something far more precious: the stories, wisdom, and cultural heritage that have been polished by time into brilliant gems of human experience.
-
-Together, "Athar Ruby" means "Heritage Gems" — the precious traces of our ancestors that we discover, polish, and present as living treasures for the world to experience and cherish.`
+        sections: [
+          {
+            text: `"Athar" means "traces" or "heritage" in Arabic — the marks left by those who came before us, the stories carved into stone and memory, the legacy that shapes who we are today.`,
+            design: 'primary'
+          },
+          {
+            text: `"Ruby," the precious gemstone, represents the rare and valuable treasures we uncover — not gold or silver, but something far more precious: the stories, wisdom, and cultural heritage that have been polished by time into brilliant gems of human experience. Together, "Athar Ruby" means "Heritage Gems" — the precious traces of our ancestors that we discover, polish, and present as living treasures for the world to experience and cherish.`,
+            design: 'secondary'
+          }
+        ]
       },
       featuresTitle: 'What Makes Us Different',
       features: [
@@ -45,9 +50,9 @@ Together, "Athar Ruby" means "Heritage Gems" — the precious traces of our ance
       ],
       stats: [
         { label: 'Years of Passion', value: '10+' },
-        { label: 'Experiences Crafted', value: '120+' },
-        { label: 'Historic Sites', value: '60+' },
-        { label: 'Languages', value: '2' },
+        { label: 'Experiences Crafted', value: '50+' },
+        { label: 'Historic Sites', value: '20+' },
+        { label: 'Languages', value: '2+' },
       ]
     },
     ar: {
@@ -120,14 +125,14 @@ Together, "Athar Ruby" means "Heritage Gems" — the precious traces of our ance
               // Arabic sections with different designs
               <div className="space-y-8">
                 {/* Story Container */}
-                <div className="bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-300 shadow-xl rounded-2xl p-8">
+                <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-2 border-gray-200 shadow-xl rounded-2xl p-8">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {content[language].introduction.sections.map((section, idx) => (
                       <div 
                         key={idx} 
                         className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
                           idx === 0 ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
-                          idx === 1 ? 'bg-gradient-to-r from-slate-50 to-slate-100 border-slate-600 shadow-lg' :
+                          idx === 1 ? 'bg-gradient-to-r from-amber-50 to-amber-100 border-amber-600 shadow-lg' :
                           'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg'
                         }`}
                       >
@@ -143,14 +148,14 @@ Together, "Athar Ruby" means "Heritage Gems" — the precious traces of our ance
               // English sections with different designs
               <div className="space-y-8">
                 {/* Story Container */}
-                <div className="bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-300 shadow-xl rounded-2xl p-8">
+                <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-2 border-gray-200 shadow-xl rounded-2xl p-8">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {content[language].introduction.sections.map((section, idx) => (
                       <div 
                         key={idx} 
                         className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
                           idx === 0 ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
-                          idx === 1 ? 'bg-gradient-to-r from-slate-50 to-slate-100 border-slate-600 shadow-lg' :
+                          idx === 1 ? 'bg-gradient-to-r from-amber-50 to-amber-100 border-amber-600 shadow-lg' :
                           'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg'
                         }`}
                       >
@@ -173,14 +178,14 @@ Together, "Athar Ruby" means "Heritage Gems" — the precious traces of our ance
             
             {language === 'ar' ? (
               // Arabic symbolism sections - horizontal layout
-              <div className="bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-300 shadow-xl rounded-2xl p-8">
+              <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-2 border-gray-200 shadow-xl rounded-2xl p-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {content[language].symbolism.sections.map((section, idx) => (
                     <div 
                       key={idx} 
                       className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
                         section.design === 'primary' ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
-                        'bg-gradient-to-r from-slate-50 to-slate-100 border-slate-600 shadow-lg'
+                        'bg-gradient-to-r from-amber-50 to-amber-100 border-amber-600 shadow-lg'
                       }`}
                     >
                       <p className={`text-body text-gray-800 leading-relaxed font-arabic text-right`}>
@@ -191,10 +196,24 @@ Together, "Athar Ruby" means "Heritage Gems" — the precious traces of our ance
                 </div>
               </div>
             ) : (
-              // English single text
-              <p className={`text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic text-right' : 'font-english'}`}>
-                {content[language].symbolism.text}
-              </p>
+              // English symbolism sections - horizontal layout
+              <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-2 border-gray-200 shadow-xl rounded-2xl p-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {content[language].symbolism.sections.map((section, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
+                        section.design === 'primary' ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
+                        'bg-gradient-to-r from-amber-50 to-amber-100 border-amber-600 shadow-lg'
+                      }`}
+                    >
+                      <p className={`text-body text-gray-800 leading-relaxed font-english`}>
+                        {section.text}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
         </div>
