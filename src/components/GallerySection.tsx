@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,25 @@ const GallerySection = () => {
   const { language, isRTL } = useLanguage();
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [isGalleryOpenMobile, setIsGalleryOpenMobile] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const galleryRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (galleryRef.current) {
+      observer.observe(galleryRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   // List of all files currently in public/lovable-uploads
   const uploadFileNames = useMemo(
@@ -71,7 +90,7 @@ const GallerySection = () => {
       title: "اكتشف جمال التراث",
       subtitle: "",
       close: "إغلاق",
-      viewGallery: "عرض المعرض",
+      viewGallery: "عرض المزيد",
       hideGallery: "إخفاء المعرض",
     }
   };
@@ -106,9 +125,9 @@ const GallerySection = () => {
         </div>
 
         {/* Horizontal Sliding Banner */}
-        <div className="mb-8">
+        <div className="mb-8" ref={galleryRef}>
           <div className="relative overflow-hidden">
-            <div className="flex space-x-6 animate-scroll-slow">
+            <div className={`flex space-x-6 ${isVisible ? 'animate-scroll-slow' : ''}`} style={{ direction: 'ltr' }}>
               {galleryImages.map((image, index) => (
                 <div key={index} className="flex-shrink-0">
                   <img 

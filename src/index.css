@@ -362,12 +362,25 @@ All colors MUST be HSL.
       animation: scroll-slow 80s linear infinite;
     }
 
+    .animate-scroll-fast-rtl {
+      animation: scroll-fast-rtl 40s linear infinite;
+    }
+
     @keyframes scroll-slow {
       0% {
         transform: translateX(0);
       }
       100% {
         transform: translateX(-50%);
+      }
+    }
+
+    @keyframes scroll-fast-rtl {
+      0% {
+        transform: translateX(-50%);
+      }
+      100% {
+        transform: translateX(0);
       }
     }
 }
