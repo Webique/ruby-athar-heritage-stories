@@ -56,13 +56,14 @@ const ContactSection = () => {
                 <div className="p-3 bg-gradient-primary rounded-lg">
                   <Phone className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <div className={isRTL ? 'text-right' : ''}>
+                <div className={`${isRTL ? 'text-right' : ''} flex-1`}>
                   <h3 className={`font-semibold text-primary mb-1 ${isRTL ? 'font-arabic' : 'font-english'}`}>
                     {content[language].contact.phone}
                   </h3>
                   <a 
                     href={`tel:${phoneNumber}`}
                     className="text-muted-foreground hover:text-primary transition-colors"
+                    dir="ltr"
                   >
                     {phoneNumber}
                   </a>
@@ -78,7 +79,7 @@ const ContactSection = () => {
                 <div className="p-3 bg-gradient-gold rounded-lg">
                   <MessageCircle className="h-6 w-6 text-secondary-foreground" />
                 </div>
-                <div className={isRTL ? 'text-right' : ''}>
+                <div className={`${isRTL ? 'text-right' : ''} flex-1`}>
                   <h3 className={`font-semibold text-primary mb-1 ${isRTL ? 'font-arabic' : 'font-english'}`}>
                     {content[language].contact.whatsapp}
                   </h3>
@@ -87,6 +88,7 @@ const ContactSection = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-primary transition-colors"
+                    dir="ltr"
                   >
                     {phoneNumber}
                   </a>
@@ -102,13 +104,14 @@ const ContactSection = () => {
                 <div className="p-3 bg-gradient-primary rounded-lg">
                   <Mail className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <div className={isRTL ? 'text-right' : ''}>
+                <div className={`${isRTL ? 'text-right' : ''} flex-1`}>
                   <h3 className={`font-semibold text-primary mb-1 ${isRTL ? 'font-arabic' : 'font-english'}`}>
                     {content[language].contact.email}
                   </h3>
                   <a 
                     href={`mailto:${email}`}
                     className="text-muted-foreground hover:text-primary transition-colors"
+                    dir="ltr"
                   >
                     {email}
                   </a>
@@ -124,7 +127,7 @@ const ContactSection = () => {
                 <div className="p-3 bg-gradient-gold rounded-lg">
                   <MapPin className="h-6 w-6 text-secondary-foreground" />
                 </div>
-                <div className={isRTL ? 'text-right' : ''}>
+                <div className={`${isRTL ? 'text-right' : ''} flex-1`}>
                   <h3 className={`font-semibold text-primary mb-1 ${isRTL ? 'font-arabic' : 'font-english'}`}>
                     {content[language].contact.location}
                   </h3>
