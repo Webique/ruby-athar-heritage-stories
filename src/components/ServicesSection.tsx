@@ -16,13 +16,13 @@ const ServicesSection = () => {
         {
           icon: MapPin,
           title: "Cultural Field Trips",
-          description: "Guided explorations of historical sites, archaeological wonders, and cultural landmarks that bring Saudi heritage to life through expert storytelling.",
+          description: "Explorations of historical sites, archaeological wonders, and cultural landmarks.",
           image: fieldTripsImage
         },
         {
           icon: BookOpen,
           title: "Live Storytelling Experiences",
-          description: "Immersive narrative sessions where ancient tales, legends, and historical events are brought to life by master storytellers.",
+          description: "Immersive narrative sessions where ancient tales, legends, and historical events are brought to life.",
           image: storytellingImage
         },
         {
@@ -39,17 +39,13 @@ const ServicesSection = () => {
         {
           icon: MapPin,
           title: "على خطى التاريخ",
-          description: `استكشاف مُرشد للمواقع التاريخية والعجائب الأثرية والمعالم الثقافية.
-
-التي تحيي التراث السعودي من خلال السرد المتخصص.`,
+          description: `استكشاف للمواقع التاريخية والعجائب الأثرية والمعالم الثقافية.`,
           image: fieldTripsImage
         },
         {
           icon: BookOpen,
           title: "حكايات على الطريق",
-          description: `جلسات سردية غامرة حيث تُحيا الحكايات القديمة والأساطير والأحداث التاريخية.
-
-من خلال أساتذة الحكواتي.`,
+          description: `جلسات سردية غامرة حيث تُحيا الحكايات القديمة والأساطير والأحداث التاريخية.`,
           image: storytellingImage
         },
         {

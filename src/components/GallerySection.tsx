@@ -103,13 +103,37 @@ const GallerySection = () => {
           <h2 className={`text-section font-bold text-primary mb-4 ${isRTL ? 'font-arabic' : 'font-english'}`}>
             {content[language].title}
           </h2>
-          <p className={`text-large text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
-            {content[language].subtitle}
-          </p>
         </div>
 
-        {/* Mobile toggle button */}
-        <div className="flex justify-center md:hidden mb-6">
+        {/* Horizontal Sliding Banner */}
+        <div className="mb-8">
+          <div className="relative overflow-hidden">
+            <div className="flex space-x-6 animate-scroll-slow">
+              {galleryImages.map((image, index) => (
+                <div key={index} className="flex-shrink-0">
+                  <img 
+                    src={image.src}
+                    alt={image.alt}
+                    className="w-40 h-40 object-cover rounded-lg border-2 border-white shadow-lg"
+                  />
+                </div>
+              ))}
+              {/* Duplicate images for seamless loop */}
+              {galleryImages.map((image, index) => (
+                <div key={`duplicate-${index}`} className="flex-shrink-0">
+                  <img 
+                    src={image.src}
+                    alt={image.alt}
+                    className="w-40 h-40 object-cover rounded-lg border-2 border-white shadow-lg"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Toggle Button */}
+        <div className="flex justify-center mb-6">
           <Button
             onClick={() => setIsGalleryOpenMobile((prev) => !prev)}
             className="flex items-center gap-2 bg-primary text-primary-foreground border border-primary hover:bg-primary/90 shadow-glow"
@@ -128,8 +152,8 @@ const GallerySection = () => {
           </Button>
         </div>
 
-        {/* Gallery Grid */}
-        <div className={`${isGalleryOpenMobile ? 'grid' : 'hidden'} grid-cols-3 md:grid md:grid-cols-4 lg:grid-cols-6 gap-3 max-w-6xl mx-auto`}>
+        {/* Gallery Grid - Hidden by default */}
+        <div className={`${isGalleryOpenMobile ? 'grid' : 'hidden'} grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-7xl mx-auto`}>
           {galleryImages.map((image, index) => (
             <Card 
               key={index}
@@ -146,39 +170,6 @@ const GallerySection = () => {
               </div>
             </Card>
           ))}
-        </div>
-
-        {/* Carousel Navigation */}
-        <div className="flex justify-center items-center gap-4 mt-8">
-          <Button
-            variant="outline"
-            size="sm"
-            className="p-2 rounded-full"
-            onClick={() => {
-              const gallery = document.querySelector('.grid');
-              if (gallery) {
-                gallery.scrollBy({ left: -300, behavior: 'smooth' });
-              }
-            }}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <span className="text-sm text-muted-foreground">
-            {galleryImages.length} صورة
-          </span>
-          <Button
-            variant="outline"
-            size="sm"
-            className="p-2 rounded-full"
-            onClick={() => {
-              const gallery = document.querySelector('.grid');
-              if (gallery) {
-                gallery.scrollBy({ left: 300, behavior: 'smooth' });
-              }
-            }}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
         </div>
 
         {/* Lightbox */}

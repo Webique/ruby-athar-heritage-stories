@@ -31,9 +31,9 @@ const EmotionalSection = () => {
         { label: 'إلهام', value: 'مستمر', icon: 'Sparkles' },
       ],
       timeline: [
-        { title: 'الوصول', desc: 'الفضول يلتقي بالمكان', icon: 'Map' },
-        { title: 'الانغماس', desc: 'القصص تحيا', icon: 'Scroll' },
-        { title: 'التأمل', desc: 'المعنى يتجذر', icon: 'Flame' },
+        { title: 'الوصول', desc: 'فضول يلتقي بالمكان', icon: 'Map' },
+        { title: 'الانغماس', desc: 'قصص تحيا', icon: 'Scroll' },
+        { title: 'التأمل', desc: 'معنى يتجذر', icon: 'Flame' },
         { title: 'الدفاع', desc: 'أنت تحمل القصة', icon: 'Flag' },
       ]
     }
@@ -67,8 +67,12 @@ const EmotionalSection = () => {
                     {m.icon === 'Shield' && <Shield className="h-8 w-8 text-secondary-foreground" />}
                     {m.icon === 'Sparkles' && <Sparkles className="h-8 w-8 text-secondary-foreground" />}
                   </div>
-                  <div className="text-primary-foreground/95 text-xl font-semibold">{m.value}</div>
-                  <div className="text-primary-foreground/80 text-sm">{m.label}</div>
+                  <div className="text-primary-foreground/95 text-xl font-bold">
+                    {language === 'ar' ? m.label : m.value}
+                  </div>
+                  <div className="text-primary-foreground/80 text-xl font-bold">
+                    {language === 'ar' ? m.value : m.label}
+                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -87,8 +91,8 @@ const EmotionalSection = () => {
                     {step.icon === 'Flame' && <Flame className="h-8 w-8 text-primary-foreground" />}
                     {step.icon === 'Flag' && <Flag className="h-8 w-8 text-primary-foreground" />}
                   </div>
-                  <div className="text-primary-foreground/95 font-semibold mb-1">{step.title}</div>
-                  <div className="text-primary-foreground/80 text-sm">{step.desc}</div>
+                  <div className="text-primary-foreground/95 text-xl font-bold mb-1">{step.title}</div>
+                  <div className="text-primary-foreground/80 text-xl font-bold">{step.desc}</div>
                 </CardContent>
               </Card>
             ))}

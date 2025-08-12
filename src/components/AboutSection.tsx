@@ -57,55 +57,44 @@ Together, "Athar Ruby" means "Heritage Gems" — the precious traces of our ance
         sections: [
           {
             text: `"أثر روبي" ليست مجرد شركة سياحية، بل هي بوابة حيّة تربط الناس بتاريخ شبه الجزيرة العربية العميق. من خلال قصصها المنسية، وأساطيرها الغامضة، وشخصياتها الملهمة عبر الزمن.`,
-            design: 'primary'
+            design: 'story-section-1'
           },
           {
             text: `نحن نؤمن أن المملكة العربية السعودية غنية بما هو أعمق من الرمال والجبال. وأن تراثها يضاهي في قوته ما نعرفه عن حضارات بابل، والفراعنة، والإغريق.`,
-            design: 'secondary'
+            design: 'story-section-2'
           },
           {
             text: `هدفنا هو أن نُعرّف العالم على هذا العمق من خلال تجارب ثقافية وسرد حيّ يجعل الزائر يعيش القصة، لا يقرأها فقط.`,
-            design: 'accent'
+            design: 'story-section-3'
           }
         ]
       },
       symbolism: {
         title: "لماذا أثر روبي",
-        text: `"أثر" يشير إلى التاريخ، البصمة، والامتداد العميق الذي نُحييه عبر القصص، والأماكن، والشخصيات.
-
-"روبي" حجر كريم أحمر يرمز إلى القيمة والندرة والجمال الدفين.
-
-تمامًا كحكايات تراثنا التي لم تُكتشف بعد.
-
-الاسم يعكس أن التراث العربي السعودي ليس شيئًا باهتًا أو عابرًا.
-
-بل كنز ثمين يجب أن يُكشف ويُقدَّم للعالم كتحفة ثقافية.`
+        sections: [
+          {
+            text: `"أثر" يشير إلى التاريخ، البصمة، والامتداد العميق الذي نُحييه عبر القصص، والأماكن، والشخصيات.`,
+            design: 'primary'
+          },
+          {
+            text: `"روبي" حجر كريم أحمر يرمز إلى القيمة والندرة والجمال الدفين. تمامًا كحكايات تراثنا التي لم تُكتشف بعد. الاسم يعكس أن التراث العربي السعودي ليس شيئًا باهتًا أو عابرًا. بل كنز ثمين يجب أن يُكشف ويُقدَّم للعالم كتحفة ثقافية.`,
+            design: 'secondary'
+          }
+        ]
       },
       featuresTitle: 'لماذا نحن مختلفون',
       features: [
-        { title: 'جواهر التراث', desc: `قصص نادرة نصونها كالأحجار الكريمة.
-
-ونحافظ عليها للأجيال القادمة.`, icon: 'Gem' },
-        { title: 'سرد حي', desc: `حكايات غامرة تعيشها وتبقى في الذاكرة.
-
-تجربة لا تُنسى.`, icon: 'BookOpen' },
-        { title: 'اكتشاف موجه', desc: `مسارات مدروسة عبر مواقع ثقافية أصيلة.
-
-مع خبراء متخصصين.`, icon: 'Compass' },
-        { title: 'عمق تاريخي', desc: `من النقوش الصخرية إلى طرق التجارة وما بعدها.
-
-تاريخ يمتد لآلاف السنين.`, icon: 'Landmark' },
-        { title: 'صلة إنسانية', desc: `خبراء محليون وفنانون ورواة.
-
-يربطونك بالتراث الحي.`, icon: 'Users' },
-        { title: 'ترحيب عالمي', desc: `مصمم للزوار المحليين والدوليين معًا.
-
-تجربة تناسب الجميع.`, icon: 'Globe2' },
+        { title: 'جواهر التراث', desc: 'قصص نادرة نصونها كالأحجار الكريمة.', icon: 'Gem' },
+        { title: 'سرد حي', desc: 'حكايات غامرة تعيشها وتبقى في الذاكرة.', icon: 'BookOpen' },
+        { title: 'اكتشاف موجه', desc: 'مسارات مدروسة عبر مواقع ثقافية أصيلة.', icon: 'Compass' },
+        { title: 'عمق تاريخي', desc: 'من النقوش الصخرية إلى طرق التجارة وما بعدها.', icon: 'Landmark' },
+        { title: 'صلة إنسانية', desc: 'خبراء محليون وفنانون ورواة.', icon: 'Users' },
+        { title: 'ترحيب عالمي', desc: 'مصمم للزوار المحليين والدوليين معاً.', icon: 'Globe2' },
       ],
       stats: [
         { label: 'سنوات من الشغف', value: '10+' },
-        { label: 'تجارب مُعدّة', value: '120+' },
-        { label: 'مواقع تاريخية', value: '60+' },
+        { label: 'تجارب', value: '50+' },
+        { label: 'مواقع تاريخية', value: '20+' },
         { label: 'لغات', value: '2+' },
       ]
     }
@@ -122,60 +111,91 @@ Together, "Athar Ruby" means "Heritage Gems" — the precious traces of our ance
 
         <div className="grid lg:grid-cols-2 gap-16 max-w-6xl mx-auto">
           {/* Introduction */}
-          <div className="space-y-6">
-            <h3 className={`text-large font-semibold text-primary mb-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+          <div className="space-y-6 lg:col-span-2">
+            <h3 className={`text-large font-semibold text-primary mb-6 text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].introduction.title}
             </h3>
             
             {language === 'ar' ? (
               // Arabic sections with different designs
               <div className="space-y-8">
-                {content[language].introduction.sections.map((section, idx) => (
-                  <div 
-                    key={idx} 
-                    className={`p-8 rounded-2xl transition-all duration-500 hover:scale-105 ${
-                      section.design === 'primary' ? 'bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-600 shadow-lg' :
-                      section.design === 'secondary' ? 'bg-gradient-to-r from-slate-50 to-slate-100 border-l-4 border-slate-600 shadow-lg' :
-                      section.design === 'accent' ? 'bg-gradient-to-r from-rose-50 to-rose-100 border-l-4 border-rose-600 shadow-lg' :
-                      'bg-gradient-to-r from-amber-50 to-amber-100 border-l-4 border-amber-600 shadow-lg'
-                    }`}
-                  >
-                    <p className={`text-body text-gray-800 leading-relaxed font-arabic text-right`}>
-                      {section.text}
-                    </p>
+                {/* Story Container */}
+                <div className="bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-300 shadow-xl rounded-2xl p-8">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {content[language].introduction.sections.map((section, idx) => (
+                      <div 
+                        key={idx} 
+                        className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
+                          idx === 0 ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
+                          idx === 1 ? 'bg-gradient-to-r from-slate-50 to-slate-100 border-slate-600 shadow-lg' :
+                          'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg'
+                        }`}
+                      >
+                        <p className={`text-body text-gray-800 leading-relaxed font-arabic text-right`}>
+                          {section.text}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             ) : (
               // English sections with different designs
               <div className="space-y-8">
-                {content[language].introduction.sections.map((section, idx) => (
-                  <div 
-                    key={idx} 
-                    className={`p-8 rounded-2xl transition-all duration-500 hover:scale-105 ${
-                      section.design === 'primary' ? 'bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-600 shadow-lg' :
-                      section.design === 'secondary' ? 'bg-gradient-to-r from-slate-50 to-slate-100 border-l-4 border-slate-600 shadow-lg' :
-                      section.design === 'accent' ? 'bg-gradient-to-r from-rose-50 to-rose-100 border-l-4 border-rose-600 shadow-lg' :
-                      'bg-gradient-to-r from-amber-50 to-amber-100 border-l-4 border-amber-600 shadow-lg'
-                    }`}
-                  >
-                    <p className={`text-body text-gray-800 leading-relaxed font-english`}>
-                      {section.text}
-                    </p>
+                {/* Story Container */}
+                <div className="bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-300 shadow-xl rounded-2xl p-8">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {content[language].introduction.sections.map((section, idx) => (
+                      <div 
+                        key={idx} 
+                        className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
+                          idx === 0 ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
+                          idx === 1 ? 'bg-gradient-to-r from-slate-50 to-slate-100 border-slate-600 shadow-lg' :
+                          'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg'
+                        }`}
+                      >
+                        <p className={`text-body text-gray-800 leading-relaxed font-english`}>
+                          {section.text}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             )}
           </div>
 
           {/* Symbolism */}
-          <div className="card-premium animate-fade-in">
-            <h3 className={`text-large font-semibold text-primary mb-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+          <div className="lg:col-span-2">
+            <h3 className={`text-large font-semibold text-primary mb-6 text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].symbolism.title}
             </h3>
-            <p className={`text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic text-right' : 'font-english'}`}>
-              {content[language].symbolism.text}
-            </p>
+            
+            {language === 'ar' ? (
+              // Arabic symbolism sections - horizontal layout
+              <div className="bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-300 shadow-xl rounded-2xl p-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {content[language].symbolism.sections.map((section, idx) => (
+                    <div 
+                      key={idx} 
+                      className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
+                        section.design === 'primary' ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
+                        'bg-gradient-to-r from-slate-50 to-slate-100 border-slate-600 shadow-lg'
+                      }`}
+                    >
+                      <p className={`text-body text-gray-800 leading-relaxed font-arabic text-right`}>
+                        {section.text}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              // English single text
+              <p className={`text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic text-right' : 'font-english'}`}>
+                {content[language].symbolism.text}
+              </p>
+            )}
           </div>
         </div>
 
@@ -216,13 +236,6 @@ Together, "Athar Ruby" means "Heritage Gems" — the precious traces of our ance
               </div>
             ))}
           </div>
-          {language === 'ar' && (
-            <div className="text-center mt-6">
-              <p className="text-sm text-muted-foreground font-arabic">
-                * الأرقام مبنية على خبرتنا المتراكمة والتقييمات المستمرة
-              </p>
-            </div>
-          )}
         </div>
       </div>
     </section>

@@ -356,4 +356,18 @@ All colors MUST be HSL.
       letter-spacing: -0.03em;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
+
+    /* Gallery Banner Animation */
+    .animate-scroll-slow {
+      animation: scroll-slow 80s linear infinite;
+    }
+
+    @keyframes scroll-slow {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
 }
