@@ -52,11 +52,11 @@ const ContactSection = () => {
           {/* Phone */}
           <Card className="card-premium">
             <CardContent className="p-6">
-              <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <div className="p-3 bg-gradient-primary rounded-lg">
+              <div className={`flex items-start gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className="p-3 bg-gradient-primary rounded-lg flex-shrink-0 mt-1">
                   <Phone className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <div className={`${isRTL ? 'text-right' : ''} flex-1`}>
+                <div className={`${isRTL ? 'text-right' : 'text-left'} flex-1`}>
                   <h3 className={`font-semibold text-primary mb-1 ${isRTL ? 'font-arabic' : 'font-english'}`}>
                     {content[language].contact.phone}
                   </h3>
@@ -75,11 +75,11 @@ const ContactSection = () => {
           {/* WhatsApp */}
           <Card className="card-premium">
             <CardContent className="p-6">
-              <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <div className="p-3 bg-gradient-gold rounded-lg">
+              <div className={`flex items-start gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className="p-3 bg-gradient-gold rounded-lg flex-shrink-0 mt-1">
                   <MessageCircle className="h-6 w-6 text-secondary-foreground" />
                 </div>
-                <div className={`${isRTL ? 'text-right' : ''} flex-1`}>
+                <div className={`${isRTL ? 'text-right' : 'text-left'} flex-1`}>
                   <h3 className={`font-semibold text-primary mb-1 ${isRTL ? 'font-arabic' : 'font-english'}`}>
                     {content[language].contact.whatsapp}
                   </h3>
@@ -100,11 +100,11 @@ const ContactSection = () => {
           {/* Email */}
           <Card className="card-premium">
             <CardContent className="p-6">
-              <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <div className="p-3 bg-gradient-primary rounded-lg">
+              <div className={`flex items-start gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className="p-3 bg-gradient-primary rounded-lg flex-shrink-0 mt-1">
                   <Mail className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <div className={`${isRTL ? 'text-right' : ''} flex-1`}>
+                <div className={`${isRTL ? 'text-right' : 'text-left'} flex-1`}>
                   <h3 className={`font-semibold text-primary mb-1 ${isRTL ? 'font-arabic' : 'font-english'}`}>
                     {content[language].contact.email}
                   </h3>
@@ -123,11 +123,11 @@ const ContactSection = () => {
           {/* Location */}
           <Card className="card-premium">
             <CardContent className="p-6">
-              <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <div className="p-3 bg-gradient-gold rounded-lg">
+              <div className={`flex items-start gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className="p-3 bg-gradient-gold rounded-lg flex-shrink-0 mt-1">
                   <MapPin className="h-6 w-6 text-secondary-foreground" />
                 </div>
-                <div className={`${isRTL ? 'text-right' : ''} flex-1`}>
+                <div className={`${isRTL ? 'text-right' : 'text-left'} flex-1`}>
                   <h3 className={`font-semibold text-primary mb-1 ${isRTL ? 'font-arabic' : 'font-english'}`}>
                     {content[language].contact.location}
                   </h3>
