@@ -131,7 +131,7 @@ The name shows that Saudi heritage isn't just old history, but a priceless treas
                     {content[language].introduction.sections.map((section, idx) => (
                       <div 
                         key={idx} 
-                        className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
+                        className={`rounded-xl p-6 ${isRTL ? 'border-r-4' : 'border-l-4'} transition-all duration-300 hover:scale-105 ${
                           idx === 0 ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
                           idx === 1 ? 'border-amber-600 shadow-lg' :
                           'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg'
@@ -155,7 +155,7 @@ The name shows that Saudi heritage isn't just old history, but a priceless treas
                     {content[language].introduction.sections.map((section, idx) => (
                       <div 
                         key={idx} 
-                        className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
+                        className={`rounded-xl p-6 ${isRTL ? 'border-r-4' : 'border-l-4'} transition-all duration-300 hover:scale-105 ${
                           idx === 0 ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
                           idx === 1 ? 'border-amber-600 shadow-lg' :
                           'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg'
@@ -186,7 +186,7 @@ The name shows that Saudi heritage isn't just old history, but a priceless treas
                   {content[language].symbolism.sections.map((section, idx) => (
                     <div 
                       key={idx} 
-                      className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
+                      className={`rounded-xl p-6 ${isRTL ? 'border-r-4' : 'border-l-4'} transition-all duration-300 hover:scale-105 ${
                         section.design === 'primary' ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
                         'border-amber-600 shadow-lg'
                       }`}
@@ -206,7 +206,7 @@ The name shows that Saudi heritage isn't just old history, but a priceless treas
                   {content[language].symbolism.sections.map((section, idx) => (
                     <div 
                       key={idx} 
-                      className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
+                      className={`rounded-xl p-6 ${isRTL ? 'border-r-4' : 'border-l-4'} transition-all duration-300 hover:scale-105 ${
                         section.design === 'primary' ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
                         'border-amber-600 shadow-lg'
                       }`}
