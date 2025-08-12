@@ -8,7 +8,7 @@ const AboutSection = () => {
 
   const content = {
     en: {
-      title: "About Athar Ruby",
+      title: "Why Athar Ruby?",
       introduction: {
         title: "Our Story",
         sections: [
@@ -34,7 +34,8 @@ const AboutSection = () => {
             design: 'primary'
           },
           {
-            text: `"Ruby," the precious gemstone, represents the rare and valuable treasures we uncover — not gold or silver, but something far more precious: the stories, wisdom, and cultural heritage that have been polished by time into brilliant gems of human experience. Together, "Athar Ruby" means "Heritage Gems" — the precious traces of our ancestors that we discover, polish, and present as living treasures for the world to experience and cherish.`,
+            text: `Ruby, the red gem, stands for hidden value, rarity, and beauty—just like our untold Saudi heritage stories waiting to shine.
+The name shows that Saudi heritage isn't just old history, but a priceless treasure ready to wow the world as a cultural masterpiece.`,
             design: 'secondary'
           }
         ]
@@ -135,7 +136,7 @@ const AboutSection = () => {
                           idx === 1 ? 'border-amber-600 shadow-lg' :
                           'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg'
                         }`}
-                        style={idx === 1 ? {backgroundColor: 'rgba(239,228,204,255)'} : {}}
+                        style={idx === 1 ? {backgroundColor: 'rgba(253,250,243,255)'} : {}}
                       >
                         <p className={`text-body text-gray-800 leading-relaxed font-arabic text-right`}>
                           {section.text}
@@ -159,7 +160,7 @@ const AboutSection = () => {
                           idx === 1 ? 'border-amber-600 shadow-lg' :
                           'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg'
                         }`}
-                        style={idx === 1 ? {backgroundColor: 'rgba(239,228,204,255)'} : {}}
+                        style={idx === 1 ? {backgroundColor: 'rgba(253,250,243,255)'} : {}}
                       >
                         <p className={`text-body text-gray-800 leading-relaxed font-english`}>
                           {section.text}
@@ -189,7 +190,7 @@ const AboutSection = () => {
                         section.design === 'primary' ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
                         'border-amber-600 shadow-lg'
                       }`}
-                      style={section.design !== 'primary' ? {backgroundColor: 'rgba(239,228,204,255)'} : {}}
+                      style={section.design !== 'primary' ? {backgroundColor: 'rgba(253,250,243,255)'} : {}}
                     >
                       <p className={`text-body text-gray-800 leading-relaxed font-arabic text-right`}>
                         {section.text}
@@ -209,7 +210,7 @@ const AboutSection = () => {
                         section.design === 'primary' ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
                         'border-amber-600 shadow-lg'
                       }`}
-                      style={section.design !== 'primary' ? {backgroundColor: 'rgba(239,228,204,255)'} : {}}
+                      style={section.design !== 'primary' ? {backgroundColor: 'rgba(253,250,243,255)'} : {}}
                     >
                       <p className={`text-body text-gray-800 leading-relaxed font-english`}>
                         {section.text}
@@ -231,7 +232,7 @@ const AboutSection = () => {
             {content[language].features.map((feature, idx) => (
               <Card key={idx} className="card-premium animate-scale-in">
                 <CardContent className={`p-6 flex items-start gap-4 ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
-                  <div className="p-3 rounded-lg bg-gradient-gold shadow-gold">
+                  <div className="p-3 rounded-lg bg-gradient-gold shadow-gold flex-shrink-0">
                     {feature.icon === 'Gem' && <Gem className="h-6 w-6 text-secondary-foreground" />}
                     {feature.icon === 'BookOpen' && <BookOpen className="h-6 w-6 text-secondary-foreground" />}
                     {feature.icon === 'Compass' && <Compass className="h-6 w-6 text-secondary-foreground" />}
@@ -239,7 +240,7 @@ const AboutSection = () => {
                     {feature.icon === 'Users' && <Users className="h-6 w-6 text-secondary-foreground" />}
                     {feature.icon === 'Globe2' && <Globe2 className="h-6 w-6 text-secondary-foreground" />}
                   </div>
-                  <div>
+                  <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
                     <h4 className={`font-semibold text-primary mb-1 ${isRTL ? 'font-arabic' : 'font-english'}`}>{feature.title}</h4>
                     <p className={`text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>{feature.desc}</p>
                   </div>

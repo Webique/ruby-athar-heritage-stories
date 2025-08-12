@@ -31,18 +31,16 @@ const GallerySection = () => {
   // List of all files currently in public/lovable-uploads
   const uploadFileNames = useMemo(
     () => [
-      '19e206c3-4a07-4ef2-b477-cd3e49919a36.JPG',
-      '250259e1-54d5-4954-9e0b-7ba1bd7d4698.JPG',
-      '3efae04f-d55e-47cb-bace-328e3aa1bb91.JPG',
-      '87b9d1e9-eb5c-43a6-8e56-81e77cb3e2de.JPG',
-      '98e67da8-4a60-4d75-b49f-bd3b8289dc66.JPG',
-      'bb975493-9bdd-4ec3-8c36-5206dc5acd29.JPG',
-      'cd6970f6-e9b1-40b1-886c-10084491cd98.JPG',
-      'd0f41331-24d6-4050-b958-00ab02fff505.JPG',
-      'd4383754-7b97-47ea-a48d-3344b4095edf.JPG',
-      'dc0c6535-876e-43c5-8f5a-1aff8cca290c.JPG',
-      'e2e3b43e-d5f2-459f-bc73-f8dde23b1e4e.JPG',
-      'fed2ecb2-42f9-4811-94e8-85aebfb0ccf1.JPG',
+      '1.jpeg',
+      '2.jpeg',
+      '3.jpeg',
+      '4.jpeg',
+      '5.jpeg',
+      '6.jpeg',
+      '7.jpeg',
+      '8.jpeg',
+      '9.jpeg',
+      '10.jpeg',
     ]
       // Keep sorted for stable UI order
       .sort((a, b) => a.localeCompare(b)),
