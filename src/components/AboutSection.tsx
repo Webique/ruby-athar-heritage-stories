@@ -132,9 +132,10 @@ const AboutSection = () => {
                         key={idx} 
                         className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
                           idx === 0 ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
-                          idx === 1 ? 'bg-gradient-to-r from-amber-50 to-amber-100 border-amber-600 shadow-lg' :
+                          idx === 1 ? 'border-amber-600 shadow-lg' :
                           'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg'
                         }`}
+                        style={idx === 1 ? {backgroundColor: 'rgba(239,228,204,255)'} : {}}
                       >
                         <p className={`text-body text-gray-800 leading-relaxed font-arabic text-right`}>
                           {section.text}
@@ -155,9 +156,10 @@ const AboutSection = () => {
                         key={idx} 
                         className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
                           idx === 0 ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
-                          idx === 1 ? 'bg-gradient-to-r from-amber-50 to-amber-100 border-amber-600 shadow-lg' :
+                          idx === 1 ? 'border-amber-600 shadow-lg' :
                           'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg'
                         }`}
+                        style={idx === 1 ? {backgroundColor: 'rgba(239,228,204,255)'} : {}}
                       >
                         <p className={`text-body text-gray-800 leading-relaxed font-english`}>
                           {section.text}
@@ -185,8 +187,9 @@ const AboutSection = () => {
                       key={idx} 
                       className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
                         section.design === 'primary' ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
-                        'bg-gradient-to-r from-amber-50 to-amber-100 border-amber-600 shadow-lg'
+                        'border-amber-600 shadow-lg'
                       }`}
+                      style={section.design !== 'primary' ? {backgroundColor: 'rgba(239,228,204,255)'} : {}}
                     >
                       <p className={`text-body text-gray-800 leading-relaxed font-arabic text-right`}>
                         {section.text}
@@ -204,8 +207,9 @@ const AboutSection = () => {
                       key={idx} 
                       className={`rounded-xl p-6 border-l-4 transition-all duration-300 hover:scale-105 ${
                         section.design === 'primary' ? 'bg-gradient-to-r from-red-50 to-red-100 border-red-600 shadow-lg' :
-                        'bg-gradient-to-r from-amber-50 to-amber-100 border-amber-600 shadow-lg'
+                        'border-amber-600 shadow-lg'
                       }`}
+                      style={section.design !== 'primary' ? {backgroundColor: 'rgba(239,228,204,255)'} : {}}
                     >
                       <p className={`text-body text-gray-800 leading-relaxed font-english`}>
                         {section.text}
