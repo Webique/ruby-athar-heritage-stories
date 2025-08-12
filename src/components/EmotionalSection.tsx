@@ -9,21 +9,12 @@ const EmotionalSection = () => {
   const content = {
     en: {
       title: "The Impact of Your Journey",
-      message: `When you return from an Athar Ruby experience, you won't just carry photos and souvenirs. You'll carry something far more valuable: a deep connection to a land and culture that many have never truly understood.
-
-You'll find yourself defending the richness of Arabian heritage in conversations, sharing stories that fascinate your friends, and perhaps most importantly, you'll have gained a new perspective on what civilization, wisdom, and human legacy truly mean.
-
-Our goal isn't just to show you places — it's to change how you see the world. To help you understand that every stone, every tradition, every story in this land carries the weight of centuries of human experience, wisdom, and dreams.
-
-When you leave, you'll take with you not just memories, but a part of Arabia's soul — and you'll leave behind a part of your own, forever connecting you to this timeless land.`,
-      metricsTitle: 'How Journeys Transform',
       metrics: [
         { label: 'Cultural Insight', value: 'Deeper', icon: 'Layers' },
         { label: 'Personal Reflection', value: 'Stronger', icon: 'Heart' },
         { label: 'Respect for Heritage', value: 'Higher', icon: 'Shield' },
         { label: 'Inspiration', value: 'Lasting', icon: 'Sparkles' },
       ],
-      timelineTitle: 'Your Impact Path',
       timeline: [
         { title: 'Arrival', desc: 'Curiosity meets place', icon: 'Map' },
         { title: 'Immersion', desc: 'Stories come alive', icon: 'Scroll' },
@@ -33,16 +24,18 @@ When you leave, you'll take with you not just memories, but a part of Arabia's s
     },
     ar: {
       title: "أثر رحلتك",
-      message: "",
-      metricsTitle: 'كيف تُحوّل الرحلات إدراكك',
       metrics: [
         { label: 'فهم ثقافي', value: 'أعمق', icon: 'Layers' },
         { label: 'تأمل شخصي', value: 'أقوى', icon: 'Heart' },
         { label: 'احترام للتراث', value: 'أعلى', icon: 'Shield' },
         { label: 'إلهام', value: 'مستمر', icon: 'Sparkles' },
       ],
-      timelineTitle: "",
-      timeline: []
+      timeline: [
+        { title: 'الوصول', desc: 'الفضول يلتقي بالمكان', icon: 'Map' },
+        { title: 'الانغماس', desc: 'القصص تحيا', icon: 'Scroll' },
+        { title: 'التأمل', desc: 'المعنى يتجذر', icon: 'Flame' },
+        { title: 'الدفاع', desc: 'أنت تحمل القصة', icon: 'Flag' },
+      ]
     }
   };
 
@@ -60,30 +53,19 @@ When you leave, you'll take with you not just memories, but a part of Arabia's s
           <h2 className={`text-section font-bold text-primary-foreground mb-12 ${isRTL ? 'font-arabic' : 'font-english'}`}>
             {content[language].title}
           </h2>
-          
-          <div className="space-y-8">
-            {content[language].message && (
-              <p className={`text-large text-primary-foreground/90 leading-relaxed ${isRTL ? 'font-arabic text-right' : 'font-english'}`}>
-                {content[language].message}
-              </p>
-            )}
-          </div>
         </div>
 
         {/* Metrics Row */}
         <div className="max-w-6xl mx-auto mt-12">
-          <h3 className={`text-large font-semibold text-primary-foreground/95 mb-6 text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
-            {content[language].metricsTitle}
-          </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {content[language].metrics?.map((m: any, idx: number) => (
               <Card key={idx} className="bg-white/10 backdrop-blur border-white/20 hover:bg-white/15 transition-all duration-300 animate-scale-in">
                 <CardContent className={`p-6 text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                  <div className="mx-auto mb-3 inline-flex p-3 rounded-lg bg-gradient-gold shadow-gold">
-                    {m.icon === 'Layers' && <Layers className="h-6 w-6 text-secondary-foreground" />}
-                    {m.icon === 'Heart' && <Heart className="h-6 w-6 text-secondary-foreground" />}
-                    {m.icon === 'Shield' && <Shield className="h-6 w-6 text-secondary-foreground" />}
-                    {m.icon === 'Sparkles' && <Sparkles className="h-6 w-6 text-secondary-foreground" />}
+                  <div className="mx-auto mb-3 inline-flex p-4 rounded-full bg-gradient-gold shadow-gold w-16 h-16 items-center justify-center">
+                    {m.icon === 'Layers' && <Layers className="h-8 w-8 text-secondary-foreground" />}
+                    {m.icon === 'Heart' && <Heart className="h-8 w-8 text-secondary-foreground" />}
+                    {m.icon === 'Shield' && <Shield className="h-8 w-8 text-secondary-foreground" />}
+                    {m.icon === 'Sparkles' && <Sparkles className="h-8 w-8 text-secondary-foreground" />}
                   </div>
                   <div className="text-primary-foreground/95 text-xl font-semibold">{m.value}</div>
                   <div className="text-primary-foreground/80 text-sm">{m.label}</div>
@@ -94,29 +76,24 @@ When you leave, you'll take with you not just memories, but a part of Arabia's s
         </div>
 
         {/* Timeline Row */}
-        {content[language].timelineTitle && content[language].timeline && (
-          <div className="max-w-6xl mx-auto mt-12">
-            <h3 className={`text-large font-semibold text-primary-foreground/95 mb-6 text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
-              {content[language].timelineTitle}
-            </h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {content[language].timeline?.map((step: any, i: number) => (
-                <Card key={i} className="bg-white/10 backdrop-blur border-white/20 hover:bg-white/15 transition-all duration-300 animate-slide-up">
-                  <CardContent className={`p-6 text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                    <div className="mx-auto mb-3 inline-flex p-3 rounded-full bg-gradient-primary shadow-glow">
-                      {step.icon === 'Map' && <Map className="h-6 w-6 text-primary-foreground" />}
-                      {step.icon === 'Scroll' && <Scroll className="h-6 w-6 text-primary-foreground" />}
-                      {step.icon === 'Flame' && <Flame className="h-6 w-6 text-primary-foreground" />}
-                      {step.icon === 'Flag' && <Flag className="h-6 w-6 text-primary-foreground" />}
-                    </div>
-                    <div className="text-primary-foreground/95 font-semibold mb-1">{step.title}</div>
-                    <div className="text-primary-foreground/80 text-sm">{step.desc}</div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+        <div className="max-w-6xl mx-auto mt-12">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {content[language].timeline?.map((step: any, i: number) => (
+              <Card key={i} className="bg-white/10 backdrop-blur border-white/20 hover:bg-white/15 transition-all duration-300 animate-slide-up">
+                <CardContent className={`p-6 text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                  <div className="mx-auto mb-3 inline-flex p-4 rounded-full bg-gradient-primary shadow-glow w-16 h-16 items-center justify-center">
+                    {step.icon === 'Map' && <Map className="h-8 w-8 text-primary-foreground" />}
+                    {step.icon === 'Scroll' && <Scroll className="h-8 w-8 text-primary-foreground" />}
+                    {step.icon === 'Flame' && <Flame className="h-8 w-8 text-primary-foreground" />}
+                    {step.icon === 'Flag' && <Flag className="h-8 w-8 text-primary-foreground" />}
+                  </div>
+                  <div className="text-primary-foreground/95 font-semibold mb-1">{step.title}</div>
+                  <div className="text-primary-foreground/80 text-sm">{step.desc}</div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-        )}
+        </div>
       </div>
     </section>
   );

@@ -32,10 +32,11 @@ const Header = () => {
 
           {/* Phone Number - Center */}
           <div className={`flex items-center gap-2 order-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <Phone className="h-4 w-4 text-primary" />
+            <Phone className={`h-4 w-4 text-primary ${isRTL ? 'ml-2' : 'mr-2'}`} />
             <a 
               href={`tel:${content[language].phone}`}
-              className="text-body font-medium hover:text-primary transition-colors"
+              className={`text-body font-medium hover:text-primary transition-colors ${isRTL ? 'font-arabic' : ''}`}
+              dir="ltr"
             >
               {content[language].phone}
             </a>
