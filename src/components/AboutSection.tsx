@@ -8,7 +8,7 @@ const AboutSection = () => {
 
   const content = {
     en: {
-      title: "Why Athar Ruby?",
+      title: "About Athar Ruby",
       introduction: {
         title: "Our Story",
         sections: [
@@ -27,7 +27,7 @@ const AboutSection = () => {
         ]
       },
       symbolism: {
-        title: "The Name & Symbolism",
+        title: "Why Athar Ruby?",
         sections: [
           {
             text: `"Athar" means "traces" or "heritage" in Arabic — the marks left by those who came before us, the stories carved into stone and memory, the legacy that shapes who we are today.`,

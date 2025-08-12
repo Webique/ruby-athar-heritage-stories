@@ -48,6 +48,7 @@ const Footer = () => {
                 <a 
                   href={`tel:${content[language].phone}`}
                   className="hover:text-secondary transition-colors"
+                  dir="ltr"
                 >
                   {content[language].phone}
                 </a>
@@ -58,6 +59,7 @@ const Footer = () => {
                 <a 
                   href={`mailto:${content[language].email}`}
                   className="hover:text-secondary transition-colors"
+                  dir="ltr"
                 >
                   {content[language].email}
                 </a>
