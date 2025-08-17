@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 import heroBackground from '@/assets/hero-background.jpg';
 
 const HeroSection = () => {
   const { language, isRTL } = useLanguage();
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
+
+  const handleJourneyClick = () => {
+    navigate('/journey');
+  };
 
   const content = {
     en: {
@@ -57,7 +63,10 @@ const HeroSection = () => {
           </div>
 
           <div className={`${isVisible ? 'text-reveal animate' : 'text-reveal'}`} style={{ animationDelay: '0.8s' }}>
-            <Button className="btn-hero text-lg px-12 py-6 shadow-glow">
+            <Button 
+              className="btn-hero text-lg px-12 py-6 shadow-glow"
+              onClick={handleJourneyClick}
+            >
               {content[language].cta}
             </Button>
           </div>
