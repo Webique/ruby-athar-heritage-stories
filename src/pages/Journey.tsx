@@ -70,26 +70,26 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
   if (showConfirmation) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className={`max-w-md ${isRTL ? 'text-right' : 'text-left'}`}>
-          <DialogHeader>
-            <DialogTitle className={`text-xl font-bold text-primary text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
+        <DialogContent className={`max-w-[95vw] sm:max-w-md mx-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+          <DialogHeader className="px-2 sm:px-0">
+            <DialogTitle className={`text-lg sm:text-xl font-bold text-primary text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].confirmation}
             </DialogTitle>
           </DialogHeader>
           
-          <div className="text-center py-6">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="text-center py-4 sm:py-6 px-2 sm:px-0">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+              <svg className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <p className={`text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
+            <p className={`text-sm sm:text-base text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].confirmationMessage}
             </p>
           </div>
 
-          <div className={`flex pt-4 ${isRTL ? 'justify-start' : 'justify-end'}`}>
-            <Button onClick={handleClose} className="btn-primary">
+          <div className={`flex justify-center sm:pt-4 px-2 sm:px-0 ${isRTL ? 'sm:justify-start' : 'sm:justify-end'}`}>
+            <Button onClick={handleClose} className="btn-primary w-full sm:w-auto text-sm py-2">
               {content[language].close}
             </Button>
           </div>
@@ -100,19 +100,19 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`max-w-md ${isRTL ? 'text-right' : 'text-left'}`}>
-        <DialogHeader>
-          <DialogTitle className={`text-xl font-bold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
+      <DialogContent className={`max-w-[95vw] sm:max-w-md mx-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+        <DialogHeader className="px-2 sm:px-0">
+          <DialogTitle className={`text-lg sm:text-xl font-bold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
             {content[language].title}
           </DialogTitle>
-          <p className={`text-sm text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
+          <p className={`text-xs sm:text-sm text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
             {trip?.title}
           </p>
         </DialogHeader>
         
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 px-2 sm:px-0">
           <div className="space-y-2">
-            <Label htmlFor="name" className={`${isRTL ? 'font-arabic' : 'font-english'}`}>
+            <Label htmlFor="name" className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].name}
             </Label>
             <Input
@@ -122,13 +122,13 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
               required
               value={formData.name}
               onChange={handleInputChange}
-              className={isRTL ? 'text-right' : 'text-left'}
+              className={`text-sm py-2 ${isRTL ? 'text-right' : 'text-left'}`}
               dir={isRTL ? 'rtl' : 'ltr'}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone" className={`${isRTL ? 'font-arabic' : 'font-english'}`}>
+            <Label htmlFor="phone" className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].phone}
             </Label>
             <Input
@@ -138,13 +138,13 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
               required
               value={formData.phone}
               onChange={handleInputChange}
-              className={isRTL ? 'text-right' : 'text-left'}
+              className={`text-sm py-2 ${isRTL ? 'text-right' : 'text-left'}`}
               dir={isRTL ? 'rtl' : 'ltr'}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email" className={`${isRTL ? 'font-arabic' : 'font-english'}`}>
+            <Label htmlFor="email" className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].email}
             </Label>
             <Input
@@ -154,13 +154,13 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
               required
               value={formData.email}
               onChange={handleInputChange}
-              className={isRTL ? 'text-right' : 'text-left'}
+              className={`text-sm py-2 ${isRTL ? 'text-right' : 'text-left'}`}
               dir={isRTL ? 'rtl' : 'ltr'}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="age" className={`${isRTL ? 'font-arabic' : 'font-english'}`}>
+            <Label htmlFor="age" className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].age}
             </Label>
             <Input
@@ -172,16 +172,16 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
               required
               value={formData.age}
               onChange={handleInputChange}
-              className={isRTL ? 'text-right' : 'text-left'}
+              className={`text-sm py-2 ${isRTL ? 'text-right' : 'text-left'}`}
               dir={isRTL ? 'rtl' : 'ltr'}
             />
           </div>
 
-          <div className={`flex gap-2 pt-4 ${isRTL ? 'justify-start' : 'justify-end'}`}>
-            <Button type="button" variant="outline" onClick={onClose}>
+          <div className={`flex flex-col sm:flex-row gap-2 pt-4 ${isRTL ? 'sm:justify-start' : 'sm:justify-end'}`}>
+            <Button type="button" variant="outline" onClick={onClose} className="w-full sm:w-auto text-sm py-2">
               {language === 'en' ? 'Cancel' : 'إلغاء'}
             </Button>
-            <Button type="submit" className="btn-primary">
+            <Button type="submit" className="btn-primary w-full sm:w-auto text-sm py-2">
               {content[language].submit}
             </Button>
           </div>
@@ -196,34 +196,34 @@ const TripModal = ({ trip, isOpen, onClose, language, isRTL }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`max-w-4xl max-h-[90vh] overflow-y-auto ${isRTL ? 'text-right' : 'text-left'}`}>
-        <DialogHeader>
-          <DialogTitle className={`text-2xl font-bold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+      <DialogContent className={`max-w-[95vw] md:max-w-4xl max-h-[90vh] overflow-y-auto mx-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+        <DialogHeader className="px-2 md:px-0">
+          <DialogTitle className={`text-xl sm:text-2xl font-bold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
             {trip.title}
           </DialogTitle>
         </DialogHeader>
         
-        <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+        <div className={`space-y-4 md:space-y-6 px-2 md:px-0 ${isRTL ? 'text-right' : 'text-left'}`}>
           {/* Experience Description */}
-          <div className="space-y-3">
-            <h3 className={`text-lg font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+          <div className="space-y-2 md:space-y-3">
+            <h3 className={`text-base md:text-lg font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
               {language === 'en' ? 'Experience Description' : 'وصف التجربة'}
             </h3>
-            <p className={`text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+            <p className={`text-sm md:text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
               {trip.fullDescription}
             </p>
           </div>
 
           {/* Experience Details */}
-          <div className="space-y-3">
-            <h3 className={`text-lg font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+          <div className="space-y-2 md:space-y-3">
+            <h3 className={`text-base md:text-lg font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
               {language === 'en' ? 'Experience Details' : 'تفاصيل التجربة'}
             </h3>
-            <div className={`grid grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+            <div className={`grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
               {trip.details.map((detail, idx) => (
                 <div key={idx} className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                  <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0"></div>
-                  <span className={`text-sm text-muted-foreground ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-primary rounded-full flex-shrink-0"></div>
+                  <span className={`text-xs md:text-sm text-muted-foreground ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
                     {detail}
                   </span>
                 </div>
@@ -232,15 +232,15 @@ const TripModal = ({ trip, isOpen, onClose, language, isRTL }) => {
           </div>
 
           {/* What's Included */}
-          <div className="space-y-3">
-            <h3 className={`text-lg font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+          <div className="space-y-2 md:space-y-3">
+            <h3 className={`text-base md:text-lg font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
               {language === 'en' ? "What's Included in the Base Price" : 'ما يشمله السعر الأساسي'}
             </h3>
             <div className={`grid grid-cols-1 gap-2 ${isRTL ? 'text-right' : 'text-left'}`}>
               {trip.included.map((item, idx) => (
                 <div key={idx} className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                  <div className="w-2 h-2 bg-secondary rounded-full flex-shrink-0"></div>
-                  <span className={`text-sm text-muted-foreground ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-secondary rounded-full flex-shrink-0"></div>
+                  <span className={`text-xs md:text-sm text-muted-foreground ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
                     {item}
                   </span>
                 </div>
@@ -249,20 +249,20 @@ const TripModal = ({ trip, isOpen, onClose, language, isRTL }) => {
           </div>
 
           {/* Pricing Packages */}
-          <div className="space-y-3">
-            <h3 className={`text-lg font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+          <div className="space-y-2 md:space-y-3">
+            <h3 className={`text-base md:text-lg font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
               {language === 'en' ? 'Pricing Packages' : 'باقات الأسعار'}
             </h3>
-            <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+            <div className={`grid grid-cols-1 gap-3 md:gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
               {trip.pricing.map((pkg, idx) => (
-                <div key={idx} className={`border border-border rounded-lg p-4 bg-card ${isRTL ? 'text-right' : 'text-left'}`}>
-                  <h4 className={`font-semibold text-primary mb-2 ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+                <div key={idx} className={`border border-border rounded-lg p-3 md:p-4 bg-card ${isRTL ? 'text-right' : 'text-left'}`}>
+                  <h4 className={`text-sm md:text-base font-semibold text-primary mb-2 ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
                     {pkg.name}
                   </h4>
-                  <p className={`text-lg font-bold text-secondary mb-2 ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+                  <p className={`text-base md:text-lg font-bold text-secondary mb-2 ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
                     {pkg.price}
                   </p>
-                  <p className={`text-sm text-muted-foreground ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+                  <p className={`text-xs md:text-sm text-muted-foreground ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
                     {pkg.description}
                   </p>
                   {pkg.optional && (
@@ -276,15 +276,15 @@ const TripModal = ({ trip, isOpen, onClose, language, isRTL }) => {
           </div>
 
           {/* Important Notes */}
-          <div className="space-y-3">
-            <h3 className={`text-lg font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+          <div className="space-y-2 md:space-y-3">
+            <h3 className={`text-base md:text-lg font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
               {language === 'en' ? 'Important Notes' : 'ملاحظات مهمة'}
             </h3>
             <div className={`grid grid-cols-1 gap-2 ${isRTL ? 'text-right' : 'text-left'}`}>
               {trip.notes.map((note, idx) => (
                 <div key={idx} className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-                  <div className="w-2 h-2 bg-accent rounded-full flex-shrink-0"></div>
-                  <span className={`text-sm text-muted-foreground ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-accent rounded-full flex-shrink-0"></div>
+                  <span className={`text-xs md:text-sm text-muted-foreground ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
                     {note}
                   </span>
                 </div>
@@ -293,8 +293,8 @@ const TripModal = ({ trip, isOpen, onClose, language, isRTL }) => {
           </div>
         </div>
 
-        <div className={`flex justify-end pt-6 ${isRTL ? 'justify-start' : 'justify-end'}`}>
-          <Button onClick={onClose} className="btn-primary">
+        <div className={`flex justify-end pt-4 md:pt-6 px-2 md:px-0 ${isRTL ? 'justify-start' : 'justify-end'}`}>
+          <Button onClick={onClose} className="btn-primary text-sm py-2 px-4">
             {language === 'en' ? 'Close' : 'إغلاق'}
           </Button>
         </div>
@@ -791,87 +791,87 @@ const JourneyContent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-elegant pt-24">
-      <div className="container mx-auto px-6 py-16">
+    <div className="min-h-screen bg-gradient-elegant pt-20 md:pt-24">
+      <div className="container mx-auto px-4 sm:px-6 py-8 md:py-16">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className={`text-hero font-bold text-primary mb-6 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+        <div className="text-center mb-8 md:mb-16">
+          <h1 className={`text-3xl sm:text-4xl md:text-hero font-bold text-primary mb-4 md:mb-6 px-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
             {content[language].title}
           </h1>
-          <p className={`text-large text-muted-foreground max-w-3xl mx-auto ${isRTL ? 'font-arabic' : 'font-english'}`}>
+          <p className={`text-base sm:text-lg md:text-large text-muted-foreground max-w-3xl mx-auto px-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
             {content[language].subtitle}
           </p>
         </div>
 
         {/* Journey Cards */}
-        <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
           {content[language].trips.map((trip) => (
             <Card key={trip.id} className="card-premium animate-scale-in hover:shadow-glow transition-all duration-300">
-              <CardHeader className="pb-4">
-                <div className="flex items-start justify-between">
+              <CardHeader className="pb-3 md:pb-4 px-4 md:px-6">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                   <div className="flex-1">
-                    <CardTitle className={`text-xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                    <CardTitle className={`text-lg sm:text-xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
                       {trip.title}
                     </CardTitle>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
-                        <MapPin className="h-4 w-4" />
+                        <MapPin className="h-3 w-3 sm:h-4 sm:w-4" />
                         <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.location}</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
+                        <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
                         <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.duration}</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <Users className="h-4 w-4" />
+                        <Users className="h-3 w-3 sm:h-4 sm:w-4" />
                         <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.groupSize}</span>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 bg-gradient-gold px-3 py-1 rounded-full">
-                    <Star className="h-4 w-4 text-secondary-foreground fill-current" />
-                    <span className="text-secondary-foreground font-semibold">{trip.rating}</span>
+                  <div className="flex items-center gap-1 bg-gradient-gold px-2 py-1 sm:px-3 rounded-full self-start">
+                    <Star className="h-3 w-3 sm:h-4 sm:w-4 text-secondary-foreground fill-current" />
+                    <span className="text-secondary-foreground font-semibold text-xs sm:text-sm">{trip.rating}</span>
                   </div>
                 </div>
               </CardHeader>
               
-              <CardContent className="space-y-4">
-                <p className={`text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
+              <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
+                <p className={`text-sm sm:text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
                   {trip.description}
                 </p>
                 
                 <div className="space-y-2">
-                  <h4 className={`font-semibold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                  <h4 className={`text-sm sm:text-base font-semibold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
                     {language === 'en' ? 'Highlights' : 'أبرز المميزات'}
                   </h4>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {trip.highlights.map((highlight, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <div key={idx} className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full flex-shrink-0"></div>
                         <span className={isRTL ? 'font-arabic' : 'font-english'}>{highlight}</span>
                       </div>
                     ))}
                   </div>
                 </div>
                 
-                <div className="flex items-center justify-between pt-4">
-                  <div className="text-2xl font-bold text-primary">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 md:pt-4">
+                  <div className="text-xl sm:text-2xl font-bold text-primary text-center sm:text-left">
                     {trip.price}
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                     <Button 
                       variant="outline" 
-                      className="btn-gold"
+                      className="btn-gold w-full sm:w-auto text-sm py-2"
                       onClick={() => handleViewDetails(trip)}
                     >
                       {content[language].viewDetails}
                     </Button>
                     <Button 
-                      className="btn-primary"
+                      className="btn-primary w-full sm:w-auto text-sm py-2"
                       onClick={() => handleBookJourney(trip)}
                     >
                       {content[language].cta}
-                      <ArrowRight className={`h-4 w-4 ml-2 ${isRTL ? 'rotate-180' : ''}`} />
+                      <ArrowRight className={`h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2 ${isRTL ? 'rotate-180' : ''}`} />
                     </Button>
                   </div>
                 </div>

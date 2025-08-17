@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
-import { Phone, Globe, Map } from 'lucide-react';
+import { Phone, Globe, Map, Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
   const { language, toggleLanguage, isRTL } = useLanguage();
   const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const content = {
     en: {
@@ -69,7 +70,7 @@ const Header = () => {
             <Phone className={`h-4 w-4 text-primary ${isRTL ? 'ml-2' : 'mr-2'}`} />
             <a 
               href={`tel:${content[language].phone}`}
-              className={`text-body font-medium hover:text-primary transition-colors ${isRTL ? 'font-arabic' : ''}`}
+              className={`text-xs sm:text-body font-medium hover:text-primary transition-colors ${isRTL ? 'font-arabic' : ''}`}
               dir="ltr"
             >
               {content[language].phone}
@@ -88,28 +89,47 @@ const Header = () => {
               {content[language].toggleText}
             </Button>
           </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden order-5">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </Button>
+          </div>
         </div>
 
-        {/* Mobile Navigation */}
-        <div className="md:hidden mt-4 pt-4 border-t border-border">
-          <nav className="flex items-center justify-center gap-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  location.pathname === item.path || 
-                  (item.path === '/#about' && location.pathname === '/' && location.hash === '#about') ||
-                  (item.path === '/#contact' && location.pathname === '/' && location.hash === '#contact')
-                    ? 'text-primary'
-                    : 'text-muted-foreground'
-                } ${isRTL ? 'font-arabic' : 'font-english'}`}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-        </div>
+        {/* Mobile Navigation Drawer */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 pt-4 border-t border-border bg-background/95 backdrop-blur-sm rounded-lg shadow-lg">
+            <nav className="flex flex-col gap-3 px-4 py-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`text-base font-medium transition-colors hover:text-primary py-2 px-3 rounded-md ${
+                    location.pathname === item.path || 
+                    (item.path === '/#about' && location.pathname === '/' && location.hash === '#about') ||
+                    (item.path === '/#contact' && location.pathname === '/' && location.hash === '#contact')
+                      ? 'text-primary bg-primary/10'
+                      : 'text-muted-foreground hover:bg-muted/50'
+                  } ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );
