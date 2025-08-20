@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
-import { Layers, Heart, Shield, Sparkles, Map, Scroll, Flame, Flag } from 'lucide-react';
+import { Layers, Heart, Shield, Sparkles } from 'lucide-react';
 
 const EmotionalSection = () => {
   const { language, isRTL } = useLanguage();
@@ -15,12 +15,7 @@ const EmotionalSection = () => {
         { label: 'Respect for Heritage', value: 'Higher', icon: 'Shield' },
         { label: 'Inspiration', value: 'Lasting', icon: 'Sparkles' },
       ],
-      timeline: [
-        { title: 'Arrival', desc: 'Curiosity meets place', icon: 'Map' },
-        { title: 'Immersion', desc: 'Stories come alive', icon: 'Scroll' },
-        { title: 'Reflection', desc: 'Meaning takes root', icon: 'Flame' },
-        { title: 'Advocacy', desc: 'You carry the story', icon: 'Flag' },
-      ]
+
     },
     ar: {
       title: "أثر رحلتك",
@@ -30,12 +25,7 @@ const EmotionalSection = () => {
         { label: 'احترام للتراث', value: 'أعلى', icon: 'Shield' },
         { label: 'إلهام', value: 'مستمر', icon: 'Sparkles' },
       ],
-      timeline: [
-        { title: 'الوصول', desc: 'فضول يلتقي بالمكان', icon: 'Map' },
-        { title: 'الانغماس', desc: 'قصص تحيا', icon: 'Scroll' },
-        { title: 'التأمل', desc: 'معنى يتجذر', icon: 'Flame' },
-        { title: 'الدفاع', desc: 'أنت تحمل القصة', icon: 'Flag' },
-      ]
+
     }
   };
 
@@ -79,25 +69,7 @@ const EmotionalSection = () => {
           </div>
         </div>
 
-        {/* Timeline Row */}
-        <div className="max-w-6xl mx-auto mt-12">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {content[language].timeline?.map((step: any, i: number) => (
-              <Card key={i} className="bg-white/10 backdrop-blur border-white/20 hover:bg-white/15 transition-all duration-300 animate-slide-up">
-                <CardContent className={`p-6 text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                  <div className="mx-auto mb-3 inline-flex p-4 rounded-full bg-gradient-primary shadow-glow w-16 h-16 items-center justify-center">
-                    {step.icon === 'Map' && <Map className="h-8 w-8 text-primary-foreground" />}
-                    {step.icon === 'Scroll' && <Scroll className="h-8 w-8 text-primary-foreground" />}
-                    {step.icon === 'Flame' && <Flame className="h-8 w-8 text-primary-foreground" />}
-                    {step.icon === 'Flag' && <Flag className="h-8 w-8 text-primary-foreground" />}
-                  </div>
-                  <div className="text-primary-foreground/95 text-xl font-bold mb-1">{step.title}</div>
-                  <div className="text-primary-foreground/80 text-xl font-bold">{step.desc}</div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+
       </div>
     </section>
   );

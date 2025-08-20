@@ -33,7 +33,7 @@ const ContactSection = () => {
     }
   };
 
-  const phoneNumber = '+966504333581';
+  const phoneNumber = '0573600158';
   const email = 'atharruby@outlook.com';
 
   return (
