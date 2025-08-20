@@ -15,6 +15,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
     phone: '',
     email: '',
     age: '',
+    date: '',
     package: '',
     participants: '1',
     addOns: []
@@ -116,6 +117,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
       phone: '',
       email: '',
       age: '',
+      date: '',
       package: '',
       participants: '1',
       addOns: []
@@ -134,6 +136,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
       phone: 'Phone Number',
       email: 'Email Address',
       age: 'Age',
+      date: 'Preferred Date',
       package: 'Select Package',
       participants: 'Number of Participants',
       addOns: 'Add-Ons (Optional)',
@@ -148,6 +151,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
       phone: 'رقم الهاتف',
       email: 'البريد الإلكتروني',
       age: 'العمر',
+      date: 'التاريخ المفضل',
       package: 'اختر الباقة',
       participants: 'عدد المشاركين',
       addOns: 'إضافات اختيارية',
@@ -269,6 +273,26 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="date" className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
+              {content[language].date}
+            </Label>
+            <Input
+              id="date"
+              name="date"
+              type="date"
+              required
+              min={new Date().toISOString().split('T')[0]}
+              value={formData.date}
+              onChange={handleInputChange}
+              className={`text-sm py-2 ${isRTL ? 'text-right' : 'text-left'}`}
+              dir={isRTL ? 'rtl' : 'ltr'}
+            />
+            <p className={`text-xs text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
+              {language === 'en' ? 'Please select your preferred date for the journey' : 'يرجى اختيار التاريخ المفضل للرحلة'}
+            </p>
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="package" className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].package}
             </Label>
@@ -368,6 +392,18 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
                 
                 {/* Package Details */}
                 <div className="space-y-2 mb-3">
+                  {/* Selected Date */}
+                  {formData.date && (
+                    <div className="flex justify-between items-center text-sm bg-primary/5 p-2 rounded">
+                      <span className={`text-primary font-medium ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                        {language === 'en' ? 'Selected Date' : 'التاريخ المختار'}
+                      </span>
+                      <span className="font-medium text-primary">
+                        {formData.date}
+                      </span>
+                    </div>
+                  )}
+                  
                   <div className="flex justify-between items-center text-sm">
                     <span className={isRTL ? 'font-arabic' : 'font-english'}>
                       {formData.package}
@@ -432,7 +468,11 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
             <Button type="button" variant="outline" onClick={onClose} className="w-full sm:w-auto text-sm py-2">
               {language === 'en' ? 'Cancel' : 'إلغاء'}
             </Button>
-            <Button type="submit" className="btn-primary w-full sm:w-auto text-sm py-2">
+            <Button 
+              type="submit" 
+              className="btn-primary w-full sm:w-auto text-sm py-2"
+              disabled={!formData.date || !formData.package}
+            >
               {content[language].submit}
             </Button>
           </div>
