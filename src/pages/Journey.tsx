@@ -13,15 +13,96 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
     name: '',
     phone: '',
     email: '',
-    age: ''
+    age: '',
+    package: '',
+    participants: '1',
+    addOns: []
   });
   const [showConfirmation, setShowConfirmation] = useState(false);
+
+  // Calculate total price
+  const calculateTotalPrice = () => {
+    if (!trip || !formData.package || !formData.participants) return 0;
+    
+    const selectedPackage = trip.pricing.find(pkg => pkg.name === formData.package);
+    if (!selectedPackage) return 0;
+    
+    let basePrice = 0;
+    const participants = parseInt(formData.participants);
+    
+    // Extract price from package (handle different price formats)
+    const priceText = selectedPackage.price;
+    
+    // Handle per-person pricing
+    if (priceText.includes('SAR per person') || priceText.includes('ريال للشخص')) {
+      const priceMatch = priceText.match(/(\d+)/);
+      if (priceMatch) {
+        basePrice = parseInt(priceMatch[1]) * participants;
+      }
+    }
+    // Handle fixed total pricing (like group packages)
+    else if (priceText.includes('SAR') || priceText.includes('ريال')) {
+      const priceMatch = priceText.match(/(\d+)/);
+      if (priceMatch) {
+        basePrice = parseInt(priceMatch[1]);
+        // If it's a group package with fixed total, don't multiply by participants
+        if (priceText.includes('Total') || priceText.includes('المجموع')) {
+          // Keep as is - it's already the total
+        } else if (priceText.includes('×') || priceText.includes('عدد المشاركين')) {
+          // This is already calculated, keep as is
+        } else {
+          // For individual packages, multiply by participants
+          basePrice = parseInt(priceMatch[1]) * participants;
+        }
+      }
+    }
+    
+    // Add add-ons
+    let addOnsTotal = 0;
+    formData.addOns.forEach(addonName => {
+      const addon = trip?.addOns?.find(a => a.name === addonName);
+      if (addon) {
+        if (addon.name.includes('VIP') || addon.name.includes('باقة VIP')) {
+          // VIP package replaces base price
+          const vipPriceMatch = addon.price.match(/(\d+)/);
+          if (vipPriceMatch) {
+            addOnsTotal = parseInt(vipPriceMatch[1]) * participants;
+          }
+        } else {
+          // Regular add-on
+          const addonPriceMatch = addon.price.match(/(\d+)/);
+          if (addonPriceMatch) {
+            addOnsTotal += parseInt(addonPriceMatch[1]) * participants;
+          }
+        }
+      }
+    });
+    
+    // If VIP is selected, return only VIP price
+    if (formData.addOns.some(addon => addon.includes('VIP'))) {
+      return addOnsTotal;
+    }
+    
+    return basePrice + addOnsTotal;
+  };
+
+  const totalPrice = calculateTotalPrice();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  // Reset add-ons when package changes (to avoid conflicts)
+  const handlePackageChange = (e) => {
+    const { value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      package: value,
+      addOns: [] // Reset add-ons when package changes
     }));
   };
 
@@ -33,7 +114,10 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
       name: '',
       phone: '',
       email: '',
-      age: ''
+      age: '',
+      package: '',
+      participants: '1',
+      addOns: []
     });
   };
 
@@ -49,6 +133,9 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
       phone: 'Phone Number',
       email: 'Email Address',
       age: 'Age',
+      package: 'Select Package',
+      participants: 'Number of Participants',
+      addOns: 'Add-Ons (Optional)',
       submit: 'Submit Booking',
       confirmation: 'Booking Submitted!',
       confirmationMessage: 'Thank you for your booking request. We will contact you soon to confirm your journey details.',
@@ -60,6 +147,9 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
       phone: 'رقم الهاتف',
       email: 'البريد الإلكتروني',
       age: 'العمر',
+      package: 'اختر الباقة',
+      participants: 'عدد المشاركين',
+      addOns: 'إضافات اختيارية',
       submit: 'إرسال الحجز',
       confirmation: 'تم إرسال الحجز!',
       confirmationMessage: 'شكراً لك على طلب الحجز. سنتواصل معك قريباً لتأكيد تفاصيل رحلتك.',
@@ -70,8 +160,8 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
   if (showConfirmation) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className={`max-w-[95vw] sm:max-w-md mx-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-          <DialogHeader className="px-2 sm:px-0">
+        <DialogContent className={`max-w-[95vw] sm:max-w-md mx-2 max-h-[90vh] overflow-y-auto [&>button]:hidden ${isRTL ? 'text-right' : 'text-left'}`}>
+          <DialogHeader className="px-2 sm:px-0 sticky top-0 bg-background z-10 pb-2">
             <DialogTitle className={`text-lg sm:text-xl font-bold text-primary text-center ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].confirmation}
             </DialogTitle>
@@ -98,19 +188,19 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
     );
   }
 
-  return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`max-w-[95vw] sm:max-w-md mx-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-        <DialogHeader className="px-2 sm:px-0">
-          <DialogTitle className={`text-lg sm:text-xl font-bold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
-            {content[language].title}
-          </DialogTitle>
-          <p className={`text-xs sm:text-sm text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
-            {trip?.title}
-          </p>
-        </DialogHeader>
-        
-        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 px-2 sm:px-0">
+      return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className={`max-w-[95vw] sm:max-w-md mx-2 max-h-[90vh] overflow-y-auto [&>button]:hidden ${isRTL ? 'text-right' : 'text-left'}`}>
+          <DialogHeader className="px-2 sm:px-0 sticky top-0 bg-background z-10 pb-2">
+            <DialogTitle className={`text-lg sm:text-xl font-bold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
+              {content[language].title}
+            </DialogTitle>
+            <p className={`text-xs sm:text-sm text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
+              {trip?.title}
+            </p>
+          </DialogHeader>
+          
+          <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 px-2 sm:px-0">
           <div className="space-y-2">
             <Label htmlFor="name" className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].name}
@@ -176,6 +266,166 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
               dir={isRTL ? 'rtl' : 'ltr'}
             />
           </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="package" className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
+              {content[language].package}
+            </Label>
+            <select
+              id="package"
+              name="package"
+              required
+              value={formData.package}
+              onChange={handlePackageChange}
+              className={`w-full px-3 py-2 border border-input rounded-md text-sm bg-background ${isRTL ? 'text-right' : 'text-left'}`}
+              dir={isRTL ? 'rtl' : 'ltr'}
+            >
+              <option value="">{language === 'en' ? 'Select Package' : 'اختر الباقة'}</option>
+              {trip?.pricing?.map((pkg, idx) => (
+                <option key={idx} value={pkg.name}>
+                  {pkg.name} - {pkg.price}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="participants" className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
+              {content[language].participants}
+            </Label>
+            <Input
+              id="participants"
+              name="participants"
+              type="number"
+              min="1"
+              max="20"
+              required
+              value={formData.participants}
+              onChange={handleInputChange}
+              className={`text-sm py-2 ${isRTL ? 'text-right' : 'text-left'}`}
+              dir={isRTL ? 'rtl' : 'ltr'}
+            />
+          </div>
+
+          {/* Add-Ons Selection */}
+          {trip?.addOns && trip.addOns.length > 0 && (
+            <div className="space-y-2">
+              <Label className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                {content[language].addOns}
+              </Label>
+              <div className="space-y-2">
+                {trip.addOns.map((addon, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id={`addon-${idx}`}
+                      checked={formData.addOns.includes(addon.name)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          // Special handling for VIP package
+                          if (addon.name.includes('VIP') || addon.name.includes('باقة VIP')) {
+                            setFormData(prev => ({
+                              ...prev,
+                              addOns: [addon.name] // Replace all with VIP only
+                            }));
+                          } else {
+                            setFormData(prev => ({
+                              ...prev,
+                              addOns: [...prev.addOns, addon.name]
+                            }));
+                          }
+                        } else {
+                          setFormData(prev => ({
+                            ...prev,
+                            addOns: prev.addOns.filter(name => name !== addon.name)
+                          }));
+                        }
+                      }}
+                      className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                    />
+                    <Label htmlFor={`addon-${idx}`} className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                      {addon.name} (+{addon.price})
+                      {addon.name.includes('VIP') || addon.name.includes('باقة VIP') && (
+                        <span className="text-xs text-muted-foreground ml-1">
+                          {language === 'en' ? '(replaces standard package)' : '(تحل محل الباقة القياسية)'}
+                        </span>
+                      )}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Total Price Display */}
+          {formData.package && (
+            <div className={`border-t pt-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <div className="bg-muted/50 rounded-lg p-3 md:p-4">
+                <h4 className={`text-sm md:text-base font-semibold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                  {language === 'en' ? 'Price Summary' : 'ملخص السعر'}
+                </h4>
+                
+                {/* Package Details */}
+                <div className="space-y-2 mb-3">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className={isRTL ? 'font-arabic' : 'font-english'}>
+                      {formData.package}
+                    </span>
+                    <span className="font-medium">
+                      {trip?.pricing?.find(pkg => pkg.name === formData.package)?.price}
+                    </span>
+                  </div>
+                  
+                  {parseInt(formData.participants) > 1 && (
+                    <div className="flex justify-between items-center text-sm text-muted-foreground">
+                      <span className={isRTL ? 'font-arabic' : 'font-english'}>
+                        {language === 'en' ? 'Participants' : 'المشاركون'}: {formData.participants}
+                      </span>
+                      <span>
+                        × {formData.participants}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Add-Ons */}
+                {formData.addOns.length > 0 && (
+                  <div className="space-y-2 mb-3">
+                    <h5 className={`text-xs md:text-sm font-medium text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                      {language === 'en' ? 'Add-Ons' : 'الإضافات'}
+                    </h5>
+                    {formData.addOns.map((addonName, idx) => {
+                      const addon = trip?.addOns?.find(a => a.name === addonName);
+                      if (!addon) return null;
+                      
+                      return (
+                        <div key={idx} className="flex justify-between items-center text-sm">
+                          <span className={isRTL ? 'font-arabic' : 'font-english'}>
+                            {addon.name}
+                          </span>
+                          <span className="font-medium">
+                            +{addon.price} {parseInt(formData.participants) > 1 && `× ${formData.participants}`}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Total */}
+                <div className="border-t pt-3">
+                  <div className="flex justify-between items-center">
+                    <span className={`text-base md:text-lg font-bold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                      {language === 'en' ? 'Total' : 'المجموع'}
+                    </span>
+                    <span className="text-xl md:text-2xl font-bold text-secondary">
+                      {totalPrice} {language === 'en' ? 'SAR' : 'ريال'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className={`flex flex-col sm:flex-row gap-2 pt-4 ${isRTL ? 'sm:justify-start' : 'sm:justify-end'}`}>
             <Button type="button" variant="outline" onClick={onClose} className="w-full sm:w-auto text-sm py-2">
@@ -247,6 +497,53 @@ const TripModal = ({ trip, isOpen, onClose, language, isRTL }) => {
               ))}
             </div>
           </div>
+
+          {/* Experience Stations */}
+          {trip.experienceStations && (
+            <div className="space-y-2 md:space-y-3">
+              <h3 className={`text-base md:text-lg font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+                {language === 'en' ? 'Experience Stations' : 'محطات التجربة'}
+              </h3>
+              <div className={`grid grid-cols-1 gap-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {trip.experienceStations.map((station, idx) => (
+                  <div key={idx} className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+                    <div className="w-4 h-4 md:w-5 md:h-5 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-xs md:text-sm font-bold text-accent-foreground">{idx + 1}</span>
+                    </div>
+                    <span className={`text-xs md:text-sm text-muted-foreground ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+                      {station}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Add-Ons */}
+          {trip.addOns && (
+            <div className="space-y-2 md:space-y-3">
+              <h3 className={`text-base md:text-lg font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+                {language === 'en' ? 'Add-Ons' : 'إضافات اختيارية'}
+              </h3>
+              <div className={`grid grid-cols-1 gap-3 md:gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {trip.addOns.map((addon, idx) => (
+                  <div key={idx} className={`border border-border rounded-lg p-3 md:p-4 bg-card ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className={`text-sm md:text-base font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+                        {addon.name}
+                      </h4>
+                      <span className="text-base md:text-lg font-bold text-secondary">
+                        +{addon.price}
+                      </span>
+                    </div>
+                    <p className={`text-xs md:text-sm text-muted-foreground ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
+                      {addon.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Pricing Packages */}
           <div className="space-y-2 md:space-y-3">
@@ -334,7 +631,7 @@ const JourneyContent = () => {
           rating: 4.7,
           description: "A poetic journey through the heart of Wadi Hanifah, where enchanting nature meets the verses of Al-A'sha.",
           highlights: ["Poetic journey", "Nature exploration", "Cultural experience", "Writing activity"],
-          price: "From 150 SAR",
+          price: "From 120 SAR",
           image: "/src/assets/gallery/instruments.jpg",
           fullDescription: "A poetic journey through the heart of Wadi Hanifah, where enchanting nature meets the verses of Al-A'sha, offering an authentic and inspiring cultural experience.",
           details: [
@@ -347,26 +644,26 @@ const JourneyContent = () => {
             "🗺️ Guided field tour led by a guide sharing Al-A'sha's poems and stories",
             "📜 Interactive cards and brochure for all stations",
             "✍️ Writing activity (pens and papers for your own verses)",
-            "☕ Light refreshments (water, coffee/tea, ice)",
+            "☕ Light refreshments",
             "🌅 Closing session in the heart of the valley with a poetic farewell",
             "🛠️ Full organization and preparation of all stops and the route"
           ],
           pricing: [
             {
               name: "Standard Experience",
-              price: "150 SAR per person",
+              price: "120 SAR per person",
               description: "Basic package with all included features",
               optional: ""
             },
             {
               name: "Premium Package",
-              price: "200 SAR per person",
+              price: "150 SAR per person",
               description: "Private session + additional hospitality",
               optional: ""
             },
             {
               name: "Group Package (10 people)",
-              price: "1500 SAR",
+              price: "1300 SAR",
               description: "Best value for groups",
               optional: ""
             }
@@ -407,6 +704,13 @@ const JourneyContent = () => {
             "✍️ Group \"Abu Fanous Letter\" writing session",
             "🛠️ Full organization of the route and stops"
           ],
+          experienceStations: [
+            "Welcome and introduction to the plan and precautions",
+            "Abu Fanous Station: Legend narration",
+            "Walking through rocky terrain while sharing heritage and historical information",
+            "Reaching the sunset viewpoint and panoramic view",
+            "Closing session: hospitality, participant sharing, and writing \"Abu Fanous Letter\""
+          ],
           pricing: [
             {
               name: "Standard Experience",
@@ -428,7 +732,7 @@ const JourneyContent = () => {
             }
           ],
           notes: [
-            "Comfortable clothing and shoes recommended",
+            "Comfortable clothing and shoes recommended for walking",
             "Advance booking required to confirm participation"
           ]
         },
@@ -441,7 +745,7 @@ const JourneyContent = () => {
           rating: 4.9,
           description: "Discover the historic heart of Saudi Arabia with a cultural and historical adventure in Diriyah, the birthplace of the Saudi state.",
           highlights: ["Ancient mud-brick streets", "Historic palaces", "Heritage stories", "Leadership history"],
-          price: "From 350 SAR",
+          price: "From 200 SAR",
           image: "/src/assets/gallery/desert-ruins.jpg",
           fullDescription: "Discover the historic heart of Saudi Arabia with a cultural and historical adventure in Diriyah, the birthplace of the Saudi state. Walk through its ancient mud-brick streets, explore historic palaces, and immerse yourself in stories of heritage, leadership, and resilience.",
           details: [
@@ -449,7 +753,7 @@ const JourneyContent = () => {
             "Location: Diriyah, Riyadh",
             "Difficulty: Easy to moderate",
             "Participants: 1–10 people",
-            "Language: English guided tour",
+            "Language: English / Arabic",
             "Includes transportation"
           ],
           included: [
@@ -459,30 +763,25 @@ const JourneyContent = () => {
             "Transportation within the tour",
             "Transportation to/from the meeting point"
           ],
+          addOns: [
+            {
+              name: "Lunch/Dinner",
+              price: "150 SAR per person",
+              description: "Delicious local cuisine at a traditional restaurant"
+            }
+          ],
           pricing: [
             {
               name: "Individual Package",
-              price: "350 SAR per person",
-              description: "",
-              optional: "Optional: Lunch/Dinner ≈ 250–300 SAR per person"
-            },
-            {
-              name: "Package for Two People",
-              price: "700 SAR for two people (350 × 2)",
-              description: "",
-              optional: "Optional: Lunch/Dinner ≈ 500–600 SAR for two people"
-            },
-            {
-              name: "Package for Three People",
-              price: "1050 SAR for three people (350 × 3)",
-              description: "",
-              optional: "Optional: Lunch/Dinner ≈ 750–900 SAR for three people"
+              price: "250 SAR per person",
+              description: "Base package with all included features",
+              optional: ""
             },
             {
               name: "Group Package (4–10 people)",
-              price: "350 SAR per person × number of participants",
-              description: "",
-              optional: "Optional: Lunch/Dinner ≈ 250–300 SAR per person"
+              price: "200 SAR per person",
+              description: "Discounted rate for groups",
+              optional: ""
             }
           ],
           notes: [
@@ -500,13 +799,12 @@ const JourneyContent = () => {
           rating: 4.9,
           description: "Explore the history and culture of Riyadh in a unique journey from Al-Masmak Fortress to Al-Zal Market.",
           highlights: ["Historical Riyadh", "Al-Masmak Fortress", "Al-Zal Market", "Cultural heritage"],
-          price: "From 300 SAR",
+          price: "From 200 SAR",
           image: "/src/assets/gallery/trade-route.jpg",
           fullDescription: "Explore the history and culture of Riyadh in a unique journey from Al-Masmak Fortress, where the story of the capture of Riyadh began, to Al-Zal Market, one of the oldest traditional markets in the region. Learn about key historical events and immerse yourself in the vibrant heritage while enjoying shopping at the historic market.",
           details: [
             "Duration: 3–4 hours",
             "Location: Central Riyadh – Al-Masmak & Al-Zal Market",
-            "Difficulty: Easy",
             "Participants: 5–15 people",
             "Language: English (Arabic translation available upon request)",
             "Includes transportation within the tour"
@@ -522,26 +820,14 @@ const JourneyContent = () => {
           pricing: [
             {
               name: "Individual Package",
-              price: "300 SAR per person",
-              description: "",
-              optional: ""
-            },
-            {
-              name: "Package for Two People",
-              price: "600 SAR for two people (300 × 2)",
-              description: "",
-              optional: ""
-            },
-            {
-              name: "Package for Three People",
-              price: "900 SAR for three people (300 × 3)",
-              description: "",
+              price: "250 SAR per person",
+              description: "Base package with all included features",
               optional: ""
             },
             {
               name: "Group Package (4–15 people)",
-              price: "300 SAR per person × number of participants",
-              description: "",
+              price: "200 SAR per person",
+              description: "Discounted rate for groups",
               optional: ""
             }
           ],
@@ -549,6 +835,83 @@ const JourneyContent = () => {
             "Comfortable clothing and shoes recommended for walking",
             "Advance booking required to confirm participation",
             "Price includes guided tour, organization, and light refreshments"
+          ]
+        },
+        {
+          id: 5,
+          title: "Riyadh Full-Day Experience – Discover the Capital",
+          location: "Riyadh – Multiple Locations",
+          duration: "8-9 Hours",
+          groupSize: "1-10 People",
+          rating: 5.0,
+          description: "A day full of history and culture, exploring palaces, markets, and museums.",
+          highlights: ["Al-Masmak Palace", "Al-Zal Market", "National Museum", "Al-Murabba", "Traditional Cuisine"],
+          price: "From 450 SAR",
+          image: "/src/assets/gallery/calligraphy.jpg",
+          fullDescription: "A comprehensive full-day experience exploring the heart of Saudi Arabia's capital. Discover the rich history and culture of Riyadh through visits to iconic landmarks, traditional markets, and cultural institutions.",
+          details: [
+            "Duration: 8–9 hours",
+            "Location: Riyadh – Multiple Locations",
+            "Difficulty: Easy",
+            "Participants: 1–10 people",
+            "Language: Arabic/English",
+            "Includes transportation and certified guide"
+          ],
+          included: [
+            "Certified tour guide (Arabic/English)",
+            "Transportation to/from meeting point + during the tour",
+            "Full organization of the itinerary",
+            "Water and light refreshments"
+          ],
+          experienceStations: [
+            "Al-Masmak Palace – Learn about the recapture of Riyadh and the beginning of Saudi unification",
+            "Al-Zal Market – Explore Riyadh's oldest traditional market + shopping time",
+            "National Museum – Discover the history of the Arabian Peninsula through interactive exhibits",
+            "Al-Murabba – Walk through the historic district and take photos"
+          ],
+          addOns: [
+            {
+              name: "Traditional Meal",
+              price: "150 SAR per person",
+              description: "Taste authentic Saudi cuisine at a traditional restaurant"
+            },
+            {
+              name: "VIP Package",
+              price: "550 SAR per person",
+              description: "Private car + Personal guide + Photography + Gifts (replaces standard package)"
+            }
+          ],
+          pricing: [
+            {
+              name: "Individual Package",
+              price: "600 SAR per person",
+              description: "Base package with all included features",
+              optional: ""
+            },
+            {
+              name: "Couple Package (2 people)",
+              price: "550 SAR per person",
+              description: "Discounted rate for couples",
+              optional: "Total: 1100 SAR"
+            },
+            {
+              name: "Three People Package",
+              price: "500 SAR per person",
+              description: "Special rate for three people",
+              optional: "Total: 1500 SAR"
+            },
+            {
+              name: "Group Package (4–10 people)",
+              price: "450 SAR per person",
+              description: "Best value for groups",
+              optional: "Total: 1800–4500 SAR"
+            }
+          ],
+          notes: [
+            "Personal purchases not included",
+            "Optional meal available as add-on",
+            "VIP services available as separate package",
+            "Comfortable clothing and walking shoes recommended"
           ]
         }
       ],
@@ -568,7 +931,7 @@ const JourneyContent = () => {
           rating: 4.7,
           description: "رحلة شعرية في قلب وادي حنيفة، حيث تمتزج الطبيعة الساحرة مع قصائد الأعشى.",
           highlights: ["رحلة شعرية", "استكشاف الطبيعة", "تجربة ثقافية", "نشاط كتابي"],
-          price: "ابتداءً من 150 ريال",
+          price: "ابتداءً من 120 ريال",
           image: "/src/assets/gallery/instruments.jpg",
           fullDescription: "رحلة شعرية في قلب وادي حنيفة، حيث تمتزج الطبيعة الساحرة مع قصائد الأعشى، فتعيش تجربة ثقافية أصيلة ومُلهمة.",
           details: [
@@ -578,29 +941,29 @@ const JourneyContent = () => {
             "عدد المشاركين: 5 – 15 شخص"
           ],
           included: [
-            "🗺️ جولة إرشادية ميدانية بقيادة مرشد/قائدة تروي قصائد وقصص الأعشى",
+            "🗺️ جولة إرشادية ميدانية بقيادة مرشد/قائد يروي قصائد وقصص الأعشى",
             "📜 بطاقات وبروشور تفاعلي يرافقك خلال المحطات",
             "✍️ نشاط كتابي (أقلام وأوراق لتدوين أبياتك الخاصة)",
-            "☕ مشروبات خفيفة (ماء – قهوة/شاي – ثلج للتبريد)",
+            "☕ مشروبات خفيفة",
             "🌅 جلسة ختامية في قلب الوادي مع وداع شعري",
             "🛠️ تنظيم وتجهيز كامل لنقاط التوقف ومسار الرحلة"
           ],
           pricing: [
             {
               name: "التجربة القياسية",
-              price: "150 ريال للشخص",
+              price: "120 ريال للشخص",
               description: "الباقة الأساسية مع جميع المميزات المدرجة",
               optional: ""
             },
             {
               name: "باقة بريميوم",
-              price: "200 ريال للشخص",
+              price: "150 ريال للشخص",
               description: "جلسة خاصة + ضيافة إضافية",
               optional: ""
             },
             {
               name: "باقة المجموعات (10 أشخاص)",
-              price: "1500 ريال",
+              price: "1300 ريال",
               description: "أفضل قيمة للمجموعات",
               optional: ""
             }
@@ -641,6 +1004,13 @@ const JourneyContent = () => {
             "✍️ جلسة كتابة \"رسالة أبو فانوس\" الجماعية",
             "🛠️ تنظيم كامل للمسار ونقاط التوقف"
           ],
+          experienceStations: [
+            "استقبال وتعريف بالخطة والاحتياطات",
+            "محطة أبو فانوس: سرد الأسطورة",
+            "المشي عبر التضاريس الصخرية وسرد المعلومات التراثية والتاريخية",
+            "الوصول إلى نقطة الغروب ومشاهدة المنظر البانورامي",
+            "الجلسة الختامية: ضيافة، مشاركة المشاركين، وكتابة \"رسالة أبو فانوس\""
+          ],
           pricing: [
             {
               name: "التجربة القياسية",
@@ -675,7 +1045,7 @@ const JourneyContent = () => {
           rating: 4.9,
           description: "اكتشف قلب التاريخ في المملكة العربية السعودية مع مغامرة ثقافية وتاريخية في الدرعية، مسقط رأس الدولة السعودية.",
           highlights: ["شوارع طينية قديمة", "قصور تاريخية", "قصص التراث", "تاريخ القيادة"],
-          price: "ابتداءً من 350 ريال",
+          price: "ابتداءً من 200 ريال",
           image: "/src/assets/gallery/desert-ruins.jpg",
           fullDescription: "اكتشف قلب التاريخ في المملكة العربية السعودية مع مغامرة ثقافية وتاريخية في الدرعية، مسقط رأس الدولة السعودية. تجول في شوارعها الطينية القديمة، استكشف القصور القديمة، وانغمس في قصص التراث والقيادة والصمود.",
           details: [
@@ -683,7 +1053,7 @@ const JourneyContent = () => {
             "الموقع: الدرعية، الرياض",
             "الصعوبة: سهلة إلى متوسطة",
             "عدد المشاركين: 1–10 أشخاص",
-            "اللغة: الجولة الإرشادية بالإنجليزية",
+            "اللغة: الإنجليزية / العربية",
             "يشمل النقل"
           ],
           included: [
@@ -692,36 +1062,31 @@ const JourneyContent = () => {
             "تذاكر الدخول (50 ريال لكل شخص)",
             "النقل من موقع الانطلاق إلى الدرعية والعودة"
           ],
+          addOns: [
+            {
+              name: "الغداء/العشاء",
+              price: "150 ريال للشخص",
+              description: "مأكولات محلية لذيذة في مطعم تقليدي"
+            }
+          ],
           pricing: [
             {
               name: "باقة الفرد الواحد",
-              price: "350 ريال للشخص",
-              description: "",
-              optional: "اختياري: الغداء/العشاء ≈ 250–300 ريال"
-            },
-            {
-              name: "باقة لشخصين",
-              price: "700 ريال لمجموع شخصين (350 × 2)",
-              description: "",
-              optional: "اختياري: الغداء/العشاء ≈ 500–600 ريال"
-            },
-            {
-              name: "باقة لثلاثة أشخاص",
-              price: "1050 ريال لمجموع ثلاثة أشخاص (350 × 3)",
-              description: "",
-              optional: "اختياري: الغداء/العشاء ≈ 750–900 ريال"
+              price: "250 ريال للشخص",
+              description: "الباقة الأساسية مع جميع المميزات المدرجة",
+              optional: ""
             },
             {
               name: "باقة المجموعات (4–10 أشخاص)",
-              price: "350 ريال للشخص × عدد المشاركين",
-              description: "",
-              optional: "اختياري: الغداء/العشاء ≈ 250–300 ريال للشخص"
+              price: "200 ريال للشخص",
+              description: "سعر مخفض للمجموعات",
+              optional: ""
             }
           ],
           notes: [
             "ينصح بارتداء أحذية مريحة للمشي",
             "الحجز المسبق مطلوب لتأكيد المشاركة",
-            "السعر يشمل النقل داخل الجولة ومن وإلى نقطة الانطلاق"
+            "السعر يشمل النقل"
           ]
         },
         {
@@ -733,13 +1098,12 @@ const JourneyContent = () => {
           rating: 4.9,
           description: "استكشف تاريخ وثقافة الرياض في رحلة فريدة من قلعة المصمك إلى سوق الزل.",
           highlights: ["الرياض التاريخية", "قلعة المصمك", "سوق الزل", "التراث الثقافي"],
-          price: "ابتداءً من 300 ريال",
+          price: "ابتداءً من 200 ريال",
           image: "/src/assets/gallery/trade-route.jpg",
           fullDescription: "استكشف تاريخ وثقافة الرياض في رحلة فريدة من قلعة المصمك، حيث بدأت قصة استعادة الرياض، إلى سوق الزل، أحد أقدم الأسواق التقليدية في المنطقة. تعلم عن الأحداث التاريخية المهمة وانغمس في التراث النابض بالحياة مع الاستمتاع بالتسوق في السوق التاريخي.",
           details: [
             "المدة: 3–4 ساعات",
             "الموقع: وسط الرياض – المصمك وسوق الزل",
-            "الصعوبة: سهلة",
             "عدد المشاركين: 5–15 شخص",
             "اللغة: الإنجليزية (مع إمكانية توفير ترجمة بالعربية عند الطلب)",
             "يشمل النقل"
@@ -755,26 +1119,14 @@ const JourneyContent = () => {
           pricing: [
             {
               name: "باقة الفرد الواحد",
-              price: "300 ريال للشخص",
-              description: "",
-              optional: ""
-            },
-            {
-              name: "باقة لشخصين",
-              price: "600 ريال لمجموع شخصين (300 × 2)",
-              description: "",
-              optional: ""
-            },
-            {
-              name: "باقة لثلاثة أشخاص",
-              price: "900 ريال لمجموع ثلاثة أشخاص (300 × 3)",
-              description: "",
+              price: "250 ريال للشخص",
+              description: "الباقة الأساسية مع جميع المميزات المدرجة",
               optional: ""
             },
             {
               name: "باقة المجموعات (4–15 شخص)",
-              price: "300 ريال للشخص × عدد المشاركين",
-              description: "",
+              price: "200 ريال للشخص",
+              description: "سعر مخفض للمجموعات",
               optional: ""
             }
           ],
@@ -782,6 +1134,83 @@ const JourneyContent = () => {
             "ينصح بارتداء ملابس وأحذية مريحة للمشي",
             "الحجز المسبق مطلوب لتأكيد المشاركة",
             "السعر يشمل الجولة الإرشادية والتنظيم والمشروبات الخفيفة"
+          ]
+        },
+        {
+          id: 5,
+          title: "تجربة الرياض ليوم كامل – اكتشف العاصمة",
+          location: "الرياض – مواقع متعددة",
+          duration: "8-9 ساعات",
+          groupSize: "1-10 أشخاص",
+          rating: 5.0,
+          description: "يوم مليء بالتاريخ والثقافة، استكشف القصور والأسواق والمتاحف.",
+          highlights: ["قصر المصمك", "سوق الزل", "المتحف الوطني", "حي المربع", "المأكولات التقليدية"],
+          price: "ابتداءً من 450 ريال",
+          image: "/src/assets/gallery/calligraphy.jpg",
+          fullDescription: "تجربة شاملة ليوم كامل تستكشف قلب عاصمة المملكة العربية السعودية. اكتشف التاريخ والثقافة الغنية للرياض من خلال زيارة المعالم الشهيرة والأسواق التقليدية والمؤسسات الثقافية.",
+          details: [
+            "المدة: 8–9 ساعات",
+            "الموقع: الرياض – مواقع متعددة",
+            "الصعوبة: سهلة",
+            "عدد المشاركين: 1–10 أشخاص",
+            "اللغة: العربية/الإنجليزية",
+            "يشمل النقل والمرشد المعتمد"
+          ],
+          included: [
+            "مرشد سياحي معتمد (عربي/إنجليزي)",
+            "النقل من وإلى نقطة اللقاء + أثناء الجولة",
+            "تنظيم كامل للمسار",
+            "ماء ومشروبات خفيفة"
+          ],
+          experienceStations: [
+            "قصر المصمك – تعلم عن استعادة الرياض وبداية توحيد المملكة",
+            "سوق الزل – استكشف أقدم سوق تقليدي في الرياض + وقت للتسوق",
+            "المتحف الوطني – اكتشف تاريخ شبه الجزيرة العربية من خلال المعارض التفاعلية",
+            "حي المربع – تجول في الحي التاريخي والتقط الصور"
+          ],
+          addOns: [
+            {
+              name: "وجبة تقليدية",
+              price: "150 ريال للشخص",
+              description: "تذوق المأكولات السعودية الأصيلة في مطعم تقليدي"
+            },
+            {
+              name: "باقة VIP",
+              price: "550 ريال للشخص",
+              description: "سيارة خاصة + مرشد شخصي + تصوير + هدايا (تحل محل الباقة القياسية)"
+            }
+          ],
+          pricing: [
+            {
+              name: "باقة الفرد الواحد",
+              price: "600 ريال للشخص",
+              description: "الباقة الأساسية مع جميع المميزات المدرجة",
+              optional: ""
+            },
+            {
+              name: "باقة الزوجين (شخصان)",
+              price: "550 ريال للشخص",
+              description: "سعر مخفض للزوجين",
+              optional: "المجموع: 1100 ريال"
+            },
+            {
+              name: "باقة ثلاثة أشخاص",
+              price: "500 ريال للشخص",
+              description: "سعر خاص لثلاثة أشخاص",
+              optional: "المجموع: 1500 ريال"
+            },
+            {
+              name: "باقة المجموعات (4–10 أشخاص)",
+              price: "450 ريال للشخص",
+              description: "أفضل قيمة للمجموعات",
+              optional: "المجموع: 1800–4500 ريال"
+            }
+          ],
+          notes: [
+            "المشتريات الشخصية غير مشمولة",
+            "الوجبة الاختيارية متاحة كإضافة",
+            "خدمات VIP متاحة كباقة منفصلة",
+            "ينصح بارتداء ملابس وأحذية مريحة للمشي"
           ]
         }
       ],
@@ -855,8 +1284,13 @@ const JourneyContent = () => {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 md:pt-4">
-                  <div className="text-xl sm:text-2xl font-bold text-primary text-center sm:text-left">
-                    {trip.price}
+                  <div className="text-center sm:text-left">
+                    <div className="text-xl sm:text-2xl font-bold text-primary">
+                      {trip.price}
+                    </div>
+                    <div className="text-xs sm:text-sm text-muted-foreground mt-1">
+                      {language === 'en' ? 'Starting price per person' : 'السعر الابتدائي للشخص'}
+                    </div>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                     <Button 
