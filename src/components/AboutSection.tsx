@@ -44,7 +44,6 @@ The name shows that Saudi heritage isn't just old history, but a priceless treas
       features: [
         { title: 'Heritage Gems', desc: 'Rare stories curated like precious rubies.', icon: 'Gem' },
         { title: 'Live Storytelling', desc: 'Immersive narratives you can feel and remember.', icon: 'BookOpen' },
-        { title: 'Guided Discovery', desc: 'Thoughtful routes across authentic cultural sites.', icon: 'Compass' },
         { title: 'Historic Depth', desc: 'From petroglyphs to trade routes and beyond.', icon: 'Landmark' },
         { title: 'Human Connection', desc: 'Local experts, artists, and storytellers.', icon: 'Users' },
         { title: 'Global Welcome', desc: 'Crafted for both local and international guests.', icon: 'Globe2' },
@@ -92,7 +91,6 @@ The name shows that Saudi heritage isn't just old history, but a priceless treas
       features: [
         { title: 'جواهر التراث', desc: 'قصص نادرة نصونها كالأحجار الكريمة.', icon: 'Gem' },
         { title: 'سرد حي', desc: 'حكايات غامرة تعيشها وتبقى في الذاكرة.', icon: 'BookOpen' },
-        { title: 'اكتشاف موجه', desc: 'مسارات مدروسة عبر مواقع ثقافية أصيلة.', icon: 'Compass' },
         { title: 'عمق تاريخي', desc: 'من النقوش الصخرية إلى طرق التجارة وما بعدها.', icon: 'Landmark' },
         { title: 'صلة إنسانية', desc: 'خبراء محليون وفنانون ورواة.', icon: 'Users' },
         { title: 'ترحيب عالمي', desc: 'مصمم للزوار المحليين والدوليين معاً.', icon: 'Globe2' },
