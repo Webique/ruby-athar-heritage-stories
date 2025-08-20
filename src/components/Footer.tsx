@@ -166,19 +166,19 @@ const Footer = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3 md:space-y-4">
-                  <div className={`flex items-start gap-2 md:gap-3 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+                  <div className="flex items-start gap-2 md:gap-3">
                     <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                     <p className={`text-xs md:text-sm text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
                       {language === 'en' ? 'Guests must arrive on time' : 'الالتزام بالحضور في الوقت المحدد'}
                     </p>
                   </div>
-                  <div className={`flex items-start gap-2 md:gap-3 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+                  <div className="flex items-start gap-2 md:gap-3">
                     <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                     <p className={`text-xs md:text-sm text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
                       {language === 'en' ? 'The company may modify or cancel the tour in case of unforeseen circumstances, with a full refund' : 'للشركة الحق في تعديل أو إلغاء الجولة عند حدوث ظروف طارئة، مع استرجاع المبلغ كاملًا'}
                     </p>
                   </div>
-                  <div className={`flex items-start gap-2 md:gap-3 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+                  <div className="flex items-start gap-2 md:gap-3">
                     <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                     <p className={`text-xs md:text-sm text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
                       {language === 'en' ? 'Prices include only what is mentioned in the experience description' : 'الأسعار تشمل ما هو مذكور فقط في وصف التجربة'}
@@ -202,19 +202,19 @@ const Footer = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-3 md:space-y-4">
-                  <div className={`flex items-start gap-2 md:gap-3 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+                  <div className="flex items-start gap-2 md:gap-3">
                     <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
                     <p className={`text-xs md:text-sm text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
                       {language === 'en' ? 'Cancellation 48+ hours before = Full refund' : 'إلغاء قبل 48 ساعة = استرجاع كامل'}
                     </p>
                   </div>
-                  <div className={`flex items-start gap-2 md:gap-3 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+                  <div className="flex items-start gap-2 md:gap-3">
                     <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
                     <p className={`text-xs md:text-sm text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
                       {language === 'en' ? 'Cancellation within 48 hours = 50% refund' : 'إلغاء أقل من 48 ساعة = خصم 50%'}
                     </p>
                   </div>
-                  <div className={`flex items-start gap-2 md:gap-3 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+                  <div className="flex items-start gap-2 md:gap-3">
                     <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
                     <p className={`text-xs md:text-sm text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
                       {language === 'en' ? 'No-show = Non-refundable' : 'في حال عدم الحضور (No-show) لا يوجد استرجاع'}
