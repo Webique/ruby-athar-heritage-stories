@@ -632,7 +632,10 @@ const JourneyContent = () => {
           rating: 4.7,
           description: "A poetic journey through the heart of Wadi Hanifah, where enchanting nature meets the verses of Al-A'sha.",
           highlights: ["Poetic journey", "Nature exploration", "Cultural experience", "Writing activity"],
-          price: "From 120 SAR",
+          price: "From 85 SAR",
+          originalPrice: "120 SAR",
+          isOnSale: true,
+          saleEndDate: "2024-12-31",
           image: "/src/assets/gallery/instruments.jpg",
           fullDescription: "A poetic journey through the heart of Wadi Hanifah, where enchanting nature meets the verses of Al-A'sha, offering an authentic and inspiring cultural experience.",
           details: [
@@ -652,8 +655,9 @@ const JourneyContent = () => {
           pricing: [
             {
               name: "Standard Experience",
-              price: "120 SAR per person",
-              description: "Basic package with all included features",
+              price: "85 SAR per person",
+              originalPrice: "120 SAR per person",
+              description: "Basic package with all included features - LIMITED TIME OFFER!",
               optional: ""
             },
             {
@@ -932,7 +936,10 @@ const JourneyContent = () => {
           rating: 4.7,
           description: "رحلة شعرية في قلب وادي حنيفة، حيث تمتزج الطبيعة الساحرة مع قصائد الأعشى.",
           highlights: ["رحلة شعرية", "استكشاف الطبيعة", "تجربة ثقافية", "نشاط كتابي"],
-          price: "ابتداءً من 120 ريال",
+          price: "ابتداءً من 85 ريال",
+          originalPrice: "120 ريال",
+          isOnSale: true,
+          saleEndDate: "2024-12-31",
           image: "/src/assets/gallery/instruments.jpg",
           fullDescription: "رحلة شعرية في قلب وادي حنيفة، حيث تمتزج الطبيعة الساحرة مع قصائد الأعشى، فتعيش تجربة ثقافية أصيلة ومُلهمة.",
           details: [
@@ -952,8 +959,9 @@ const JourneyContent = () => {
           pricing: [
             {
               name: "التجربة القياسية",
-              price: "120 ريال للشخص",
-              description: "الباقة الأساسية مع جميع المميزات المدرجة",
+              price: "85 ريال للشخص",
+              originalPrice: "120 ريال للشخص",
+              description: "الباقة الأساسية مع جميع المميزات المدرجة - عرض محدود الوقت!",
               optional: ""
             },
             {
@@ -1258,9 +1266,18 @@ const JourneyContent = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 bg-gradient-gold px-2 py-1 sm:px-3 rounded-full self-start">
-                    <Star className="h-3 w-3 sm:h-4 sm:w-4 text-secondary-foreground fill-current" />
-                    <span className="text-secondary-foreground font-semibold text-xs sm:text-sm">{trip.rating}</span>
+                  <div className="flex items-center gap-2 self-start">
+                    {/* Sale Badge */}
+                    {trip.isOnSale && (
+                      <div className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse shadow-lg">
+                        {language === 'en' ? 'SALE!' : 'تخفيض!'}
+                      </div>
+                    )}
+                    
+                    <div className="flex items-center gap-1 bg-gradient-gold px-2 py-1 sm:px-3 rounded-full">
+                      <Star className="h-3 w-3 sm:h-4 sm:w-4 text-secondary-foreground fill-current" />
+                      <span className="text-secondary-foreground font-semibold text-xs sm:text-sm">{trip.rating}</span>
+                    </div>
                   </div>
                 </div>
               </CardHeader>
@@ -1286,11 +1303,38 @@ const JourneyContent = () => {
                 
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 md:pt-4">
                   <div className="text-center sm:text-left">
+                    {/* Sale Badge */}
+                    {trip.isOnSale && (
+                      <div className="mb-2">
+                        <span className="inline-block bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                          {language === 'en' ? '🔥 SALE! 29% OFF' : '🔥 تخفيض! خصم 29%'}
+                        </span>
+                      </div>
+                    )}
+                    
                     <div className="text-xl sm:text-2xl font-bold text-primary">
-                      {trip.price}
+                      {trip.isOnSale ? (
+                        <div className="flex items-center gap-2">
+                          <span className="text-red-600">{trip.price}</span>
+                          {trip.originalPrice && (
+                            <span className="text-lg text-muted-foreground line-through">
+                              {trip.originalPrice}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        trip.price
+                      )}
                     </div>
+                    
                     <div className="text-xs sm:text-sm text-muted-foreground mt-1">
-                      {language === 'en' ? 'Starting price per person' : 'السعر الابتدائي للشخص'}
+                      {trip.isOnSale ? (
+                        <span className="text-red-600 font-medium">
+                          {language === 'en' ? 'Limited Time Offer - Save 35 SAR!' : 'عرض محدود الوقت - وفر 35 ريال!'}
+                        </span>
+                      ) : (
+                        language === 'en' ? 'Starting price per person' : 'السعر الابتدائي للشخص'
+                      )}
                     </div>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
