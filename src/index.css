@@ -359,7 +359,14 @@ All colors MUST be HSL.
 
     /* Gallery Banner Animation */
     .animate-scroll-slow {
-      animation: scroll-slow 80s linear infinite;
+      animation: scroll-slow 20s linear infinite;
+    }
+    
+    /* Faster animation for mobile */
+    @media (max-width: 768px) {
+      .animate-scroll-slow {
+        animation: scroll-slow 8s linear infinite;
+      }
     }
 
     .animate-scroll-fast-rtl {
