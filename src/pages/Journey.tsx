@@ -1282,121 +1282,393 @@ const JourneyContent = () => {
         </div>
 
         {/* Journey Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 max-w-7xl mx-auto">
-          {content[language].trips.map((trip) => (
-            <Card key={trip.id} className="card-premium animate-scale-in hover:shadow-glow transition-all duration-300">
-              <CardHeader className="pb-3 md:pb-4 px-4 md:px-6">
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-                  <div className="flex-1">
-                    <CardTitle className={`text-lg sm:text-xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                      {trip.title}
-                    </CardTitle>
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3 sm:h-4 sm:w-4" />
-                        <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.location}</span>
+        <div className="space-y-12 max-w-7xl mx-auto">
+          {/* Section 1: على خطى التاريخ | In the Footsteps of History */}
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                {language === 'en' ? 'In the Footsteps of History' : 'على خطى التاريخ'}
+              </h2>
+              <p className={`text-base sm:text-lg text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                {language === 'en' ? 'Discover the historical treasures of Saudi Arabia' : 'اكتشف كنوز المملكة العربية السعودية التاريخية'}
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 justify-items-center">
+              {content[language].trips.filter(trip => [3, 4, 5].includes(trip.id)).map((trip) => (
+                <Card key={trip.id} className="card-premium animate-scale-in hover:shadow-glow transition-all duration-300">
+                  <CardHeader className="pb-3 md:pb-4 px-4 md:px-6">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                      <div className="flex-1">
+                        <CardTitle className={`text-lg sm:text-xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                          {trip.title}
+                        </CardTitle>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="h-3 w-3 sm:h-4 sm:w-4" />
+                            <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.location}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
+                            <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.duration}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Users className="h-3 w-3 sm:h-4 sm:w-4" />
+                            <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.groupSize}</span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
-                        <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.duration}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Users className="h-3 w-3 sm:h-4 sm:w-4" />
-                        <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.groupSize}</span>
+                      <div className="flex items-center gap-2 self-start">
+                        {/* Sale Badge */}
+                        {trip.isOnSale && (
+                          <div className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse shadow-lg">
+                            {language === 'en' ? 'SALE!' : 'تخفيض!'}
+                          </div>
+                        )}
+                        
+                        <div className="flex items-center gap-1 bg-gradient-gold px-2 py-1 sm:px-3 rounded-full">
+                          <Star className="h-3 w-3 sm:h-4 sm:w-4 text-secondary-foreground fill-current" />
+                          <span className="text-secondary-foreground font-semibold text-xs sm:text-sm">{trip.rating}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2 self-start">
-                    {/* Sale Badge */}
-                    {trip.isOnSale && (
-                      <div className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse shadow-lg">
-                        {language === 'en' ? 'SALE!' : 'تخفيض!'}
-                      </div>
-                    )}
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
+                    <p className={`text-sm sm:text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                      {trip.description}
+                    </p>
                     
-                    <div className="flex items-center gap-1 bg-gradient-gold px-2 py-1 sm:px-3 rounded-full">
-                      <Star className="h-3 w-3 sm:h-4 sm:w-4 text-secondary-foreground fill-current" />
-                      <span className="text-secondary-foreground font-semibold text-xs sm:text-sm">{trip.rating}</span>
+                    <div className="space-y-2">
+                      <h4 className={`text-sm sm:text-base font-semibold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                        {language === 'en' ? 'Highlights' : 'أبرز المميزات'}
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {trip.highlights.map((highlight, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full flex-shrink-0"></div>
+                            <span className={isRTL ? 'font-arabic' : 'font-english'}>{highlight}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </CardHeader>
-              
-              <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
-                <p className={`text-sm sm:text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                  {trip.description}
-                </p>
-                
-                <div className="space-y-2">
-                  <h4 className={`text-sm sm:text-base font-semibold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                    {language === 'en' ? 'Highlights' : 'أبرز المميزات'}
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {trip.highlights.map((highlight, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full flex-shrink-0"></div>
-                        <span className={isRTL ? 'font-arabic' : 'font-english'}>{highlight}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 md:pt-4">
-                  <div className="text-center sm:text-left">
-                    {/* Sale Badge */}
-                    {trip.isOnSale && (
-                      <div className="mb-2">
-                        <span className="inline-block bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
-                          {language === 'en' ? '🔥 SALE! 29% OFF' : '🔥 تخفيض! خصم 29%'}
-                        </span>
-                      </div>
-                    )}
                     
-                    <div className="text-xl sm:text-2xl font-bold text-primary">
-                      {trip.isOnSale ? (
-                        <div className="flex items-center gap-2">
-                          <span className="text-red-600">{trip.price}</span>
-                          {trip.originalPrice && (
-                            <span className="text-lg text-muted-foreground line-through">
-                              {trip.originalPrice}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 md:pt-4">
+                      <div className="text-center sm:text-left">
+                        {/* Sale Badge */}
+                        {trip.isOnSale && (
+                          <div className="mb-2">
+                            <span className="inline-block bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                              {language === 'en' ? '🔥 SALE! 29% OFF' : '🔥 تخفيض! خصم 29%'}
                             </span>
+                          </div>
+                        )}
+                        
+                        <div className="text-xl sm:text-2xl font-bold text-primary">
+                          {trip.isOnSale ? (
+                            <div className="flex items-center gap-2">
+                              <span className="text-red-600">{trip.price}</span>
+                              {trip.originalPrice && (
+                                <span className="text-lg text-muted-foreground line-through">
+                                  {trip.originalPrice}
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            trip.price
                           )}
                         </div>
-                      ) : (
-                        trip.price
-                      )}
+                        
+                        <div className="text-xs sm:text-sm text-muted-foreground mt-1">
+                          {trip.isOnSale ? (
+                            <span className="text-red-600 font-medium">
+                              {language === 'en' ? 'Limited Time Offer - Save 35 SAR!' : 'عرض محدود الوقت - وفر 35 ريال!'}
+                            </span>
+                          ) : (
+                            language === 'en' ? 'Starting price per person' : 'السعر الابتدائي للشخص'
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                        <Button 
+                          variant="outline" 
+                          className="btn-gold w-full sm:w-auto text-sm py-2"
+                          onClick={() => handleViewDetails(trip)}
+                        >
+                          {content[language].viewDetails}
+                        </Button>
+                        <Button 
+                          className="btn-primary w-full sm:w-auto text-sm py-2"
+                          onClick={() => handleBookJourney(trip)}
+                        >
+                          {content[language].cta}
+                          <ArrowRight className={`h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2 ${isRTL ? 'rotate-180' : ''}`} />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 2: حكايات على الطريق | Stories on the Road */}
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                {language === 'en' ? 'Stories on the Road' : 'حكايات على الطريق'}
+              </h2>
+              <p className={`text-base sm:text-lg text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                {language === 'en' ? 'Poetic journeys through nature and heritage' : 'رحلات شعرية عبر الطبيعة والتراث'}
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 justify-items-center">
+              {content[language].trips.filter(trip => [1].includes(trip.id)).map((trip) => (
+                <Card key={trip.id} className="card-premium animate-scale-in hover:shadow-glow transition-all duration-300">
+                  <CardHeader className="pb-3 md:pb-4 px-4 md:px-6">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                      <div className="flex-1">
+                        <CardTitle className={`text-lg sm:text-xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                          {trip.title}
+                        </CardTitle>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="h-3 w-3 sm:h-4 sm:w-4" />
+                            <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.location}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
+                            <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.duration}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Users className="h-3 w-3 sm:h-4 sm:w-4" />
+                            <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.groupSize}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 self-start">
+                        {/* Sale Badge */}
+                        {trip.isOnSale && (
+                          <div className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse shadow-lg">
+                            {language === 'en' ? 'SALE!' : 'تخفيض!'}
+                          </div>
+                        )}
+                        
+                        <div className="flex items-center gap-1 bg-gradient-gold px-2 py-1 sm:px-3 rounded-full">
+                          <Star className="h-3 w-3 sm:h-4 sm:w-4 text-secondary-foreground fill-current" />
+                          <span className="text-secondary-foreground font-semibold text-xs sm:text-sm">{trip.rating}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
+                    <p className={`text-sm sm:text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                      {trip.description}
+                    </p>
+                    
+                    <div className="space-y-2">
+                      <h4 className={`text-sm sm:text-base font-semibold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                        {language === 'en' ? 'Highlights' : 'أبرز المميزات'}
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {trip.highlights.map((highlight, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full flex-shrink-0"></div>
+                            <span className={isRTL ? 'font-arabic' : 'font-english'}>{highlight}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                     
-                    <div className="text-xs sm:text-sm text-muted-foreground mt-1">
-                      {trip.isOnSale ? (
-                        <span className="text-red-600 font-medium">
-                          {language === 'en' ? 'Limited Time Offer - Save 35 SAR!' : 'عرض محدود الوقت - وفر 35 ريال!'}
-                        </span>
-                      ) : (
-                        language === 'en' ? 'Starting price per person' : 'السعر الابتدائي للشخص'
-                      )}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 md:pt-4">
+                      <div className="text-center sm:text-left">
+                        {/* Sale Badge */}
+                        {trip.isOnSale && (
+                          <div className="mb-2">
+                            <span className="inline-block bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                              {language === 'en' ? '🔥 SALE! 29% OFF' : '🔥 تخفيض! خصم 29%'}
+                            </span>
+                          </div>
+                        )}
+                        
+                        <div className="text-xl sm:text-2xl font-bold text-primary">
+                          {trip.isOnSale ? (
+                            <div className="flex items-center gap-2">
+                              <span className="text-red-600">{trip.price}</span>
+                              {trip.originalPrice && (
+                                <span className="text-lg text-muted-foreground line-through">
+                                  {trip.originalPrice}
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            trip.price
+                          )}
+                        </div>
+                        
+                        <div className="text-xs sm:text-sm text-muted-foreground mt-1">
+                          {trip.isOnSale ? (
+                            <span className="text-red-600 font-medium">
+                              {language === 'en' ? 'Limited Time Offer - Save 35 SAR!' : 'عرض محدود الوقت - وفر 35 ريال!'}
+                            </span>
+                          ) : (
+                            language === 'en' ? 'Starting price per person' : 'السعر الابتدائي للشخص'
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                        <Button 
+                          variant="outline" 
+                          className="btn-gold w-full sm:w-auto text-sm py-2"
+                          onClick={() => handleViewDetails(trip)}
+                        >
+                          {content[language].viewDetails}
+                        </Button>
+                        <Button 
+                          className="btn-primary w-full sm:w-auto text-sm py-2"
+                          onClick={() => handleBookJourney(trip)}
+                        >
+                          {content[language].cta}
+                          <ArrowRight className={`h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2 ${isRTL ? 'rotate-180' : ''}`} />
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                    <Button 
-                      variant="outline" 
-                      className="btn-gold w-full sm:w-auto text-sm py-2"
-                      onClick={() => handleViewDetails(trip)}
-                    >
-                      {content[language].viewDetails}
-                    </Button>
-                    <Button 
-                      className="btn-primary w-full sm:w-auto text-sm py-2"
-                      onClick={() => handleBookJourney(trip)}
-                    >
-                      {content[language].cta}
-                      <ArrowRight className={`h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2 ${isRTL ? 'rotate-180' : ''}`} />
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 3: مغامرات بروح ثقافية | Cultural Spirit Adventures */}
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                {language === 'en' ? 'Cultural Spirit Adventures' : 'مغامرات بروح ثقافية'}
+              </h2>
+              <p className={`text-base sm:text-lg text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                {language === 'en' ? 'Adventure experiences with cultural heritage' : 'تجارب مغامرة مع التراث الثقافي'}
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 justify-items-center">
+              {content[language].trips.filter(trip => [2].includes(trip.id)).map((trip) => (
+                <Card key={trip.id} className="card-premium animate-scale-in hover:shadow-glow transition-all duration-300">
+                  <CardHeader className="pb-3 md:pb-4 px-4 md:px-6">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                      <div className="flex-1">
+                        <CardTitle className={`text-lg sm:text-xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                          {trip.title}
+                        </CardTitle>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="h-3 w-3 sm:h-4 sm:w-4" />
+                            <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.location}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
+                            <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.duration}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Users className="h-3 w-3 sm:h-4 sm:w-4" />
+                            <span className={isRTL ? 'font-arabic' : 'font-english'}>{trip.groupSize}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 self-start">
+                        {/* Sale Badge */}
+                        {trip.isOnSale && (
+                          <div className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse shadow-lg">
+                            {language === 'en' ? 'SALE!' : 'تخفيض!'}
+                          </div>
+                        )}
+                        
+                        <div className="flex items-center gap-1 bg-gradient-gold px-2 py-1 sm:px-3 rounded-full">
+                          <Star className="h-3 w-3 sm:h-4 sm:w-4 text-secondary-foreground fill-current" />
+                          <span className="text-secondary-foreground font-semibold text-xs sm:text-sm">{trip.rating}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
+                    <p className={`text-sm sm:text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                      {trip.description}
+                    </p>
+                    
+                    <div className="space-y-2">
+                      <h4 className={`text-sm sm:text-base font-semibold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                        {language === 'en' ? 'Highlights' : 'أبرز المميزات'}
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {trip.highlights.map((highlight, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                            <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full flex-shrink-0"></div>
+                            <span className={isRTL ? 'font-arabic' : 'font-english'}>{highlight}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 md:pt-4">
+                      <div className="text-center sm:text-left">
+                        {/* Sale Badge */}
+                        {trip.isOnSale && (
+                          <div className="mb-2">
+                            <span className="inline-block bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                              {language === 'en' ? '🔥 SALE! 29% OFF' : '🔥 تخفيض! خصم 29%'}
+                            </span>
+                          </div>
+                        )}
+                        
+                        <div className="text-xl sm:text-2xl font-bold text-primary">
+                          {trip.isOnSale ? (
+                            <div className="flex items-center gap-2">
+                              <span className="text-red-600">{trip.price}</span>
+                              {trip.originalPrice && (
+                                <span className="text-lg text-muted-foreground line-through">
+                                  {trip.originalPrice}
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            trip.price
+                          )}
+                        </div>
+                        
+                        <div className="text-xs sm:text-sm text-muted-foreground mt-1">
+                          {trip.isOnSale ? (
+                            <span className="text-red-600 font-medium">
+                              {language === 'en' ? 'Limited Time Offer - Save 35 SAR!' : 'عرض محدود الوقت - وفر 35 ريال!'}
+                            </span>
+                          ) : (
+                            language === 'en' ? 'Starting price per person' : 'السعر الابتدائي للشخص'
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                        <Button 
+                          variant="outline" 
+                          className="btn-gold w-full sm:w-auto text-sm py-2"
+                          onClick={() => handleViewDetails(trip)}
+                        >
+                          {content[language].viewDetails}
+                        </Button>
+                        <Button 
+                          className="btn-primary w-full sm:w-auto text-sm py-2"
+                          onClick={() => handleBookJourney(trip)}
+                        >
+                          {content[language].cta}
+                          <ArrowRight className={`h-3 w-3 sm:h-4 sm:w-4 ml-1 sm:ml-2 ${isRTL ? 'rotate-180' : ''}`} />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Trip Details Modal */}
@@ -1416,8 +1688,6 @@ const JourneyContent = () => {
           language={language}
           isRTL={isRTL}
         />
-
-
       </div>
     </div>
   );
