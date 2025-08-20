@@ -360,17 +360,28 @@ All colors MUST be HSL.
     /* Gallery Banner Animation */
     .animate-scroll-slow {
       animation: scroll-slow 20s linear infinite;
+      will-change: transform;
+      backface-visibility: hidden;
+      transform: translateZ(0);
     }
     
     /* Faster animation for mobile */
     @media (max-width: 768px) {
       .animate-scroll-slow {
         animation: scroll-slow 8s linear infinite;
+        will-change: transform;
+        backface-visibility: hidden;
+        transform: translateZ(0);
       }
     }
 
     .animate-scroll-fast-rtl {
       animation: scroll-fast-rtl 40s linear infinite;
+    }
+    
+    /* Paused state - keeps current position */
+    .animate-scroll-slow.paused {
+      animation-play-state: paused;
     }
 
     /* Card and Element Animations */

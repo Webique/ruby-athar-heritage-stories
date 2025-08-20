@@ -16,20 +16,8 @@ const GallerySection = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (galleryRef.current) {
-      observer.observe(galleryRef.current);
-    }
-
-    return () => observer.disconnect();
+    // Always start animation when component mounts
+    setIsVisible(true);
   }, []);
 
   // List of all files currently in public/lovable-uploads
@@ -165,7 +153,7 @@ const GallerySection = () => {
             )}
             <div 
               ref={scrollContainerRef}
-              className={`flex space-x-6 ${isVisible && !isPaused ? 'animate-scroll-slow' : ''} ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`} 
+              className={`flex space-x-6 animate-scroll-slow ${isPaused ? 'paused' : ''} ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`} 
               style={{ 
                 direction: 'ltr',
                 scrollBehavior: isDragging ? 'auto' : 'smooth',
