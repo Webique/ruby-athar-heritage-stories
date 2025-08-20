@@ -11,7 +11,7 @@ const Header = () => {
 
   const content = {
     en: {
-      phone: '+966 50 433 3581',
+      phone: '0573600158',
       toggleText: 'العربية',
       nav: {
         home: 'Home',
@@ -19,7 +19,7 @@ const Header = () => {
       }
     },
     ar: {
-      phone: '+966 50 433 3581',
+      phone: '0573600158',
       toggleText: 'English',
       nav: {
         home: 'الرئيسية',
