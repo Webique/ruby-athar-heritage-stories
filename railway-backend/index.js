@@ -42,6 +42,13 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Debug: Log all incoming requests
+app.use((req, res, next) => {
+  console.log(`🔍 ${req.method} ${req.originalUrl} - Request received`);
+  console.log('🔍 Request headers:', req.headers);
+  next();
+});
+
 // MongoDB Connection
 let db;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/ruby-heritage';
@@ -322,6 +329,58 @@ app.put('/api/admin/bookings/:id/status', authenticateToken, async (req, res) =>
   }
 });
 
+// Delete booking
+app.delete('/api/admin/bookings/:id', authenticateToken, async (req, res) => {
+  console.log('🔍 DELETE /api/admin/bookings/:id - Request received');
+  console.log('🔍 Request params:', req.params);
+  console.log('🔍 Request headers:', req.headers);
+  
+  try {
+    const { id } = req.params;
+    console.log('🔍 Attempting to delete booking with ID:', id);
+    
+    const result = await db.collection('bookings').deleteOne({ _id: new ObjectId(id) });
+    console.log('🔍 Delete result:', result);
+    
+    if (result.deletedCount === 0) {
+      console.log('🔍 No booking found with ID:', id);
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+    
+    console.log('🔍 Booking deleted successfully');
+    res.json({ success: true, message: 'Booking deleted successfully' });
+  } catch (error) {
+    console.error('🔍 Error deleting booking:', error);
+    res.status(500).json({ success: false, message: 'Failed to delete booking' });
+  }
+});
+
+// Delete contact
+app.delete('/api/admin/contacts/:id', authenticateToken, async (req, res) => {
+  console.log('🔍 DELETE /api/admin/contacts/:id - Request received');
+  console.log('🔍 Request params:', req.params);
+  console.log('🔍 Request headers:', req.headers);
+  
+  try {
+    const { id } = req.params;
+    console.log('🔍 Attempting to delete contact with ID:', id);
+    
+    const result = await db.collection('contacts').deleteOne({ _id: new ObjectId(id) });
+    console.log('🔍 Delete result:', result);
+    
+    if (result.deletedCount === 0) {
+      console.log('🔍 No contact found with ID:', id);
+      return res.status(404).json({ success: false, message: 'Contact not found' });
+    }
+    
+    console.log('🔍 Contact deleted successfully');
+    res.json({ success: true, message: 'Contact deleted successfully' });
+  } catch (error) {
+    console.error('🔍 Error deleting contact:', error);
+    res.status(500).json({ success: false, message: 'Failed to delete contact' });
+  }
+});
+
 // File upload route
 app.post('/api/upload', upload.single('file'), (req, res) => {
   try {
@@ -362,6 +421,8 @@ app.use((error, req, res, next) => {
 
 // 404 handler
 app.use('*', (req, res) => {
+  console.log('🔍 404 - Route not found:', req.method, req.originalUrl);
+  console.log('🔍 Request headers:', req.headers);
   res.status(404).json({
     success: false,
     message: 'Route not found'
