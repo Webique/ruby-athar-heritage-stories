@@ -319,7 +319,7 @@ app.delete('/api/admin/bookings/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     
-    const result = await bookingsCollection.deleteOne({ _id: new ObjectId(id) });
+    const result = await db.collection('bookings').deleteOne({ _id: new ObjectId(id) });
     
     if (result.deletedCount === 0) {
       return res.status(404).json({ success: false, message: 'Booking not found' });
@@ -337,7 +337,7 @@ app.delete('/api/admin/contacts/:id', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     
-    const result = await contactsCollection.deleteOne({ _id: new ObjectId(id) });
+    const result = await db.collection('contacts').deleteOne({ _id: new ObjectId(id) });
     
     if (result.deletedCount === 0) {
       return res.status(404).json({ success: false, message: 'Contact not found' });
