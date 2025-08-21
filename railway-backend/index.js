@@ -14,7 +14,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5002; // Changed from 5000 to 5002 for local testing
 
 // CORS configuration
 const corsOptions = {

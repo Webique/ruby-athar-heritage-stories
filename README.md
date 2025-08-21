@@ -1,255 +1,122 @@
-# Ruby Heritage Stories - Full Stack Application
+# 🏛️ Ruby Athar Heritage Stories
 
-A modern, bilingual (English/Arabic) cultural heritage tourism website with a complete backend system for managing bookings and contacts.
-
-## 🚀 Features
-
-### Frontend
-- **Bilingual Support**: English and Arabic with RTL support
-- **Responsive Design**: Mobile-first approach with Tailwind CSS
-- **Modern UI**: Built with React, TypeScript, and shadcn/ui components
-- **Cultural Experiences**: Interactive tour booking system
-- **Contact Forms**: Integrated with backend API
-- **Admin Panel**: Protected dashboard for managing bookings and contacts
-
-### Backend
-- **Express.js Server**: RESTful API with middleware
-- **MongoDB Database**: NoSQL database for data persistence
-- **Authentication**: JWT-based admin authentication
-- **Email Notifications**: Automated email system for bookings and contacts
-- **File Upload**: Image upload functionality
-- **Data Validation**: Input validation and error handling
-
-## 🛠️ Tech Stack
-
-### Frontend
-- React 18 + TypeScript
-- Vite (Build tool)
-- Tailwind CSS + shadcn/ui
-- React Router DOM
-- React Hook Form + Zod validation
-- TanStack Query
-
-### Backend
-- Node.js + Express.js
-- MongoDB (with Mongoose-like operations)
-- JWT Authentication
-- Nodemailer (Email service)
-- Multer (File uploads)
-- CORS enabled
-
-## 📋 Prerequisites
-
-- Node.js (v18 or higher)
-- MongoDB (local or cloud instance)
-- Gmail account (for email notifications)
+A full-stack web application showcasing Saudi Arabia's cultural heritage through interactive tours and experiences.
 
 ## 🚀 Quick Start
 
-### 1. Install Dependencies
-
+### Development
 ```bash
-# Install frontend and backend dependencies
+# Install dependencies
 npm install
-```
 
-### 2. Environment Setup
+# Start frontend (port 8080)
+npm run dev
 
-Create a `.env` file in the root directory:
+# Start backend (port 5001)
+npm run server
 
-```bash
-# Copy the example file
-cp env.example .env
-
-# Edit with your configuration
-nano .env
-```
-
-**Required Environment Variables:**
-
-```env
-# Server Configuration
-PORT=5000
-NODE_ENV=development
-
-# MongoDB Configuration
-MONGODB_URI=mongodb://localhost:27017/ruby-heritage
-
-# JWT Configuration
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
-
-# Email Configuration (Gmail)
-EMAIL_USER=your-email@gmail.com
-EMAIL_PASS=your-app-password
-ADMIN_EMAIL=admin@rubyheritage.com
-
-# File Upload
-UPLOAD_DIR=uploads
-MAX_FILE_SIZE=5242880
-
-# CORS
-CORS_ORIGIN=http://localhost:5173
-```
-
-### 3. MongoDB Setup
-
-#### Option A: Local MongoDB
-```bash
-# Install MongoDB locally
-# macOS (using Homebrew)
-brew install mongodb-community
-
-# Start MongoDB service
-brew services start mongodb-community
-```
-
-#### Option B: MongoDB Atlas (Cloud)
-1. Create account at [MongoDB Atlas](https://www.mongodb.com/atlas)
-2. Create a new cluster
-3. Get your connection string
-4. Update `MONGODB_URI` in `.env`
-
-### 4. Email Setup (Gmail)
-
-1. Enable 2-factor authentication on your Gmail account
-2. Generate an App Password:
-   - Go to Google Account settings
-   - Security → 2-Step Verification → App passwords
-   - Generate password for "Mail"
-3. Use the generated password in `EMAIL_PASS`
-
-### 5. Start the Application
-
-#### Development Mode (Both Frontend & Backend)
-```bash
-# Start both frontend and backend concurrently
+# Start both frontend and backend
 npm run dev:full
 ```
 
-#### Separate Mode
+### Production Build
 ```bash
-# Terminal 1: Start backend server
-npm run server
+# Build for production
+npm run build:prod
 
-# Terminal 2: Start frontend development server
-npm run dev
+# Preview production build
+npm run preview
+
+# Check deployment readiness
+npm run deploy:check
 ```
 
-## 📱 Application URLs
+## 🌐 Deployment
 
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:5000
-- **Admin Login**: http://localhost:5173/admin/login
-- **Admin Dashboard**: http://localhost:5173/admin/dashboard
+### Frontend (Netlify)
+1. Connect GitHub repository to Netlify
+2. Set build command: `npm run build:prod`
+3. Set publish directory: `dist`
+4. Configure environment variables (see `.env.production`)
 
-## 🔐 Admin Access
+### Backend (Heroku/Railway/Render)
+1. Deploy `server/` folder to your preferred platform
+2. Set environment variables (see `DEPLOYMENT.md`)
+3. Update `VITE_API_URL` in frontend environment
 
-**Default Credentials:**
-- Username: `rubyuser`
-- Password: `rubypassword`
+## 📁 Project Structure
 
-## 🗄️ Database Collections
-
-The application automatically creates these collections:
-
-- **users**: Admin user accounts
-- **bookings**: Tour booking submissions
-- **contacts**: Contact form submissions
-
-## 📧 API Endpoints
-
-### Public Endpoints
-- `GET /api/health` - Health check
-- `POST /api/contact` - Submit contact form
-- `POST /api/bookings` - Submit booking form
-- `POST /api/auth/login` - Admin authentication
-
-### Protected Endpoints (Admin Only)
-- `GET /api/admin/bookings` - Get all bookings
-- `GET /api/admin/contacts` - Get all contacts
-- `PUT /api/admin/bookings/:id/status` - Update booking status
-- `POST /api/upload` - File upload
-
-## 🎨 Customization
-
-### Adding New Tours
-1. Update the `trips` array in `src/pages/Journey.tsx`
-2. Add tour images to `src/assets/gallery/`
-3. Update pricing and details as needed
-
-### Modifying Email Templates
-Edit email templates in `server/index.js`:
-- Customer confirmation emails
-- Admin notification emails
-- Contact form notifications
-
-### Styling
-- Main styles: `src/index.css`
-- Component styles: Tailwind CSS classes
-- Custom CSS variables: `tailwind.config.ts`
-
-## 🚀 Deployment
-
-### Frontend (Vercel/Netlify)
-```bash
-npm run build
-# Deploy the `dist` folder
+```
+├── src/                    # Frontend source code
+│   ├── components/        # React components
+│   ├── pages/            # Page components
+│   ├── contexts/         # React contexts
+│   ├── hooks/            # Custom hooks
+│   ├── lib/              # Utility libraries
+│   └── assets/           # Images and static files
+├── server/                # Backend server
+│   └── index.js          # Express server
+├── dist/                  # Production build (generated)
+├── netlify.toml          # Netlify configuration
+└── DEPLOYMENT.md          # Detailed deployment guide
 ```
 
-### Backend (Railway/Render/Heroku)
-1. Set environment variables
-2. Deploy `server/` folder
-3. Update frontend API URL
+## 🔧 Environment Variables
 
-### Database
-- Use MongoDB Atlas for production
-- Set up proper indexes
-- Configure backup strategies
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-#### MongoDB Connection Failed
+### Frontend
 ```bash
-# Check if MongoDB is running
-brew services list | grep mongodb
-
-# Check connection string
-echo $MONGODB_URI
+VITE_API_URL=http://localhost:5001          # Development
+VITE_API_URL=https://your-backend.com      # Production
 ```
 
-#### Email Not Sending
-- Verify Gmail credentials
-- Check 2FA is enabled
-- Verify app password is correct
-
-#### CORS Issues
-- Check `CORS_ORIGIN` in `.env`
-- Ensure frontend URL matches
-
-#### Port Already in Use
+### Backend
 ```bash
-# Find process using port 5000
-lsof -i :5000
-
-# Kill process
-kill -9 <PID>
+PORT=5001
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+CORS_ORIGIN=https://your-frontend.netlify.app
 ```
 
-### Debug Mode
-```bash
-# Enable debug logging
-DEBUG=* npm run server
-```
+## 🗄️ Database
 
-## 📚 Additional Resources
+- **MongoDB Atlas** for production
+- Collections: `users`, `bookings`, `contacts`
+- Automatic indexing and validation
 
-- [Express.js Documentation](https://expressjs.com/)
-- [MongoDB Node.js Driver](https://mongodb.github.io/node-mongodb-native/)
-- [JWT Authentication](https://jwt.io/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [shadcn/ui Components](https://ui.shadcn.com/)
+## 🔐 Authentication
+
+- JWT-based authentication
+- Admin panel access control
+- Secure password hashing with bcrypt
+
+## 📱 Features
+
+- **Multilingual**: Arabic and English support
+- **Responsive Design**: Mobile-first approach
+- **Admin Panel**: Manage bookings and contacts
+- **Booking System**: Trip reservations with pricing
+- **Contact Forms**: Customer inquiries
+- **Image Gallery**: Heritage site showcases
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS
+- **Backend**: Node.js, Express.js, MongoDB
+- **UI Components**: Radix UI, shadcn/ui
+- **Authentication**: JWT, bcrypt
+- **Deployment**: Netlify (frontend), Heroku/Railway (backend)
+
+## 📖 Documentation
+
+- [Deployment Guide](DEPLOYMENT.md) - Complete deployment instructions
+- [API Documentation](server/README.md) - Backend API endpoints
+- [Component Library](src/components/README.md) - UI components
+
+## 🚀 Live Demo
+
+- **Frontend**: [Your Netlify URL]
+- **Admin Panel**: [Your Netlify URL]/admin/login
+- **Credentials**: rubyuser / rubypassword
 
 ## 🤝 Contributing
 
@@ -263,12 +130,6 @@ DEBUG=* npm run server
 
 This project is licensed under the MIT License.
 
-## 🆘 Support
-
-For support and questions:
-- Email: atharruby@outlook.com
-- Phone: +966 57 360 0158
-
 ---
 
-**Built with ❤️ for preserving Arabian heritage and culture**
+Built with ❤️ for Saudi Arabia's cultural heritage
