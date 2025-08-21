@@ -13,8 +13,10 @@ const ServicesSection = () => {
 
   const handleServiceClick = () => {
     navigate('/journey');
-    // Scroll to top of the page after navigation
-    window.scrollTo(0, 150);
+    // Scroll to top of the page after navigation with responsive behavior
+    const isMobile = window.innerWidth < 768; // md breakpoint
+    const scrollPosition = isMobile ? 50 : 150;
+    window.scrollTo(0, scrollPosition);
   };
 
   const content = {
