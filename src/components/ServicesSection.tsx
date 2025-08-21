@@ -2,12 +2,20 @@ import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { MapPin, BookOpen, Mountain } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import fieldTripsImage from '@/assets/field-trips.jpg';
 import storytellingImage from '@/assets/storytelling.jpg';
 import culturalAdventureImage from '@/assets/cultural-adventure.jpg';
 
 const ServicesSection = () => {
   const { language, isRTL } = useLanguage();
+  const navigate = useNavigate();
+
+  const handleServiceClick = () => {
+    navigate('/journey');
+    // Scroll to top of the page after navigation
+    window.scrollTo(0, 150);
+  };
 
   const content = {
     en: {
@@ -75,8 +83,9 @@ const ServicesSection = () => {
             return (
               <Card 
                 key={index} 
-                className="group card-premium overflow-hidden"
+                className="group card-premium overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300"
                 style={{ animationDelay: `${index * 0.2}s` }}
+                onClick={handleServiceClick}
               >
                 <div className="relative h-64 overflow-hidden">
                   <img 
