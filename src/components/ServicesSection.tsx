@@ -11,14 +11,6 @@ const ServicesSection = () => {
   const { language, isRTL } = useLanguage();
   const navigate = useNavigate();
 
-  const handleServiceClick = () => {
-    navigate('/journey');
-    // Scroll to top of the page after navigation with responsive behavior
-    const isMobile = window.innerWidth < 768; // md breakpoint
-    const scrollPosition = isMobile ? 50 : 150;
-    window.scrollTo(0, scrollPosition);
-  };
-
   const content = {
     en: {
       title: "Our Cultural Experiences",
@@ -27,19 +19,22 @@ const ServicesSection = () => {
           icon: MapPin,
           title: "Cultural Field Trips",
           description: "Explorations of historical sites, archaeological wonders, and cultural landmarks.",
-          image: fieldTripsImage
+          image: fieldTripsImage,
+          tourPath: "/journey#cultural-spirit-adventures"
         },
         {
           icon: BookOpen,
           title: "Live Storytelling Experiences",
           description: "Immersive narrative sessions where ancient tales, legends, and historical events are brought to life.",
-          image: storytellingImage
+          image: storytellingImage,
+          tourPath: "/journey#stories-on-the-road"
         },
         {
           icon: Mountain,
           title: "Cultural Adventure Programs",
           description: "Multi-day expeditions combining outdoor adventure with deep cultural immersion, featuring traditional practices and authentic experiences.",
-          image: culturalAdventureImage
+          image: culturalAdventureImage,
+          tourPath: "/journey#top"
         }
       ]
     },
@@ -50,13 +45,15 @@ const ServicesSection = () => {
           icon: MapPin,
           title: "على خطى التاريخ",
           description: `استكشاف للمواقع التاريخية والعجائب الأثرية والمعالم الثقافية.`,
-          image: fieldTripsImage
+          image: fieldTripsImage,
+          tourPath: "/journey#cultural-spirit-adventures"
         },
         {
           icon: BookOpen,
           title: "حكايات على الطريق",
           description: `جلسات سردية غامرة حيث تُحيا الحكايات القديمة والأساطير والأحداث التاريخية.`,
-          image: storytellingImage
+          image: culturalAdventureImage,
+          tourPath: "/journey#stories-on-the-road"
         },
         {
           icon: Mountain,
@@ -64,10 +61,15 @@ const ServicesSection = () => {
           description: `رحلات استكشافية متعددة الأيام تجمع بين المغامرة الخارجية والانغماس الثقافي العميق.
 
 تتضمن الممارسات التقليدية والتجارب الأصيلة.`,
-          image: culturalAdventureImage
+          image: culturalAdventureImage,
+          tourPath: "/journey#top"
         }
       ]
     }
+  };
+
+  const handleServiceClick = (tourPath: string) => {
+    navigate(tourPath);
   };
 
   return (
@@ -87,7 +89,7 @@ const ServicesSection = () => {
                 key={index} 
                 className="group card-premium overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300"
                 style={{ animationDelay: `${index * 0.2}s` }}
-                onClick={handleServiceClick}
+                onClick={() => handleServiceClick(service.tourPath)}
               >
                 <div className="relative h-64 overflow-hidden">
                   <img 

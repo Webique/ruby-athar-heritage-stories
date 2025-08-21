@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LanguageProvider, useLanguage } from '@/contexts/LanguageContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { MapPin, Clock, Users, Star, ArrowRight, X } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
   const [formData, setFormData] = useState({
@@ -647,6 +648,31 @@ const JourneyContent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedTripForBooking, setSelectedTripForBooking] = useState(null);
+  const location = useLocation();
+
+  // Scroll to hash target with custom offsets per section
+  useEffect(() => {
+    const hash = location.hash ? location.hash.replace('#', '') : '';
+    // Defer until after render to ensure elements exist
+    requestAnimationFrame(() => {
+      if (hash) {
+        const targetElement = document.getElementById(hash);
+        if (targetElement) {
+          const isMobile = window.innerWidth < 768; // md breakpoint
+          const offsets: Record<string, number> = {
+            top: isMobile ? 50 : 150,
+            'stories-on-the-road': isMobile ? 250 : 350, // slightly deeper so it's above the section
+            'cultural-spirit-adventures': isMobile ? 120 : 180,
+          };
+          const offset = offsets[hash] ?? (isMobile ? 80 : 150);
+          const top = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      } else {
+        // No hash: don't force scroll so normal navigation stays at top naturally
+      }
+    });
+  }, [location]);
 
   const handleViewDetails = (trip) => {
     setSelectedTrip(trip);
@@ -1270,7 +1296,7 @@ const JourneyContent = () => {
 
   return (
     <div className="min-h-screen bg-gradient-elegant pt-20 md:pt-24">
-      <div className="container mx-auto px-4 sm:px-6 py-8 md:py-16">
+      <div className="container mx-auto px-4 sm:px-6 py-8 md:py-16" id="top">
         {/* Header */}
         <div className="text-center mb-8 md:mb-16">
           <h1 className={`text-3xl sm:text-4xl md:text-hero font-bold text-primary mb-4 md:mb-6 px-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
@@ -1413,7 +1439,7 @@ const JourneyContent = () => {
           </div>
 
           {/* Section 2: حكايات على الطريق | Stories on the Road */}
-          <div className="space-y-6">
+          <div className="space-y-6" id="stories-on-the-road">
             <div className="text-center">
               <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
                 {language === 'en' ? 'Stories on the Road' : 'حكايات على الطريق'}
@@ -1542,7 +1568,7 @@ const JourneyContent = () => {
           </div>
 
           {/* Section 3: مغامرات بروح ثقافية | Cultural Spirit Adventures */}
-          <div className="space-y-6">
+          <div className="space-y-6" id="cultural-spirit-adventures">
             <div className="text-center">
               <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
                 {language === 'en' ? 'Cultural Spirit Adventures' : 'مغامرات بروح ثقافية'}
