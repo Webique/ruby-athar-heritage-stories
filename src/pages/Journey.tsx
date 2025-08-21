@@ -17,6 +17,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
     email: '',
     age: '',
     date: '',
+    
     package: '',
     participants: '1',
     addOns: []
