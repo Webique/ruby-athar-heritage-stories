@@ -62,15 +62,21 @@ class ApiClient {
 
     // Add auth token if available
     const token = localStorage.getItem('authToken');
+    console.log('API Client - Stored token:', token ? `${token.substring(0, 20)}...` : 'No token found');
+    
     if (token) {
       config.headers = {
         ...config.headers,
         Authorization: `Bearer ${token}`,
       };
+      console.log('API Client - Added Authorization header');
+    } else {
+      console.log('API Client - No token available, skipping Authorization header');
     }
 
     try {
       console.log('API Client - Making fetch request to:', url);
+      console.log('API Client - Final config:', config);
       const response = await fetch(url, config);
       console.log('API Client - Response status:', response.status);
       console.log('API Client - Response headers:', response.headers);
@@ -187,7 +193,9 @@ export const getAuthToken = (): string | null => {
 };
 
 export const setAuthToken = (token: string): void => {
+  console.log('setAuthToken called with:', token ? `${token.substring(0, 20)}...` : 'No token');
   localStorage.setItem('authToken', token);
+  console.log('Token stored in localStorage. Current token:', localStorage.getItem('authToken') ? 'Token exists' : 'No token');
 };
 
 export const setUser = (user: any): void => {
