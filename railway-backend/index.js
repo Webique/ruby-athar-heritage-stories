@@ -121,7 +121,7 @@ const authenticateToken = (req, res, next) => {
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'Ruby Heritage Backend is running' });
+  res.json({ status: 'OK', message: 'Ruby Heritage Backend is running - DELETE ROUTES ADDED! 🎯' });
 });
 
 // Authentication routes
