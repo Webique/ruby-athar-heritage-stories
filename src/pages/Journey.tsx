@@ -36,7 +36,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
     // Extract price from package (handle different price formats)
     const priceText = selectedPackage.price;
     
-    // Handle per-person pricing
+    // Handle per-person pricing (SAR per person, ريال للشخص)
     if (priceText.includes('SAR per person') || priceText.includes('ريال للشخص')) {
       const priceMatch = priceText.match(/(\d+)/);
       if (priceMatch) {
@@ -47,15 +47,23 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
     else if (priceText.includes('SAR') || priceText.includes('ريال')) {
       const priceMatch = priceText.match(/(\d+)/);
       if (priceMatch) {
-        basePrice = parseInt(priceMatch[1]);
-        // If it's a group package with fixed total, don't multiply by participants
-        if (priceText.includes('Total') || priceText.includes('المجموع')) {
-          // Keep as is - it's already the total
-        } else if (priceText.includes('×') || priceText.includes('عدد المشاركين')) {
-          // This is already calculated, keep as is
+        const extractedPrice = parseInt(priceMatch[1]);
+        
+        // Check if it's a group package with fixed total
+        if (priceText.includes('Group Package') || priceText.includes('باقة المجموعات')) {
+          // For group packages, check if it's per person or total
+          if (priceText.includes('per person') || priceText.includes('للشخص')) {
+            basePrice = extractedPrice * participants;
+          } else {
+            // Fixed total for group
+            basePrice = extractedPrice;
+          }
+        } else if (priceText.includes('Total') || priceText.includes('المجموع')) {
+          // Already total price, don't multiply
+          basePrice = extractedPrice;
         } else {
-          // For individual packages, multiply by participants
-          basePrice = parseInt(priceMatch[1]) * participants;
+          // Default: multiply by participants for individual packages
+          basePrice = extractedPrice * participants;
         }
       }
     }
@@ -65,17 +73,18 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
     formData.addOns.forEach(addonName => {
       const addon = trip?.addOns?.find(a => a.name === addonName);
       if (addon) {
-        if (addon.name.includes('VIP') || addon.name.includes('باقة VIP')) {
-          // VIP package replaces base price
-          const vipPriceMatch = addon.price.match(/(\d+)/);
-          if (vipPriceMatch) {
-            addOnsTotal = parseInt(vipPriceMatch[1]) * participants;
-          }
-        } else {
-          // Regular add-on
-          const addonPriceMatch = addon.price.match(/(\d+)/);
-          if (addonPriceMatch) {
-            addOnsTotal += parseInt(addonPriceMatch[1]) * participants;
+        const addonPriceText = addon.price;
+        const addonPriceMatch = addonPriceText.match(/(\d+)/);
+        
+        if (addonPriceMatch) {
+          const addonPrice = parseInt(addonPriceMatch[1]);
+          
+          if (addon.name.includes('VIP') || addon.name.includes('باقة VIP')) {
+            // VIP package replaces base price
+            addOnsTotal = addonPrice * participants;
+          } else {
+            // Regular add-on (per person)
+            addOnsTotal += addonPrice * participants;
           }
         }
       }
@@ -90,6 +99,15 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
   };
 
   const totalPrice = calculateTotalPrice();
+
+  // Debug price calculation
+  console.log('Price Debug:', {
+    trip: trip?.title,
+    package: formData.package,
+    participants: formData.participants,
+    addOns: formData.addOns,
+    totalPrice
+  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -109,20 +127,55 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setShowConfirmation(true);
-    // Reset form
-    setFormData({
-      name: '',
-      phone: '',
-      email: '',
-      age: '',
-      date: '',
-      package: '',
-      participants: '1',
-      addOns: []
-    });
+    
+    try {
+      // Prepare booking data for API
+      const bookingData = {
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        age: formData.age,
+        date: formData.date,
+        package: formData.package,
+        participants: formData.participants,
+        addOns: formData.addOns,
+        tripTitle: trip.title,
+        language: language,
+        totalPrice: totalPrice
+      };
+
+      // Submit to backend
+      const response = await fetch('http://localhost:5001/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingData),
+      });
+
+      if (response.ok) {
+        setShowConfirmation(true);
+        // Reset form
+        setFormData({
+          name: '',
+          phone: '',
+          email: '',
+          age: '',
+          date: '',
+          package: '',
+          participants: '1',
+          addOns: []
+        });
+      } else {
+        console.error('Booking submission failed');
+        alert('Failed to submit booking. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting booking:', error);
+      alert('Error submitting booking. Please try again.');
+    }
   };
 
   const handleClose = () => {

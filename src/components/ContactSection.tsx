@@ -2,6 +2,7 @@ import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Phone, MessageCircle, Mail, MapPin } from 'lucide-react';
+import ContactForm from './ContactForm';
 
 const ContactSection = () => {
   const { language, isRTL } = useLanguage();
@@ -48,6 +49,12 @@ const ContactSection = () => {
           </p>
         </div>
 
+        {/* Contact Form */}
+        <div className="mb-16">
+          <ContactForm />
+        </div>
+
+        {/* Quick Contact Cards */}
         <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {/* Phone */}
           <Card className="card-premium">
