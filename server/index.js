@@ -292,6 +292,7 @@ app.get('/api/admin/contacts', authenticateToken, async (req, res) => {
   }
 });
 
+// Update booking status
 app.put('/api/admin/bookings/:id/status', authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
@@ -303,22 +304,49 @@ app.put('/api/admin/bookings/:id/status', authenticateToken, async (req, res) =>
     );
     
     if (result.matchedCount === 0) {
-      return res.status(404).json({
-        success: false,
-        message: 'Booking not found'
-      });
+      return res.status(404).json({ success: false, message: 'Booking not found' });
     }
     
-    res.json({
-      success: true,
-      message: 'Booking status updated successfully'
-    });
+    res.json({ success: true, message: 'Status updated successfully' });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Failed to update booking status',
-      error: error.message
-    });
+    console.error('Error updating booking status:', error);
+    res.status(500).json({ success: false, message: 'Failed to update status' });
+  }
+});
+
+// Delete booking
+app.delete('/api/admin/bookings/:id', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const result = await bookingsCollection.deleteOne({ _id: new ObjectId(id) });
+    
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+    
+    res.json({ success: true, message: 'Booking deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting booking:', error);
+    res.status(500).json({ success: false, message: 'Failed to delete booking' });
+  }
+});
+
+// Delete contact
+app.delete('/api/admin/contacts/:id', authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const result = await contactsCollection.deleteOne({ _id: new ObjectId(id) });
+    
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ success: false, message: 'Contact not found' });
+    }
+    
+    res.json({ success: true, message: 'Contact deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting contact:', error);
+    res.status(500).json({ success: false, message: 'Failed to delete contact' });
   }
 });
 

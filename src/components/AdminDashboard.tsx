@@ -7,30 +7,11 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { apiClient, isAuthenticated, logout } from '@/lib/api';
+import { useNavigate } from 'react-router-dom';
 import { 
-  Users, 
-  Calendar, 
-  MessageSquare, 
-  LogOut, 
-  Eye, 
-  CheckCircle, 
-  XCircle, 
-  Clock,
-  TrendingUp,
-  Search,
-  Filter,
-  Download,
-  MapPin,
-  Package,
-  User,
-  Phone,
-  Mail,
-  CalendarDays,
-  Users as UsersIcon,
-  DollarSign,
-  FileText,
-  SortAsc,
-  SortDesc
+  Search, Filter, Download, MapPin, Package, User, Phone, Mail, 
+  CalendarDays, UsersIcon, DollarSign, FileText, SortAsc, SortDesc,
+  Trash2, AlertTriangle, Clock, CheckCircle, XCircle, LogOut, Calendar, MessageSquare
 } from 'lucide-react';
 
 interface FilterState {
@@ -127,7 +108,11 @@ const AdminDashboard = () => {
       bookingInfo: "Booking Information",
       addOns: "Add-ons",
       totalPrice: "Total Price",
-      notes: "Notes"
+      notes: "Notes",
+      delete: "Delete",
+      confirmDelete: "Are you sure?",
+      deleteSuccess: "Deleted successfully",
+      deleteError: "Failed to delete"
     },
     ar: {
       title: "لوحة الإدارة",
@@ -181,7 +166,11 @@ const AdminDashboard = () => {
       bookingInfo: "معلومات الحجز",
       addOns: "إضافات",
       totalPrice: "السعر الإجمالي",
-      notes: "ملاحظات"
+      notes: "ملاحظات",
+      delete: "حذف",
+      confirmDelete: "هل أنت متأكد؟",
+      deleteSuccess: "تم الحذف بنجاح",
+      deleteError: "فشل في الحذف"
     }
   };
 
@@ -317,6 +306,56 @@ const AdminDashboard = () => {
         description: "Failed to update status",
         variant: "destructive"
       });
+    }
+  };
+
+  const handleDeleteBooking = async (id: string) => {
+    if (!window.confirm(`${content[language].confirmDelete} ${content[language].delete} ${content[language].bookings.toLowerCase()}?`)) {
+      return;
+    }
+    
+    try {
+      const response = await apiClient.deleteBooking(id);
+      if (response.success) {
+        toast({
+          title: content[language].success,
+          description: content[language].deleteSuccess
+        });
+        fetchData();
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+              toast({
+          title: content[language].error,
+          description: content[language].deleteError,
+          variant: "destructive"
+        });
+    }
+  };
+
+  const handleDeleteContact = async (id: string) => {
+    if (!window.confirm(`${content[language].confirmDelete} ${content[language].delete} ${content[language].contacts.toLowerCase()}?`)) {
+      return;
+    }
+    
+    try {
+      const response = await apiClient.deleteContact(id);
+      if (response.success) {
+        toast({
+          title: content[language].success,
+          description: content[language].deleteSuccess
+        });
+        fetchData();
+      } else {
+        throw new Error(response.message);
+      }
+    } catch (error) {
+              toast({
+          title: content[language].error,
+          description: content[language].deleteError,
+          variant: "destructive"
+        });
     }
   };
 
@@ -800,24 +839,35 @@ const AdminDashboard = () => {
                         )}
 
                         {/* Actions */}
-                        {booking.status === 'pending' && (
-                          <div className="flex gap-2 pt-2">
-                            <Button
-                              size="sm"
-                              onClick={() => handleStatusUpdate(booking._id, 'confirmed')}
-                              className="bg-green-600 hover:bg-green-700"
-                            >
-                              {content[language].confirm}
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              onClick={() => handleStatusUpdate(booking._id, 'cancelled')}
-                            >
-                              {content[language].cancel}
-                            </Button>
-                          </div>
-                        )}
+                        <div className="flex gap-2 pt-2">
+                          {booking.status === 'pending' && (
+                            <>
+                              <Button
+                                size="sm"
+                                onClick={() => handleStatusUpdate(booking._id, 'confirmed')}
+                                className="bg-green-600 hover:bg-green-700"
+                              >
+                                {content[language].confirm}
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => handleStatusUpdate(booking._id, 'cancelled')}
+                              >
+                                {content[language].cancel}
+                              </Button>
+                            </>
+                          )}
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleDeleteBooking(booking._id)}
+                            className="text-red-600 border-red-600 hover:bg-red-50"
+                          >
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            {content[language].delete}
+                          </Button>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -860,9 +910,20 @@ const AdminDashboard = () => {
                         </p>
                       </div>
 
-                      <div className="flex justify-between items-center text-sm text-muted-foreground">
-                        <span>Language: {contact.language}</span>
-                        <span>Submitted: {new Date(contact.createdAt).toLocaleDateString()}</span>
+                      <div className="flex justify-between items-center">
+                        <div className="text-sm text-muted-foreground">
+                          <span>Language: {contact.language}</span>
+                          <span className="ml-4">Submitted: {new Date(contact.createdAt).toLocaleDateString()}</span>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleDeleteContact(contact._id)}
+                          className="text-red-600 border-red-600 hover:bg-red-50"
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          {content[language].delete}
+                        </Button>
                       </div>
                     </div>
                   ))}

@@ -144,6 +144,19 @@ class ApiClient {
     });
   }
 
+  // Delete methods
+  async deleteBooking(id: string): Promise<ApiResponse> {
+    return this.request(`/admin/bookings/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async deleteContact(id: string): Promise<ApiResponse> {
+    return this.request(`/admin/contacts/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
   // File upload
   async uploadFile(file: File): Promise<ApiResponse<{ filename: string; path: string }>> {
     const formData = new FormData();
