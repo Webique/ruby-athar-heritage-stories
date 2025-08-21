@@ -115,7 +115,9 @@ const AdminDashboard = () => {
       // Details
       tripDetails: "Trip Details",
       totalPrice: "Total Price",
-      notes: "Notes"
+      notes: "Notes",
+      // Status filter
+      showAll: "Show All"
     },
     ar: {
       title: "لوحة الإدارة",
@@ -176,7 +178,9 @@ const AdminDashboard = () => {
       // Details
       tripDetails: "تفاصيل الرحلة",
       totalPrice: "السعر الإجمالي",
-      notes: "ملاحظات"
+      notes: "ملاحظات",
+      // Status filter
+      showAll: "عرض الكل"
     }
   };
 
@@ -383,6 +387,13 @@ const AdminDashboard = () => {
     });
   };
 
+  const handleStatusFilter = (status: string) => {
+    setFilters({
+      ...filters,
+      status: status
+    });
+  };
+
   const exportData = () => {
     const csvContent = [
       ['Name', 'Email', 'Phone', 'Trip Title', 'Package', 'Date', 'Participants', 'Status', 'Language', 'Total Price', 'Created'],
@@ -483,7 +494,12 @@ const AdminDashboard = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6 mb-6 sm:mb-8">
-          <Card className="col-span-2 sm:col-span-1">
+          <Card 
+            className={`cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 ${
+              filters.status === 'all' ? 'ring-2 ring-primary ring-offset-2' : ''
+            }`}
+            onClick={() => handleStatusFilter('all')}
+          >
             <CardContent className="p-3 sm:p-6">
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="p-2 sm:p-3 bg-gradient-primary rounded-lg">
@@ -497,7 +513,12 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card 
+            className={`cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 ${
+              filters.status === 'pending' ? 'ring-2 ring-secondary ring-offset-2' : ''
+            }`}
+            onClick={() => handleStatusFilter('pending')}
+          >
             <CardContent className="p-3 sm:p-6">
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="p-2 sm:p-3 bg-gradient-gold rounded-lg">
@@ -511,7 +532,12 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card 
+            className={`cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 ${
+              filters.status === 'confirmed' ? 'ring-2 ring-green-500 ring-offset-2' : ''
+            }`}
+            onClick={() => handleStatusFilter('confirmed')}
+          >
             <CardContent className="p-3 sm:p-6">
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="p-2 sm:p-3 bg-green-500 rounded-lg">
@@ -525,7 +551,12 @@ const AdminDashboard = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card 
+            className={`cursor-pointer hover:shadow-lg transition-all duration-200 hover:scale-105 ${
+              filters.status === 'cancelled' ? 'ring-2 ring-red-500 ring-offset-2' : ''
+            }`}
+            onClick={() => handleStatusFilter('cancelled')}
+          >
             <CardContent className="p-3 sm:p-6">
               <div className="flex items-center gap-2 sm:gap-3">
                 <div className="p-2 sm:p-3 bg-red-500 rounded-lg">
@@ -579,6 +610,41 @@ const AdminDashboard = () => {
         {/* Content */}
         {activeTab === 'bookings' ? (
           <div className="space-y-6">
+            {/* Active Status Filter Indicator */}
+            {filters.status !== 'all' && (
+              <Card className="bg-primary/5 border-primary/20">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="p-2 bg-primary rounded-lg">
+                        {filters.status === 'pending' && <Clock className="h-4 w-4 text-white" />}
+                        {filters.status === 'confirmed' && <CheckCircle className="h-4 w-4 text-white" />}
+                        {filters.status === 'cancelled' && <XCircle className="h-4 w-4 text-white" />}
+                      </div>
+                      <div>
+                        <p className="font-medium text-primary">
+                          {filters.status === 'pending' && content[language].pendingBookings}
+                          {filters.status === 'confirmed' && content[language].confirmedBookings}
+                          {filters.status === 'cancelled' && content[language].cancelledBookings}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {filteredBookings.length} {content[language].bookings.toLowerCase()}
+                        </p>
+                      </div>
+                    </div>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleStatusFilter('all')}
+                      className="text-primary border-primary hover:bg-primary hover:text-white"
+                    >
+                      {content[language].showAll}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+            
             {/* Filters */}
             <Card>
               <CardHeader>
@@ -614,17 +680,19 @@ const AdminDashboard = () => {
                   </Select>
 
                   {/* Status */}
-                  <Select value={filters.status} onValueChange={(value) => setFilters({...filters, status: value})}>
-                    <SelectTrigger>
-                      <SelectValue placeholder={content[language].status} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">{content[language].all}</SelectItem>
-                      <SelectItem value="pending">{content[language].pendingBookings}</SelectItem>
-                      <SelectItem value="confirmed">{content[language].confirmedBookings}</SelectItem>
-                      <SelectItem value="cancelled">{content[language].cancelledBookings}</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  {filters.status === 'all' && (
+                    <Select value={filters.status} onValueChange={(value) => setFilters({...filters, status: value})}>
+                      <SelectTrigger>
+                        <SelectValue placeholder={content[language].status} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">{content[language].all}</SelectItem>
+                        <SelectItem value="pending">{content[language].pendingBookings}</SelectItem>
+                        <SelectItem value="confirmed">{content[language].confirmedBookings}</SelectItem>
+                        <SelectItem value="cancelled">{content[language].cancelledBookings}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
 
                   {/* Package */}
                   <Select value={filters.package} onValueChange={(value) => setFilters({...filters, package: value})}>
