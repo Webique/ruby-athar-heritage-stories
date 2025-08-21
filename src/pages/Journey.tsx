@@ -14,10 +14,11 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
+    
     email: '',
     age: '',
     date: '',
-    
+
     package: '',
     participants: '1',
     addOns: []
