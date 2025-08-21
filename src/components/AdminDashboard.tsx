@@ -102,17 +102,20 @@ const AdminDashboard = () => {
       createdAt: "Created Date",
       tripDate: "Trip Date",
       name: "Name",
-      // Details
-      tripDetails: "Trip Details",
+      // Delete functionality
+      confirmDelete: "Are you sure you want to delete this",
+      delete: "Delete",
+      deleteSuccess: "Item deleted successfully",
+      deleteError: "Failed to delete item",
+      // Add-ons
+      addOns: "Add-ons",
+      // Customer and booking info
       customerInfo: "Customer Information",
       bookingInfo: "Booking Information",
-      addOns: "Add-ons",
+      // Details
+      tripDetails: "Trip Details",
       totalPrice: "Total Price",
-      notes: "Notes",
-      delete: "Delete",
-      confirmDelete: "Are you sure?",
-      deleteSuccess: "Deleted successfully",
-      deleteError: "Failed to delete"
+      notes: "Notes"
     },
     ar: {
       title: "لوحة الإدارة",
@@ -160,17 +163,20 @@ const AdminDashboard = () => {
       createdAt: "تاريخ الإنشاء",
       tripDate: "تاريخ الرحلة",
       name: "الاسم",
-      // Details
-      tripDetails: "تفاصيل الرحلة",
+      // Delete functionality
+      confirmDelete: "هل أنت متأكد من حذف هذا",
+      delete: "حذف",
+      deleteSuccess: "تم الحذف بنجاح",
+      deleteError: "فشل في الحذف",
+      // Add-ons
+      addOns: "إضافات",
+      // Customer and booking info
       customerInfo: "معلومات العميل",
       bookingInfo: "معلومات الحجز",
-      addOns: "إضافات",
+      // Details
+      tripDetails: "تفاصيل الرحلة",
       totalPrice: "السعر الإجمالي",
-      notes: "ملاحظات",
-      delete: "حذف",
-      confirmDelete: "هل أنت متأكد؟",
-      deleteSuccess: "تم الحذف بنجاح",
-      deleteError: "فشل في الحذف"
+      notes: "ملاحظات"
     }
   };
 
@@ -457,91 +463,91 @@ const AdminDashboard = () => {
   const respondedContacts = contacts.filter(c => c.status === 'responded').length;
 
   return (
-    <div className="min-h-screen bg-gradient-elegant pt-24">
-      <div className="container mx-auto px-6 py-8">
+    <div className="min-h-screen bg-gradient-elegant pt-20 sm:pt-24">
+      <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
           <div>
-            <h1 className={`text-3xl font-bold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
+            <h1 className={`text-2xl sm:text-3xl font-bold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].title}
             </h1>
-            <p className={`text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
+            <p className={`text-sm sm:text-base text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].subtitle}
             </p>
           </div>
-          <Button onClick={handleLogout} variant="outline" className="flex items-center gap-2">
+          <Button onClick={handleLogout} variant="outline" className="flex items-center gap-2 w-full sm:w-auto">
             <LogOut className="h-4 w-4" />
             {content[language].logout}
           </Button>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-gradient-primary rounded-lg">
-                  <Calendar className="h-6 w-6 text-primary-foreground" />
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6 mb-6 sm:mb-8">
+          <Card className="col-span-2 sm:col-span-1">
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-2 sm:p-3 bg-gradient-primary rounded-lg">
+                  <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">{content[language].totalBookings}</p>
-                  <p className="text-2xl font-bold text-primary">{bookings.length}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-gradient-gold rounded-lg">
-                  <Clock className="h-6 w-6 text-secondary-foreground" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">{content[language].pendingBookings}</p>
-                  <p className="text-2xl font-bold text-secondary">{pendingBookings}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm text-muted-foreground truncate">{content[language].totalBookings}</p>
+                  <p className="text-lg sm:text-2xl font-bold text-primary">{bookings.length}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-green-500 rounded-lg">
-                  <CheckCircle className="h-6 w-6 text-white" />
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-2 sm:p-3 bg-gradient-gold rounded-lg">
+                  <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-secondary-foreground" />
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">{content[language].confirmedBookings}</p>
-                  <p className="text-2xl font-bold text-green-600">{confirmedBookings}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-red-500 rounded-lg">
-                  <XCircle className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">{content[language].cancelledBookings}</p>
-                  <p className="text-2xl font-bold text-red-600">{cancelledBookings}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm text-muted-foreground truncate">{content[language].pendingBookings}</p>
+                  <p className="text-lg sm:text-2xl font-bold text-secondary">{pendingBookings}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <div className="p-3 bg-gradient-primary rounded-lg">
-                  <MessageSquare className="h-6 w-6 text-primary-foreground" />
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-2 sm:p-3 bg-green-500 rounded-lg">
+                  <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">{content[language].totalContacts}</p>
-                  <p className="text-2xl font-bold text-primary">{contacts.length}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm text-muted-foreground truncate">{content[language].confirmedBookings}</p>
+                  <p className="text-lg sm:text-2xl font-bold text-green-600">{confirmedBookings}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-2 sm:p-3 bg-red-500 rounded-lg">
+                  <XCircle className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm text-muted-foreground truncate">{content[language].cancelledBookings}</p>
+                  <p className="text-lg sm:text-2xl font-bold text-red-600">{cancelledBookings}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="col-span-2 sm:col-span-1">
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-2 sm:p-3 bg-gradient-primary rounded-lg">
+                  <MessageSquare className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs sm:text-sm text-muted-foreground truncate">{content[language].totalContacts}</p>
+                  <p className="text-lg sm:text-2xl font-bold text-primary">{contacts.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -553,18 +559,20 @@ const AdminDashboard = () => {
           <Button
             variant={activeTab === 'bookings' ? 'default' : 'outline'}
             onClick={() => setActiveTab('bookings')}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 flex-1 sm:flex-none"
           >
             <Calendar className="h-4 w-4" />
-            {content[language].bookings}
+            <span className="hidden sm:inline">{content[language].bookings}</span>
+            <span className="sm:hidden">Bookings</span>
           </Button>
           <Button
             variant={activeTab === 'contacts' ? 'default' : 'outline'}
             onClick={() => setActiveTab('contacts')}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 flex-1 sm:flex-none"
           >
             <MessageSquare className="h-4 w-4" />
-            {content[language].contacts}
+            <span className="hidden sm:inline">{content[language].contacts}</span>
+            <span className="sm:hidden">Contacts</span>
           </Button>
         </div>
 
@@ -580,9 +588,9 @@ const AdminDashboard = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                   {/* Search */}
-                  <div className="relative">
+                  <div className="relative col-span-1 sm:col-span-2 lg:col-span-1">
                     <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       placeholder={content[language].search}
@@ -674,17 +682,17 @@ const AdminDashboard = () => {
                   </Select>
                 </div>
 
-                <div className="flex justify-between items-center mt-4">
-                  <Button variant="outline" onClick={clearFilters} className="flex items-center gap-2">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 mt-4">
+                  <Button variant="outline" onClick={clearFilters} className="flex items-center gap-2 w-full sm:w-auto">
                     <Filter className="h-4 w-4" />
                     {content[language].clearFilters}
                   </Button>
                   
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-2 w-full sm:w-auto">
+                    <span className="text-sm text-muted-foreground text-center sm:text-left">
                       {filteredBookings.length} of {bookings.length} bookings
                     </span>
-                    <Button onClick={exportData} variant="outline" className="flex items-center gap-2">
+                    <Button onClick={exportData} variant="outline" className="flex items-center gap-2 w-full sm:w-auto">
                       <Download className="h-4 w-4" />
                       {content[language].exportData}
                     </Button>
@@ -696,10 +704,10 @@ const AdminDashboard = () => {
             {/* Sorting */}
             <Card>
               <CardContent className="pt-6">
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                   <span className="text-sm font-medium">{content[language].sortBy}:</span>
                   <Select value={sort.field} onValueChange={(value) => setSort({...sort, field: value})}>
-                    <SelectTrigger className="w-48">
+                    <SelectTrigger className="w-full sm:w-48">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -714,10 +722,11 @@ const AdminDashboard = () => {
                     variant="outline"
                     size="sm"
                     onClick={() => setSort({...sort, direction: sort.direction === 'asc' ? 'desc' : 'asc'})}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 w-full sm:w-auto"
                   >
                     {sort.direction === 'asc' ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />}
-                    {sort.direction === 'asc' ? 'Ascending' : 'Descending'}
+                    <span className="hidden sm:inline">{sort.direction === 'asc' ? 'Ascending' : 'Descending'}</span>
+                    <span className="sm:hidden">{sort.direction === 'asc' ? '↑' : '↓'}</span>
                   </Button>
                 </div>
               </CardContent>
@@ -736,48 +745,48 @@ const AdminDashboard = () => {
                     {content[language].noBookings}
                   </p>
                 ) : (
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                     {filteredBookings.map((booking) => (
-                      <div key={booking._id} className="border rounded-lg p-6 space-y-4">
+                      <div key={booking._id} className="border rounded-lg p-4 sm:p-6 space-y-4">
                         {/* Header with Status */}
-                        <div className="flex justify-between items-start">
+                        <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-0">
                           <div className="flex items-center gap-3">
                             <div className="p-2 bg-primary/10 rounded-lg">
                               <MapPin className="h-5 w-5 text-primary" />
                             </div>
-                            <div>
-                              <h4 className="text-lg font-semibold text-primary">{booking.tripTitle}</h4>
-                              <p className="text-sm text-muted-foreground">{booking.packageName}</p>
+                            <div className="min-w-0 flex-1">
+                              <h4 className="text-base sm:text-lg font-semibold text-primary truncate">{booking.tripTitle}</h4>
+                              <p className="text-sm text-muted-foreground truncate">{booking.packageName}</p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 self-start sm:self-auto">
                             {getStatusBadge(booking.status)}
                           </div>
                         </div>
 
                         {/* Customer Information */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                           <div className="space-y-3">
-                            <h5 className="font-medium flex items-center gap-2">
+                            <h5 className="font-medium flex items-center gap-2 text-sm sm:text-base">
                               <User className="h-4 w-4" />
                               {content[language].customerInfo}
                             </h5>
-                            <div className="space-y-2 text-sm">
+                            <div className="space-y-2 text-xs sm:text-sm">
                               <div className="flex items-center gap-2">
-                                <span className="font-medium">Name:</span>
-                                <span>{booking.name}</span>
+                                <span className="font-medium min-w-[60px]">Name:</span>
+                                <span className="truncate">{booking.name}</span>
                               </div>
                               <div className="flex items-center gap-2">
-                                <Mail className="h-4 w-4" />
-                                <span>{booking.email}</span>
+                                <Mail className="h-4 w-4 flex-shrink-0" />
+                                <span className="truncate">{booking.email}</span>
                               </div>
                               <div className="flex items-center gap-2">
-                                <Phone className="h-4 w-4" />
-                                <span>{booking.phone}</span>
+                                <Phone className="h-4 w-4 flex-shrink-0" />
+                                <span className="truncate">{booking.phone}</span>
                               </div>
                               {booking.age && (
                                 <div className="flex items-center gap-2">
-                                  <span className="font-medium">Age:</span>
+                                  <span className="font-medium min-w-[60px]">Age:</span>
                                   <span>{booking.age}</span>
                                 </div>
                               )}
@@ -785,35 +794,35 @@ const AdminDashboard = () => {
                           </div>
 
                           <div className="space-y-3">
-                            <h5 className="font-medium flex items-center gap-2">
+                            <h5 className="font-medium flex items-center gap-2 text-sm sm:text-base">
                               <Calendar className="h-4 w-4" />
                               {content[language].bookingInfo}
                             </h5>
-                            <div className="space-y-2 text-sm">
+                            <div className="space-y-2 text-xs sm:text-sm">
                               <div className="flex items-center gap-2">
-                                <CalendarDays className="h-4 w-4" />
-                                <span className="font-medium">Trip Date:</span>
+                                <CalendarDays className="h-4 w-4 flex-shrink-0" />
+                                <span className="font-medium min-w-[80px]">Trip Date:</span>
                                 <span>{new Date(booking.date).toLocaleDateString()}</span>
                               </div>
                               <div className="flex items-center gap-2">
-                                <UsersIcon className="h-4 w-4" />
-                                <span className="font-medium">Participants:</span>
+                                <UsersIcon className="h-4 w-4 flex-shrink-0" />
+                                <span className="font-medium min-w-[80px]">Participants:</span>
                                 <span>{booking.participants}</span>
                               </div>
                               <div className="flex items-center gap-2">
-                                <Package className="h-4 w-4" />
-                                <span className="font-medium">Package:</span>
-                                <span>{booking.packageName}</span>
+                                <Package className="h-4 w-4 flex-shrink-0" />
+                                <span className="font-medium min-w-[80px]">Package:</span>
+                                <span className="truncate">{booking.packageName}</span>
                               </div>
                               <div className="flex items-center gap-2">
-                                <FileText className="h-4 w-4" />
-                                <span className="font-medium">Language:</span>
+                                <FileText className="h-4 w-4 flex-shrink-0" />
+                                <span className="font-medium min-w-[80px]">Language:</span>
                                 <span>{booking.language}</span>
                               </div>
                               {booking.totalPrice && (
                                 <div className="flex items-center gap-2">
-                                  <DollarSign className="h-4 w-4" />
-                                  <span className="font-medium">Total Price:</span>
+                                  <DollarSign className="h-4 w-4 flex-shrink-0" />
+                                  <span className="font-medium min-w-[80px]">Total Price:</span>
                                   <span className="font-semibold text-green-600">
                                     {booking.totalPrice} {booking.language === 'en' ? 'SAR' : 'ريال'}
                                   </span>
@@ -839,13 +848,13 @@ const AdminDashboard = () => {
                         )}
 
                         {/* Actions */}
-                        <div className="flex gap-2 pt-2">
+                        <div className="flex flex-wrap gap-2 pt-2">
                           {booking.status === 'pending' && (
                             <>
                               <Button
                                 size="sm"
                                 onClick={() => handleStatusUpdate(booking._id, 'confirmed')}
-                                className="bg-green-600 hover:bg-green-700"
+                                className="bg-green-600 hover:bg-green-700 flex-1 sm:flex-none"
                               >
                                 {content[language].confirm}
                               </Button>
@@ -853,6 +862,7 @@ const AdminDashboard = () => {
                                 size="sm"
                                 variant="destructive"
                                 onClick={() => handleStatusUpdate(booking._id, 'cancelled')}
+                                className="flex-1 sm:flex-none"
                               >
                                 {content[language].cancel}
                               </Button>
@@ -862,7 +872,7 @@ const AdminDashboard = () => {
                             size="sm"
                             variant="outline"
                             onClick={() => handleDeleteBooking(booking._id)}
-                            className="text-red-600 border-red-600 hover:bg-red-50"
+                            className="text-red-600 border-red-600 hover:bg-red-50 flex-1 sm:flex-none"
                           >
                             <Trash2 className="h-4 w-4 mr-1" />
                             {content[language].delete}
@@ -891,35 +901,35 @@ const AdminDashboard = () => {
                 <div className="space-y-4">
                   {contacts.map((contact) => (
                     <div key={contact._id} className="border rounded-lg p-4 space-y-3">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h4 className="font-semibold">{contact.name}</h4>
-                          <p className="text-sm text-muted-foreground">{contact.email}</p>
+                      <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-0">
+                        <div className="min-w-0 flex-1">
+                          <h4 className="font-semibold text-sm sm:text-base">{contact.name}</h4>
+                          <p className="text-xs sm:text-sm text-muted-foreground truncate">{contact.email}</p>
                           {contact.phone && (
-                            <p className="text-sm text-muted-foreground">{contact.phone}</p>
+                            <p className="text-xs sm:text-sm text-muted-foreground truncate">{contact.phone}</p>
                           )}
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 self-start sm:self-auto">
                           {getContactStatusBadge(contact.status)}
                         </div>
                       </div>
                       
                       <div>
-                        <p className="text-sm">
+                        <p className="text-xs sm:text-sm">
                           <span className="font-medium">Message:</span> {contact.message}
                         </p>
                       </div>
 
-                      <div className="flex justify-between items-center">
-                        <div className="text-sm text-muted-foreground">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
+                        <div className="text-xs sm:text-sm text-muted-foreground space-y-1 sm:space-y-0 sm:space-x-4">
                           <span>Language: {contact.language}</span>
-                          <span className="ml-4">Submitted: {new Date(contact.createdAt).toLocaleDateString()}</span>
+                          <span className="block sm:inline sm:ml-4">Submitted: {new Date(contact.createdAt).toLocaleDateString()}</span>
                         </div>
                         <Button
                           size="sm"
                           variant="outline"
                           onClick={() => handleDeleteContact(contact._id)}
-                          className="text-red-600 border-red-600 hover:bg-red-50"
+                          className="text-red-600 border-red-600 hover:bg-red-50 w-full sm:w-auto"
                         >
                           <Trash2 className="h-4 w-4 mr-1" />
                           {content[language].delete}
