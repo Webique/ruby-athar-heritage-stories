@@ -199,16 +199,7 @@ const AdminLogin = () => {
             </Button>
           </form>
 
-          {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-muted/50 rounded-lg">
-            <h4 className={`text-sm font-semibold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
-              Demo Credentials:
-            </h4>
-            <div className="text-xs text-muted-foreground space-y-1">
-              <p><strong>Username:</strong> rubyuser</p>
-              <p><strong>Password:</strong> rubypassword</p>
-            </div>
-          </div>
+
         </CardContent>
       </Card>
     </div>
