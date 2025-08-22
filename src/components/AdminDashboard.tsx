@@ -13,6 +13,7 @@ import {
   CalendarDays, UsersIcon, DollarSign, FileText, SortAsc, SortDesc,
   Trash2, AlertTriangle, Clock, CheckCircle, XCircle, LogOut, Calendar, MessageSquare
 } from 'lucide-react';
+import jsPDF from 'jspdf';
 
 interface FilterState {
   search: string;
@@ -407,52 +408,89 @@ const AdminDashboard = () => {
   };
 
   const handleDownloadReceipt = (booking: any) => {
-    // Create receipt content
-    const receiptContent = `
-      RUBY ATHAR HERITAGE STORIES
-      =============================
-      
-      CONFIRMED BOOKING RECEIPT
-      =============================
-      
-      Customer Information:
-      --------------------
-      Name: ${booking.name}
-      Email: ${booking.email}
-      Phone: ${booking.phone}
-      ${booking.age ? `Age: ${booking.age}` : ''}
-      
-      Booking Details:
-      ----------------
-      Trip Title: ${booking.tripTitle}
-      Package: ${booking.packageName}
-      Trip Date: ${new Date(booking.date).toLocaleDateString()}
-      Participants: ${booking.participants}
-      Language: ${booking.language}
-      ${booking.totalPrice ? `Total Price: ${booking.totalPrice} ${booking.language === 'en' ? 'SAR' : 'ريال'}` : ''}
-      
-      ${booking.addOns && booking.addOns.length > 0 ? `
-      Add-ons:
-      --------
-      ${booking.addOns.join(', ')}
-      ` : ''}
-      
-      Status: CONFIRMED
-      Confirmed Date: ${new Date().toLocaleDateString()}
-      
-      =============================
-      Thank you for choosing Ruby Athar Heritage Stories!
-      =============================
-    `;
+    // Create PDF document
+    const doc = new jsPDF();
     
-    // Create and download file
-    const blob = new Blob([receiptContent], { type: 'text/plain' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `receipt-${booking.name}-${new Date().toISOString().split('T')[0]}.txt`;
-    a.click();
-    window.URL.revokeObjectURL(url);
+    // Set font and colors
+    doc.setFont('helvetica');
+    doc.setFontSize(20);
+    doc.setTextColor(139, 69, 19); // Brown color for brand
+    
+    // Header
+    doc.text('RUBY ATHAR HERITAGE STORIES', 105, 20, { align: 'center' });
+    
+    // Subtitle
+    doc.setFontSize(16);
+    doc.setTextColor(100, 100, 100);
+    doc.text('CONFIRMED BOOKING RECEIPT', 105, 35, { align: 'center' });
+    
+    // Line separator
+    doc.setDrawColor(139, 69, 19);
+    doc.setLineWidth(0.5);
+    doc.line(20, 40, 190, 40);
+    
+    // Customer Information section
+    doc.setFontSize(14);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Customer Information:', 20, 55);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(12);
+    doc.text(`Name: ${booking.name}`, 20, 70);
+    doc.text(`Email: ${booking.email}`, 20, 80);
+    doc.text(`Phone: ${booking.phone}`, 20, 90);
+    if (booking.age) {
+      doc.text(`Age: ${booking.age}`, 20, 100);
+    }
+    
+    // Booking Details section
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.text('Booking Details:', 20, 120);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(12);
+    doc.text(`Trip Title: ${booking.tripTitle}`, 20, 135);
+    doc.text(`Package: ${booking.packageName}`, 20, 145);
+    doc.text(`Trip Date: ${new Date(booking.date).toLocaleDateString()}`, 20, 155);
+    doc.text(`Participants: ${booking.participants}`, 20, 165);
+    doc.text(`Language: ${booking.language}`, 20, 175);
+    
+    if (booking.totalPrice) {
+      const currency = booking.language === 'en' ? 'SAR' : 'ريال';
+      doc.text(`Total Price: ${booking.totalPrice} ${currency}`, 20, 185);
+    }
+    
+    // Add-ons section
+    if (booking.addOns && booking.addOns.length > 0) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      doc.text('Add-ons:', 20, 205);
+      
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      doc.text(booking.addOns.join(', '), 20, 220);
+    }
+    
+    // Status section
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(14);
+    doc.text('Status: CONFIRMED', 20, 245);
+    doc.text(`Confirmed Date: ${new Date().toLocaleDateString()}`, 20, 255);
+    
+    // Footer line
+    doc.setDrawColor(139, 69, 19);
+    doc.line(20, 265, 190, 265);
+    
+    // Footer text
+    doc.setFontSize(12);
+    doc.setTextColor(139, 69, 19);
+    doc.text('Thank you for choosing Ruby Athar Heritage Stories!', 105, 275, { align: 'center' });
+    
+    // Save PDF
+    const fileName = `receipt-${booking.name}-${new Date().toISOString().split('T')[0]}.pdf`;
+    doc.save(fileName);
   };
 
   const exportData = () => {
