@@ -705,6 +705,9 @@ const JourneyContent = () => {
   const [selectedTripForBooking, setSelectedTripForBooking] = useState(null);
   const location = useLocation();
 
+  // Debug: Log language in JourneyContent
+  console.log('🔍 JourneyContent: Current language:', language, 'isRTL:', isRTL, 'localStorage:', localStorage.getItem('preferred-language'));
+
   // Scroll to hash target with custom offsets per section
   useEffect(() => {
     const hash = location.hash ? location.hash.replace('#', '') : '';

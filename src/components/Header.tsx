@@ -9,6 +9,9 @@ const Header = () => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Debug: Log language in Header
+  console.log('🔍 Header: Current language:', language, 'isRTL:', isRTL, 'localStorage:', localStorage.getItem('preferred-language'));
+
   const content = {
     en: {
       phone: '0573600158',
