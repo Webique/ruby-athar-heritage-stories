@@ -22,9 +22,11 @@ Click on your service and go to "Variables" tab:
 ```bash
 PORT=5001
 NODE_ENV=production
-MONGODB_URI=mongodb+srv://rubyuser:rubypassword@rubyathar.gz7ym8s.mongodb.net/ruby-heritage?retryWrites=true&w=majority&appName=RubyAthar
+MONGODB_URI=mongodb+srv://username:password@your-cluster.mongodb.net/your-database?retryWrites=true&w=majority
+ADMIN_USERNAME=your-admin-username
+ADMIN_PASSWORD=your-admin-password
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
-CORS_ORIGIN=https://rubyathar.netlify.app
+CORS_ORIGIN=https://your-frontend-domain.netlify.app
 ```
 
 ### 5. Deploy

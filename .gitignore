@@ -22,3 +22,21 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment variables and sensitive files
+.env
+.env.local
+.env.production
+.env.development
+*.env
+railway-backend/.env
+railway-backend/env.local
+railway-backend/env.production
+
+# Credentials and secrets
+**/credentials.json
+**/secrets.json
+**/*.key
+**/*.pem
+**/*.p12
+**/*.pfx

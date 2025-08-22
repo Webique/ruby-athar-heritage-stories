@@ -116,7 +116,7 @@ CORS_ORIGIN=https://your-frontend.netlify.app
 
 - **Frontend**: [Your Netlify URL]
 - **Admin Panel**: [Your Netlify URL]/admin/login
-- **Credentials**: rubyuser / rubypassword
+- **Credentials**: Set via environment variables (see .env.example)
 
 ## 🤝 Contributing
 

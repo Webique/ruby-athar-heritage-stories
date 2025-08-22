@@ -129,7 +129,7 @@ app.post('/api/auth/login', async (req, res) => {
   try {
     const { username, password } = req.body;
     
-    if (username === 'rubyuser' && password === 'rubypassword') {
+    if (username === process.env.ADMIN_USERNAME || 'rubyuser' && password === process.env.ADMIN_PASSWORD || 'rubypassword') {
       const token = jwt.sign(
         { username, role: 'admin' },
         process.env.JWT_SECRET || 'your-secret-key',
