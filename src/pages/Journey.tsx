@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LanguageProvider, useLanguage } from '@/contexts/LanguageContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -1776,13 +1776,11 @@ const JourneyContent = () => {
 
 const Journey = () => {
   return (
-    <LanguageProvider>
-      <div className="min-h-screen pt-24 md:pt-28">
-        <Header />
-        <JourneyContent />
-        <Footer />
-      </div>
-    </LanguageProvider>
+    <div className="min-h-screen pt-24 md:pt-28">
+      <Header />
+      <JourneyContent />
+      <Footer />
+    </div>
   );
 };
 

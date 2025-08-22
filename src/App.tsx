@@ -18,30 +18,16 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={
-            <LanguageProvider>
-              <Index />
-            </LanguageProvider>
-          } />
-          <Route path="/journey" element={
-            <LanguageProvider>
-              <Journey />
-            </LanguageProvider>
-          } />
-          <Route path="/admin/login" element={
-            <LanguageProvider>
-              <AdminLogin />
-            </LanguageProvider>
-          } />
-          <Route path="/admin/dashboard" element={
-            <LanguageProvider>
-              <AdminDashboard />
-            </LanguageProvider>
-          } />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <LanguageProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/journey" element={<Journey />} />
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </LanguageProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
