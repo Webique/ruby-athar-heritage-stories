@@ -33,6 +33,9 @@ const Header = () => {
     { path: '/journey', label: content[language].nav.trips }
   ];
 
+  // Flip navigation items order for RTL
+  const displayNavItems = isRTL ? [...navItems].reverse() : navItems;
+
   return (
     <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border shadow-elegant">
       <div className="container mx-auto px-6 py-4">
@@ -48,7 +51,7 @@ const Header = () => {
 
           {/* Navigation Menu - Center */}
           <nav className={`hidden md:flex items-center gap-6 order-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            {navItems.map((item) => (
+            {displayNavItems.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
@@ -112,7 +115,7 @@ const Header = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pt-4 border-t border-border bg-background/95 backdrop-blur-sm rounded-lg shadow-lg">
             <nav className="flex flex-col gap-3 px-4 py-4">
-              {navItems.map((item) => (
+              {displayNavItems.map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
