@@ -117,7 +117,10 @@ const AdminDashboard = () => {
       totalPrice: "Total Price",
       notes: "Notes",
       // Status filter
-      showAll: "Show All"
+      showAll: "Show All",
+      // WhatsApp and Receipt
+      goToWhatsApp: "Go to WhatsApp",
+      downloadReceipt: "Download Receipt"
     },
     ar: {
       title: "لوحة الإدارة",
@@ -180,7 +183,10 @@ const AdminDashboard = () => {
       totalPrice: "السعر الإجمالي",
       notes: "ملاحظات",
       // Status filter
-      showAll: "عرض الكل"
+      showAll: "عرض الكل",
+      // WhatsApp and Receipt
+      goToWhatsApp: "اذهب إلى واتساب",
+      downloadReceipt: "تحميل الإيصال"
     }
   };
 
@@ -392,6 +398,61 @@ const AdminDashboard = () => {
       ...filters,
       status: status
     });
+  };
+
+  const handleWhatsApp = (phone: string, name: string) => {
+    const message = `Hello ${name}, thank you for your booking request. We will discuss the details and pricing.`;
+    const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  const handleDownloadReceipt = (booking: any) => {
+    // Create receipt content
+    const receiptContent = `
+      RUBY ATHAR HERITAGE STORIES
+      =============================
+      
+      CONFIRMED BOOKING RECEIPT
+      =============================
+      
+      Customer Information:
+      --------------------
+      Name: ${booking.name}
+      Email: ${booking.email}
+      Phone: ${booking.phone}
+      ${booking.age ? `Age: ${booking.age}` : ''}
+      
+      Booking Details:
+      ----------------
+      Trip Title: ${booking.tripTitle}
+      Package: ${booking.packageName}
+      Trip Date: ${new Date(booking.date).toLocaleDateString()}
+      Participants: ${booking.participants}
+      Language: ${booking.language}
+      ${booking.totalPrice ? `Total Price: ${booking.totalPrice} ${booking.language === 'en' ? 'SAR' : 'ريال'}` : ''}
+      
+      ${booking.addOns && booking.addOns.length > 0 ? `
+      Add-ons:
+      --------
+      ${booking.addOns.join(', ')}
+      ` : ''}
+      
+      Status: CONFIRMED
+      Confirmed Date: ${new Date().toLocaleDateString()}
+      
+      =============================
+      Thank you for choosing Ruby Athar Heritage Stories!
+      =============================
+    `;
+    
+    // Create and download file
+    const blob = new Blob([receiptContent], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `receipt-${booking.name}-${new Date().toISOString().split('T')[0]}.txt`;
+    a.click();
+    window.URL.revokeObjectURL(url);
   };
 
   const exportData = () => {
@@ -917,6 +978,20 @@ const AdminDashboard = () => {
 
                         {/* Actions */}
                         <div className="flex flex-wrap gap-2 pt-2">
+                          {/* WhatsApp Button for Pending Bookings */}
+                          {booking.status === 'pending' && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleWhatsApp(booking.phone, booking.name)}
+                              className="bg-green-50 border-green-200 text-green-700 hover:bg-green-100 flex-1 sm:flex-none"
+                            >
+                              <MessageSquare className="h-4 w-4 mr-1" />
+                              {content[language].goToWhatsApp}
+                            </Button>
+                          )}
+                          
+                          {/* Status Update Buttons for Pending Bookings */}
                           {booking.status === 'pending' && (
                             <>
                               <Button
@@ -936,6 +1011,20 @@ const AdminDashboard = () => {
                               </Button>
                             </>
                           )}
+                          
+                          {/* Download Receipt Button for Confirmed Bookings */}
+                          {booking.status === 'confirmed' && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleDownloadReceipt(booking)}
+                              className="bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100 flex-1 sm:flex-none"
+                            >
+                                                           <Download className="h-4 w-4 mr-1" />
+                             {content[language].downloadReceipt}
+                           </Button>
+                          )}
+                          
                           <Button
                             size="sm"
                             variant="outline"

@@ -198,7 +198,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
       addOns: 'Add-Ons (Optional)',
       submit: 'Submit Booking',
       confirmation: 'Booking Submitted!',
-      confirmationMessage: 'Thank you for your booking request. We will contact you soon to confirm your journey details.',
+      confirmationMessage: 'Thank you for your booking request. We will contact you via WhatsApp shortly.',
       close: 'Close'
     },
     ar: {
@@ -213,7 +213,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
       addOns: 'إضافات اختيارية',
       submit: 'إرسال الحجز',
       confirmation: 'تم إرسال الحجز!',
-      confirmationMessage: 'شكراً لك على طلب الحجز. سنتواصل معك قريباً لتأكيد تفاصيل رحلتك.',
+      confirmationMessage: 'شكراً لك على طلب الحجز. سنتواصل معك عبر واتساب قريباً.',
       close: 'إغلاق'
     }
   };
