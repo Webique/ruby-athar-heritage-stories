@@ -14,7 +14,7 @@ const Header = () => {
 
   const content = {
     en: {
-      phone: '0573600158',
+      phone: '+966 57 360 0158',
       toggleText: 'العربية',
       nav: {
         home: 'Home',
@@ -22,7 +22,7 @@ const Header = () => {
       }
     },
     ar: {
-      phone: '0573600158',
+      phone: '+966 57 360 0158',
       toggleText: 'English',
       nav: {
         home: 'الرئيسية',
@@ -75,7 +75,7 @@ const Header = () => {
           <div className={`flex items-center gap-2 order-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Phone className={`h-4 w-4 text-primary ${isRTL ? 'ml-2' : 'mr-2'}`} />
             <a 
-              href={`tel:${content[language].phone}`}
+              href={`tel:+966573600158`}
               className={`text-xs sm:text-body font-medium hover:text-primary transition-colors ${isRTL ? 'font-arabic' : ''}`}
               dir="ltr"
             >
