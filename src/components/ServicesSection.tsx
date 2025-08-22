@@ -69,7 +69,10 @@ const ServicesSection = () => {
   };
 
   const handleServiceClick = (tourPath: string) => {
-    navigate(tourPath);
+    // Navigate to the tour page with language parameter
+    const url = new URL(tourPath, window.location.origin);
+    url.searchParams.set('lang', language);
+    navigate(url.pathname + url.search + url.hash);
   };
 
   return (

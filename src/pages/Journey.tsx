@@ -698,7 +698,7 @@ const TripModal = ({ trip, isOpen, onClose, language, isRTL }) => {
 };
 
 const JourneyContent = () => {
-  const { language, isRTL } = useLanguage();
+  const { language, isRTL, setLanguage } = useLanguage();
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -706,8 +706,14 @@ const JourneyContent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
 
-  // Debug: Log language in JourneyContent
-  console.log('🔍 JourneyContent: Current language:', language, 'isRTL:', isRTL, 'localStorage:', localStorage.getItem('preferred-language'));
+  // Initialize language from URL parameter on mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const urlLang = urlParams.get('lang');
+    if (urlLang === 'en' || urlLang === 'ar') {
+      setLanguage(urlLang);
+    }
+  }, [location.search, setLanguage]);
 
   // Scroll to hash target with custom offsets per section
   useEffect(() => {
