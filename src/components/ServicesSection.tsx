@@ -52,7 +52,7 @@ const ServicesSection = () => {
           icon: BookOpen,
           title: "حكايات على الطريق",
           description: `جلسات سردية غامرة حيث تُحيا الحكايات القديمة والأساطير والأحداث التاريخية.`,
-          image: culturalAdventureImage,
+          image: storytellingImage,
           tourPath: "/journey#stories-on-the-road"
         },
         {
