@@ -12,14 +12,14 @@ const Footer = () => {
   const content = {
     en: {
       tagline: "Heritage Gems of Arabia",
-      phone: "0573600158",
+      phone: "+966 57 360 0158",
       email: "atharruby@outlook.com",
       copyright: "© 2024 Athar Ruby. All rights reserved.",
       developed: "Crafted with passion for Arabian heritage"
     },
     ar: {
       tagline: "جواهر التراث العربي",
-      phone: "0573600158",
+      phone: "+966 57 360 0158",
       email: "atharruby@outlook.com",
       copyright: "© 2024 أثر روبي. جميع الحقوق محفوظة.",
       developed: `صُنع بشغف للتراث العربي.
@@ -50,7 +50,7 @@ const Footer = () => {
               <div className={`flex items-center justify-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <Phone className="h-5 w-5 text-secondary" />
                 <a 
-                  href={`tel:${content[language].phone}`}
+                  href={`tel:+966573600158`}
                   className="hover:text-secondary transition-colors"
                   dir="ltr"
                 >
