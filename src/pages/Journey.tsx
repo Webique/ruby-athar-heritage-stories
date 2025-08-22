@@ -703,6 +703,7 @@ const JourneyContent = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedTripForBooking, setSelectedTripForBooking] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
 
   // Debug: Log language in JourneyContent
@@ -738,8 +739,14 @@ const JourneyContent = () => {
   };
 
   const handleBookJourney = (trip) => {
+    setIsLoading(true);
     setSelectedTripForBooking(trip);
-    setIsBookingOpen(true);
+    
+    // Simulate a brief loading delay for smooth UX
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsBookingOpen(true);
+    }, 800);
   };
 
   const content = {
@@ -1772,6 +1779,25 @@ const JourneyContent = () => {
           language={language}
           isRTL={isRTL}
         />
+
+        {/* Loading Popup */}
+        {isLoading && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+            <div className="bg-background rounded-lg p-8 shadow-2xl border border-border max-w-sm mx-4">
+              <div className="text-center space-y-4">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                <div>
+                  <h3 className={`text-lg font-semibold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                    {language === 'en' ? 'Preparing Your Journey...' : 'نحضر رحلتك...'}
+                  </h3>
+                  <p className={`text-sm text-muted-foreground mt-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                    {language === 'en' ? 'Please wait while we set up your booking form' : 'يرجى الانتظار بينما نعد نموذج الحجز الخاص بك'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
