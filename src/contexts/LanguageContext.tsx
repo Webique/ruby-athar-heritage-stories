@@ -29,6 +29,28 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     return (savedLanguage as 'en' | 'ar') || 'en';
   });
 
+  // Sync language state with localStorage whenever it changes
+  React.useEffect(() => {
+    const savedLanguage = localStorage.getItem('preferred-language');
+    if (savedLanguage && savedLanguage !== language) {
+      console.log('🔍 LanguageContext: Syncing language state with localStorage:', savedLanguage);
+      setLanguage(savedLanguage as 'en' | 'ar');
+    }
+  }, [language]);
+
+  // Listen for localStorage changes from other tabs/contexts
+  React.useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'preferred-language' && e.newValue) {
+        console.log('🔍 LanguageContext: localStorage changed, updating language to:', e.newValue);
+        setLanguage(e.newValue as 'en' | 'ar');
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   const toggleLanguage = () => {
     console.log('🔍 LanguageContext: toggleLanguage called, current language:', language);
     setLanguage(prev => {
@@ -46,21 +68,14 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     localStorage.setItem('preferred-language', lang);
   };
 
-  // Always get the current language from localStorage to ensure consistency
-  const getCurrentLanguage = (): 'en' | 'ar' => {
-    const savedLanguage = localStorage.getItem('preferred-language');
-    console.log('🔍 LanguageContext: getCurrentLanguage called, returning:', savedLanguage);
-    return (savedLanguage as 'en' | 'ar') || 'en';
-  };
-
-  const isRTL = getCurrentLanguage() === 'ar';
+  const isRTL = language === 'ar';
 
   // Debug: Log current state
   console.log('🔍 LanguageContext: Current state - language:', language, 'isRTL:', isRTL, 'localStorage:', localStorage.getItem('preferred-language'));
 
   return (
     <LanguageContext.Provider value={{ 
-      language: getCurrentLanguage(), 
+      language, 
       toggleLanguage, 
       setLanguage: setLanguageDirectly, 
       isRTL 
