@@ -117,19 +117,19 @@ const Header = () => {
         {/* Mobile Navigation Drawer */}
         {isMobileMenuOpen && (
           <div className="md:hidden mt-4 pt-4 border-t border-border bg-background/95 backdrop-blur-sm rounded-lg shadow-lg">
-            <nav className={`flex flex-col gap-3 px-4 py-4 ${isRTL ? 'items-end' : 'items-start'}`}>
-              {displayNavItems.map((item) => (
+            <nav className="flex flex-col gap-3 px-4 py-4 items-center">
+              {(isRTL ? [...displayNavItems].reverse() : displayNavItems).map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className={`text-base font-medium transition-colors hover:text-primary py-2 px-3 rounded-md w-full ${
+                  className={`text-base font-medium transition-colors hover:text-primary py-2 px-3 rounded-md w-full text-center ${
                     location.pathname === item.path || 
                     (item.path === '/#about' && location.pathname === '/' && location.hash === '#about') ||
                     (item.path === '/#contact' && location.pathname === '/' && location.hash === '#contact')
                       ? 'text-primary bg-primary/10'
                       : 'text-muted-foreground hover:bg-muted/50'
-                  } ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}
+                  } ${isRTL ? 'font-arabic' : 'font-english'}`}
                 >
                   {item.label}
                 </Link>
