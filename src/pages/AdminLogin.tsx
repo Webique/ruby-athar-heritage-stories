@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,6 +19,15 @@ const AdminLogin = () => {
     username: '',
     password: ''
   });
+
+  // Check if user is already authenticated
+  useEffect(() => {
+    const token = localStorage.getItem('adminToken');
+    if (token) {
+      // User is already logged in, redirect to dashboard
+      navigate('/admin/dashboard');
+    }
+  }, [navigate]);
 
   const content = {
     en: {
