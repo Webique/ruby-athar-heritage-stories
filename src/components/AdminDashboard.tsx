@@ -21,6 +21,9 @@ const generateReceiptHTML = (booking: any) => {
     <head>
       <meta charset="UTF-8">
       <title>Booking Receipt</title>
+      <link rel="icon" type="image/png" href="/lovable-uploads/c7c366f7-aedb-4844-ae65-e0744224b58a.png">
+      <link rel="apple-touch-icon" href="/lovable-uploads/c7c366f7-aedb-4844-ae65-e0744224b58a.png">
+      <link rel="shortcut icon" href="/lovable-uploads/c7c366f7-aedb-4844-ae65-e0744224b58a.png">
       <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@300;400;500;600;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@300;400;500;600;700&display=swap');
