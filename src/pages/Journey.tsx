@@ -767,7 +767,6 @@ const JourneyContent = () => {
           duration: "2-3 Hours",
           groupSize: "5-15 People",
           rating: 4.7,
-          description: "A poetic journey through the heart of Wadi Hanifah, where enchanting nature meets the verses of Al-A'sha.",
           highlights: ["Poetic journey", "Nature exploration", "Cultural experience", "Writing activity"],
           price: "From 85 SAR",
           originalPrice: "120 SAR",
@@ -823,7 +822,6 @@ const JourneyContent = () => {
           duration: "4-5 Hours",
           groupSize: "5-20 People",
           rating: 4.8,
-          description: "Embark on a cultural, historical, and field adventure through Darb Al-Manjour, where nature meets legends and heritage.",
           highlights: ["Interactive activities", "Sunset viewpoint", "Abu Fanous legend", "Cultural insights"],
           price: "From 300 SAR",
           image: "/src/assets/gallery/marketplace.jpg",
@@ -885,7 +883,6 @@ const JourneyContent = () => {
           duration: "3-4 Hours",
           groupSize: "1-10 People",
           rating: 4.9,
-          description: "Discover the historic heart of Saudi Arabia with a cultural and historical adventure in Diriyah, the birthplace of the Saudi state.",
           highlights: ["Ancient mud-brick streets", "Historic palaces", "Heritage stories", "Leadership history"],
           price: "From 200 SAR",
           image: "/src/assets/gallery/desert-ruins.jpg",
@@ -939,7 +936,6 @@ const JourneyContent = () => {
           duration: "3-4 Hours",
           groupSize: "5-15 People",
           rating: 4.9,
-          description: "Explore the history and culture of Riyadh in a unique journey from Al-Masmak Fortress to Al-Zal Market.",
           highlights: ["Historical Riyadh", "Al-Masmak Fortress", "Al-Zal Market", "Cultural heritage"],
           price: "From 200 SAR",
           image: "/src/assets/gallery/trade-route.jpg",
@@ -986,7 +982,6 @@ const JourneyContent = () => {
           duration: "8-9 Hours",
           groupSize: "1-10 People",
           rating: 5.0,
-          description: "A day full of history and culture, exploring palaces, markets, and museums.",
           highlights: ["Al-Masmak Palace", "Al-Zal Market", "National Museum", "Al-Murabba", "Traditional Cuisine"],
           price: "From 450 SAR",
           image: "/src/assets/gallery/calligraphy.jpg",
@@ -1071,7 +1066,6 @@ const JourneyContent = () => {
           duration: "2-3 ساعات",
           groupSize: "5-15 شخص",
           rating: 4.7,
-          description: "رحلة شعرية في قلب وادي حنيفة، حيث تمتزج الطبيعة الساحرة مع قصائد الأعشى.",
           highlights: ["رحلة شعرية", "استكشاف الطبيعة", "تجربة ثقافية", "نشاط كتابي"],
           price: "ابتداءً من 85 ريال",
           originalPrice: "120 ريال",
@@ -1127,7 +1121,6 @@ const JourneyContent = () => {
           duration: "4-5 ساعات",
           groupSize: "5-20 شخص",
           rating: 4.8,
-          description: "انطلق في رحلة ثقافية وتاريخية ومغامرة ميدانية عبر درب المنجور، حيث الطبيعة تلتقي بالأساطير والتراث.",
           highlights: ["أنشطة تفاعلية", "نقطة الغروب", "أسطورة أبو فانوس", "رؤى ثقافية"],
           price: "ابتداءً من 300 ريال",
           image: "/src/assets/gallery/marketplace.jpg",
@@ -1189,7 +1182,6 @@ const JourneyContent = () => {
           duration: "3-4 ساعات",
           groupSize: "1-10 أشخاص",
           rating: 4.9,
-          description: "اكتشف قلب التاريخ في المملكة العربية السعودية مع مغامرة ثقافية وتاريخية في الدرعية، مسقط رأس الدولة السعودية.",
           highlights: ["شوارع طينية قديمة", "قصور تاريخية", "قصص التراث", "تاريخ القيادة"],
           price: "ابتداءً من 200 ريال",
           image: "/src/assets/gallery/desert-ruins.jpg",
@@ -1242,7 +1234,6 @@ const JourneyContent = () => {
           duration: "3-4 ساعات",
           groupSize: "5-15 شخص",
           rating: 4.9,
-          description: "استكشف تاريخ وثقافة الرياض في رحلة فريدة من قلعة المصمك إلى سوق الزل.",
           highlights: ["الرياض التاريخية", "قلعة المصمك", "سوق الزل", "التراث الثقافي"],
           price: "ابتداءً من 200 ريال",
           image: "/src/assets/gallery/trade-route.jpg",
@@ -1289,7 +1280,6 @@ const JourneyContent = () => {
           duration: "8-9 ساعات",
           groupSize: "1-10 أشخاص",
           rating: 5.0,
-          description: "يوم مليء بالتاريخ والثقافة، استكشف القصور والأسواق والمتاحف.",
           highlights: ["قصر المصمك", "سوق الزل", "المتحف الوطني", "حي المربع", "المأكولات التقليدية"],
           price: "ابتداءً من 450 ريال",
           image: "/src/assets/gallery/calligraphy.jpg",
@@ -1386,9 +1376,6 @@ const JourneyContent = () => {
               <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
                 {language === 'en' ? 'In the Footsteps of History' : 'على خطى التاريخ'}
               </h2>
-              <p className={`text-base sm:text-lg text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                {language === 'en' ? 'Discover the historical treasures of Saudi Arabia' : 'اكتشف كنوز المملكة العربية السعودية التاريخية'}
-              </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 justify-items-center">
