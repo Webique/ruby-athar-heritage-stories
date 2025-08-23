@@ -13,31 +13,194 @@ import {
   CalendarDays, UsersIcon, DollarSign, FileText, SortAsc, SortDesc,
   Trash2, AlertTriangle, Clock, CheckCircle, XCircle, LogOut, Calendar, MessageSquare
 } from 'lucide-react';
-// Import pdfmake with proper error handling
-let pdfMake: any;
-let pdfFonts: any;
-
-// Use dynamic imports for better compatibility
-const loadPdfMake = async () => {
-  try {
-    if (!pdfMake) {
-      const pdfMakeModule = await import('pdfmake/build/pdfmake');
-      const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
-      await import('pdfmake-unicode');
+// Simple HTML-to-PDF solution that handles Arabic text perfectly
+const generateReceiptHTML = (booking: any) => {
+  return `
+    <!DOCTYPE html>
+    <html dir="${booking.language === 'ar' ? 'rtl' : 'ltr'}">
+    <head>
+      <meta charset="UTF-8">
+      <title>Booking Receipt</title>
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@300;400;500;600;700&display=swap');
+        
+        body {
+          font-family: ${booking.language === 'ar' ? 'Noto Naskh Arabic, Amiri' : 'Arial, sans-serif'};
+          margin: 0;
+          padding: 40px;
+          background: white;
+          color: #333;
+          line-height: 1.6;
+        }
+        
+        .header {
+          text-align: center;
+          margin-bottom: 40px;
+          border-bottom: 3px solid #8B4513;
+          padding-bottom: 20px;
+        }
+        
+        .title {
+          font-size: 28px;
+          font-weight: bold;
+          color: #8B4513;
+          margin: 0 0 10px 0;
+        }
+        
+        .subtitle {
+          font-size: 20px;
+          color: #666;
+          margin: 0;
+        }
+        
+        .section {
+          margin-bottom: 30px;
+        }
+        
+        .section-title {
+          font-size: 18px;
+          font-weight: bold;
+          color: #8B4513;
+          margin-bottom: 15px;
+          border-bottom: 1px solid #8B4513;
+          padding-bottom: 5px;
+        }
+        
+        .row {
+          display: flex;
+          margin-bottom: 10px;
+          align-items: flex-start;
+        }
+        
+        .label {
+          font-weight: bold;
+          width: 120px;
+          color: #333;
+          flex-shrink: 0;
+        }
+        
+        .value {
+          flex: 1;
+          color: #333;
+        }
+        
+        .divider {
+          border-bottom: 1px solid #8B4513;
+          margin: 25px 0;
+        }
+        
+        .footer {
+          text-align: center;
+          margin-top: 40px;
+          color: #8B4513;
+          font-size: 14px;
+          border-top: 1px solid #8B4513;
+          padding-top: 20px;
+        }
+        
+        @media print {
+          body { margin: 0; }
+          .no-print { display: none; }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div class="title">RUBY ATHAR HERITAGE STORIES</div>
+        <div class="subtitle">CONFIRMED BOOKING RECEIPT</div>
+      </div>
       
-      pdfMake = pdfMakeModule.default;
-      pdfFonts = pdfFontsModule.default;
+      <div class="section">
+        <div class="section-title">Customer Information:</div>
+        <div class="row">
+          <div class="label">Name:</div>
+          <div class="value">${booking.name}</div>
+        </div>
+        <div class="row">
+          <div class="label">Email:</div>
+          <div class="value">${booking.email}</div>
+        </div>
+        <div class="row">
+          <div class="label">Phone:</div>
+          <div class="value">${booking.phone}</div>
+        </div>
+        ${booking.age ? `
+        <div class="row">
+          <div class="label">Age:</div>
+          <div class="value">${booking.age}</div>
+        </div>
+        ` : ''}
+      </div>
       
-      // Initialize fonts
-      if (pdfFonts && pdfFonts.pdfMake) {
-        pdfMake.vfs = pdfFonts.pdfMake.vfs;
-      }
-    }
-    return true;
-  } catch (error) {
-    console.error('Failed to load pdfmake:', error);
-    return false;
-  }
+      <div class="divider"></div>
+      
+      <div class="section">
+        <div class="section-title">Booking Details:</div>
+        <div class="row">
+          <div class="label">Trip Title:</div>
+          <div class="value">${booking.tripTitle}</div>
+        </div>
+        <div class="row">
+          <div class="label">Package:</div>
+          <div class="value">${booking.packageName}</div>
+        </div>
+        <div class="row">
+          <div class="label">Trip Date:</div>
+          <div class="value">${new Date(booking.date).toLocaleDateString()}</div>
+        </div>
+        <div class="row">
+          <div class="label">Participants:</div>
+          <div class="value">${booking.participants}</div>
+        </div>
+        <div class="row">
+          <div class="label">Language:</div>
+          <div class="value">${booking.language}</div>
+        </div>
+        ${booking.totalPrice ? `
+        <div class="row">
+          <div class="label">Total Price:</div>
+          <div class="value">${booking.totalPrice} SAR</div>
+        </div>
+        ` : ''}
+      </div>
+      
+      ${booking.addOns && booking.addOns.length > 0 ? `
+      <div class="divider"></div>
+      <div class="section">
+        <div class="section-title">Add-ons:</div>
+        <div class="value">${booking.addOns.join(', ')}</div>
+      </div>
+      ` : ''}
+      
+      <div class="divider"></div>
+      
+      <div class="section">
+        <div class="row">
+          <div class="label">Status:</div>
+          <div class="value">CONFIRMED</div>
+        </div>
+        <div class="row">
+          <div class="label">Confirmed Date:</div>
+          <div class="value">${new Date().toISOString().split('T')[0]}</div>
+        </div>
+      </div>
+      
+      <div class="footer">
+        Thank you for choosing Ruby Athar Heritage Stories!
+      </div>
+      
+      <div class="no-print" style="text-align: center; margin-top: 30px;">
+        <button onclick="window.print()" style="padding: 10px 20px; background: #8B4513; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+          Print Receipt
+        </button>
+        <button onclick="window.close()" style="padding: 10px 20px; background: #666; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; margin-left: 10px;">
+          Close
+        </button>
+      </div>
+    </body>
+    </html>
+  `;
 };
 
 interface FilterState {
@@ -432,213 +595,37 @@ const AdminDashboard = () => {
     window.open(whatsappUrl, '_blank');
   };
 
-  // Initialize pdfMake with fonts
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
 
   const handleDownloadReceipt = async (booking: any) => {
     try {
-      // Load pdfMake if not already loaded
-      const isLoaded = await loadPdfMake();
-      if (!isLoaded || !pdfMake) {
-        throw new Error('PDF generation library not loaded. Please refresh the page and try again.');
-      }
-
-      // Define the PDF document structure
-      const docDefinition = {
-        pageSize: 'A4',
-        pageMargins: [40, 60, 40, 60],
-        defaultStyle: {
-          font: 'Roboto',
-          fontSize: 10,
-        },
-        content: [
-          // Header
-          {
-            text: 'RUBY ATHAR HERITAGE STORIES',
-            style: 'header',
-            alignment: 'center',
-            margin: [0, 0, 0, 10]
-          },
-          {
-            text: 'CONFIRMED BOOKING RECEIPT',
-            style: 'subheader',
-            alignment: 'center',
-            margin: [0, 0, 0, 30]
-          },
-          
-          // Customer Information Section
-          {
-            text: 'Customer Information:',
-            style: 'sectionHeader',
-            margin: [0, 0, 0, 15]
-          },
-          {
-            columns: [
-              { text: 'Name:', width: 80, style: 'label' },
-              { text: booking.name, style: 'value' }
-            ],
-            margin: [0, 0, 0, 8]
-          },
-          {
-            columns: [
-              { text: 'Email:', width: 80, style: 'label' },
-              { text: booking.email, style: 'value' }
-            ],
-            margin: [0, 0, 0, 8]
-          },
-          {
-            columns: [
-              { text: 'Phone:', width: 80, style: 'label' },
-              { text: booking.phone, style: 'value' }
-            ],
-            margin: [0, 0, 0, 8]
-          },
-          ...(booking.age ? [{
-            columns: [
-              { text: 'Age:', width: 80, style: 'label' },
-              { text: booking.age.toString(), style: 'value' }
-            ],
-            margin: [0, 0, 0, 8]
-          }] : []),
-          
-          // Divider
-          { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#8B4513' }], margin: [0, 20, 0, 20] },
-          
-          // Booking Details Section
-          {
-            text: 'Booking Details:',
-            style: 'sectionHeader',
-            margin: [0, 0, 0, 15]
-          },
-          {
-            columns: [
-              { text: 'Trip Title:', width: 80, style: 'label' },
-              { text: booking.tripTitle, style: 'value' }
-            ],
-            margin: [0, 0, 0, 8]
-          },
-          {
-            columns: [
-              { text: 'Package:', width: 80, style: 'label' },
-              { text: booking.packageName, style: 'value' }
-            ],
-            margin: [0, 0, 0, 8]
-          },
-          {
-            columns: [
-              { text: 'Trip Date:', width: 80, style: 'label' },
-              { text: new Date(booking.date).toLocaleDateString(), style: 'value' }
-            ],
-            margin: [0, 0, 0, 8]
-          },
-          {
-            columns: [
-              { text: 'Participants:', width: 80, style: 'label' },
-              { text: booking.participants.toString(), style: 'value' }
-            ],
-            margin: [0, 0, 0, 8]
-          },
-          {
-            columns: [
-              { text: 'Language:', width: 80, style: 'label' },
-              { text: booking.language, style: 'value' }
-            ],
-            margin: [0, 0, 0, 8]
-          },
-          ...(booking.totalPrice ? [{
-            columns: [
-              { text: 'Total Price:', width: 80, style: 'label' },
-              { text: `${booking.totalPrice} SAR`, style: 'value' }
-            ],
-            margin: [0, 0, 0, 8]
-          }] : []),
-          
-          // Add-ons Section (if exists)
-          ...(booking.addOns && booking.addOns.length > 0 ? [
-            { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#8B4513' }], margin: [0, 20, 0, 20] },
-            {
-              text: 'Add-ons:',
-              style: 'sectionHeader',
-              margin: [0, 0, 0, 15]
-            },
-            {
-              text: booking.addOns.join(', '),
-              style: 'value',
-              margin: [0, 0, 0, 8]
-            }
-          ] : []),
-          
-          // Divider
-          { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#8B4513' }], margin: [0, 20, 0, 20] },
-          
-          // Status Section
-          {
-            columns: [
-              { text: 'Status:', width: 80, style: 'label' },
-              { text: 'CONFIRMED', style: 'value' }
-            ],
-            margin: [0, 0, 0, 8]
-          },
-          {
-            columns: [
-              { text: 'Confirmed Date:', width: 80, style: 'label' },
-              { text: new Date().toISOString().split('T')[0], style: 'value' }
-            ],
-            margin: [0, 0, 0, 8]
-          },
-          
-          // Footer
-          { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#8B4513' }], margin: [0, 30, 0, 20] },
-          {
-            text: 'Thank you for choosing Ruby Athar Heritage Stories!',
-            style: 'footer',
-            alignment: 'center'
-          }
-        ],
+      // Generate HTML receipt
+      const htmlContent = generateReceiptHTML(booking);
+      
+      // Create a new window with the receipt
+      const receiptWindow = window.open('', '_blank', 'width=800,height=600');
+      if (receiptWindow) {
+        receiptWindow.document.write(htmlContent);
+        receiptWindow.document.close();
         
-        // Styles
-        styles: {
-          header: {
-            fontSize: 24,
-            bold: true,
-            color: '#8B4513',
-            margin: [0, 0, 0, 5]
-          },
-          subheader: {
-            fontSize: 18,
-            color: '#666666',
-            margin: [0, 0, 0, 5]
-          },
-          sectionHeader: {
-            fontSize: 16,
-            bold: true,
-            color: '#8B4513',
-            margin: [0, 0, 0, 10]
-          },
-          label: {
-            fontSize: 12,
-            bold: true,
-            color: '#333333'
-          },
-          value: {
-            fontSize: 12,
-            color: '#333333'
-          },
-          footer: {
-            fontSize: 12,
-            color: '#8B4513'
-          }
-        }
-      };
-
-      // Generate and download PDF
-      pdfMake.createPdf(docDefinition).download(`receipt-${booking.name}-${new Date().toISOString().split('T')[0]}.pdf`);
+        // Focus the window
+        receiptWindow.focus();
+        
+        // Show success message
+        toast({
+          title: "Receipt Generated",
+          description: "Receipt opened in new window. Use the Print button to save as PDF.",
+          variant: "default",
+        });
+      } else {
+        throw new Error('Popup blocked. Please allow popups for this site.');
+      }
       
     } catch (error) {
-      console.error('Error generating PDF:', error);
+      console.error('Error generating receipt:', error);
       toast({
         title: "Error",
-        description: "Failed to generate PDF receipt",
+        description: error instanceof Error ? error.message : "Failed to generate receipt",
         variant: "destructive",
       });
     }
