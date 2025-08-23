@@ -411,15 +411,50 @@ const AdminDashboard = () => {
     // Create PDF document
     const doc = new jsPDF();
     
-    // Set font and colors
-    doc.setFont('helvetica');
-    doc.setFontSize(20);
+    // Helper function to handle Arabic text properly
+    const addText = (text: string, x: number, y: number, options?: any) => {
+      // Check if text contains Arabic characters
+      const hasArabic = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(text);
+      
+      if (hasArabic) {
+        // For Arabic text, we need to handle it differently
+        // Use a simple approach: convert to transliterated text for PDF compatibility
+        const transliteratedText = text
+          .replace(/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/g, (char) => {
+            // Basic Arabic to English transliteration for common characters
+            const arabicMap: { [key: string]: string } = {
+              'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th', 'ج': 'j', 'ح': 'h', 'خ': 'kh',
+              'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z', 'س': 's', 'ش': 'sh', 'ص': 's',
+              'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a', 'غ': 'gh', 'ف': 'f', 'ق': 'q',
+              'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n', 'ه': 'h', 'و': 'w', 'ي': 'y',
+              'ة': 'h', 'ى': 'a', 'ئ': 'a', 'ؤ': 'w', 'إ': 'i', 'أ': 'a', 'آ': 'aa',
+              'ء': 'a', 'َ': 'a', 'ُ': 'u', 'ِ': 'i', 'ّ': '', 'ْ': '', 'ً': 'an',
+              'ٌ': 'un', 'ٍ': 'in', 'ٰ': 'a', 'ٱ': 'a', '٠': '0', '١': '1', '٢': '2',
+              '٣': '3', '٤': '4', '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9'
+            };
+            return arabicMap[char] || char;
+          });
+        
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(options?.fontSize || 12);
+        doc.text(transliteratedText, x, y, options);
+      } else {
+        // For English text, use normal font
+        doc.setFont('helvetica', options?.fontWeight || 'normal');
+        doc.setFontSize(options?.fontSize || 12);
+        doc.text(text, x, y, options);
+      }
+    };
+    
+    // Set colors
     doc.setTextColor(139, 69, 19); // Brown color for brand
     
-    // Header
+    // Header - Always in English for consistency
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
     doc.text('RUBY ATHAR HERITAGE STORIES', 105, 20, { align: 'center' });
     
-    // Subtitle
+    // Subtitle - Always in English for consistency
     doc.setFontSize(16);
     doc.setTextColor(100, 100, 100);
     doc.text('CONFIRMED BOOKING RECEIPT', 105, 35, { align: 'center' });
@@ -435,13 +470,15 @@ const AdminDashboard = () => {
     doc.setFont('helvetica', 'bold');
     doc.text('Customer Information:', 20, 55);
     
-    doc.setFont('helvetica', 'normal');
     doc.setFontSize(12);
-    doc.text(`Name: ${booking.name}`, 20, 70);
-    doc.text(`Email: ${booking.email}`, 20, 80);
-    doc.text(`Phone: ${booking.phone}`, 20, 90);
+    doc.setTextColor(0, 0, 0);
+    
+    // Add customer details with proper Arabic support
+    addText(`Name: ${booking.name}`, 20, 70);
+    addText(`Email: ${booking.email}`, 20, 80);
+    addText(`Phone: ${booking.phone}`, 20, 90);
     if (booking.age) {
-      doc.text(`Age: ${booking.age}`, 20, 100);
+      addText(`Age: ${booking.age}`, 20, 100);
     }
     
     // Booking Details section
@@ -449,17 +486,19 @@ const AdminDashboard = () => {
     doc.setFontSize(14);
     doc.text('Booking Details:', 20, 120);
     
-    doc.setFont('helvetica', 'normal');
     doc.setFontSize(12);
-    doc.text(`Trip Title: ${booking.tripTitle}`, 20, 135);
-    doc.text(`Package: ${booking.packageName}`, 20, 145);
-    doc.text(`Trip Date: ${new Date(booking.date).toLocaleDateString()}`, 20, 155);
-    doc.text(`Participants: ${booking.participants}`, 20, 165);
-    doc.text(`Language: ${booking.language}`, 20, 175);
+    doc.setTextColor(0, 0, 0);
+    
+    // Add booking details with proper Arabic support
+    addText(`Trip Title: ${booking.tripTitle}`, 20, 135);
+    addText(`Package: ${booking.packageName}`, 20, 145);
+    addText(`Trip Date: ${new Date(booking.date).toLocaleDateString()}`, 20, 155);
+    addText(`Participants: ${booking.participants}`, 20, 165);
+    addText(`Language: ${booking.language}`, 20, 175);
     
     if (booking.totalPrice) {
-      const currency = booking.language === 'en' ? 'SAR' : 'ريال';
-      doc.text(`Total Price: ${booking.totalPrice} ${currency}`, 20, 185);
+      const currency = booking.language === 'en' ? 'SAR' : 'SAR';
+      addText(`Total Price: ${booking.totalPrice} ${currency}`, 20, 185);
     }
     
     // Add-ons section
@@ -468,9 +507,9 @@ const AdminDashboard = () => {
       doc.setFontSize(14);
       doc.text('Add-ons:', 20, 205);
       
-      doc.setFont('helvetica', 'normal');
       doc.setFontSize(12);
-      doc.text(booking.addOns.join(', '), 20, 220);
+      doc.setTextColor(0, 0, 0);
+      addText(booking.addOns.join(', '), 20, 220);
     }
     
     // Status section
@@ -483,7 +522,7 @@ const AdminDashboard = () => {
     doc.setDrawColor(139, 69, 19);
     doc.line(20, 265, 190, 265);
     
-    // Footer text
+    // Footer text - Always in English for consistency
     doc.setFontSize(12);
     doc.setTextColor(139, 69, 19);
     doc.text('Thank you for choosing Ruby Athar Heritage Stories!', 105, 275, { align: 'center' });

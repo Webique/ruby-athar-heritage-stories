@@ -1370,7 +1370,7 @@ const JourneyContent = () => {
 
         {/* Journey Cards */}
         <div className="space-y-12 max-w-7xl mx-auto">
-          {/* Section 1: على خطى التاريخ | In the Footsteps of History */}
+          {/* Section 1: على خطى التاريخ | In the Footsteps of History - UNIQUE_ID_1 */}
           <div className="space-y-6">
             <div className="text-center">
               <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
@@ -1380,7 +1380,7 @@ const JourneyContent = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 justify-items-center">
               {content[language].trips.filter(trip => [3, 4, 5].includes(trip.id)).map((trip) => (
-                <Card key={trip.id} className="card-premium animate-scale-in hover:shadow-glow transition-all duration-300">
+                <Card key={trip.id} className="card-premium animate-scale-in hover:shadow-glow transition-all duration-300 h-full flex flex-col">
                   <CardHeader className="pb-3 md:pb-4 px-4 md:px-6">
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                       <div className="flex-1">
@@ -1418,9 +1418,9 @@ const JourneyContent = () => {
                     </div>
                   </CardHeader>
                   
-                  <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
+                  <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6 flex-1 flex flex-col">
                     <p className={`text-sm sm:text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                      {trip.description}
+                      {trip.fullDescription}
                     </p>
                     
                     <div className="space-y-2">
@@ -1437,7 +1437,7 @@ const JourneyContent = () => {
                       </div>
                     </div>
                     
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 md:pt-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 md:pt-4 mt-auto">
                       <div className="text-center sm:text-left">
                         {/* Sale Badge */}
                         {trip.isOnSale && (
@@ -1496,20 +1496,17 @@ const JourneyContent = () => {
             </div>
           </div>
 
-          {/* Section 2: حكايات على الطريق | Stories on the Road */}
+          {/* Section 2: حكايات على الطريق | Stories on the Road - UNIQUE_ID_2 */}
           <div className="space-y-6" id="stories-on-the-road">
             <div className="text-center">
               <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
                 {language === 'en' ? 'Stories on the Road' : 'حكايات على الطريق'}
               </h2>
-              <p className={`text-base sm:text-lg text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                {language === 'en' ? 'Poetic journeys through nature and heritage' : 'رحلات شعرية عبر الطبيعة والتراث'}
-              </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 justify-items-center">
               {content[language].trips.filter(trip => [1].includes(trip.id)).map((trip) => (
-                <Card key={trip.id} className="card-premium animate-scale-in hover:shadow-glow transition-all duration-300">
+                <Card key={trip.id} className="card-premium animate-scale-in hover:shadow-glow transition-all duration-300 h-full flex flex-col">
                   <CardHeader className="pb-3 md:pb-4 px-4 md:px-6">
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                       <div className="flex-1">
@@ -1547,9 +1544,9 @@ const JourneyContent = () => {
                     </div>
                   </CardHeader>
                   
-                  <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
+                  <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6 flex-1 flex flex-col">
                     <p className={`text-sm sm:text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                      {trip.description}
+                      {trip.fullDescription}
                     </p>
                     
                     <div className="space-y-2">
@@ -1566,7 +1563,7 @@ const JourneyContent = () => {
                       </div>
                     </div>
                     
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 md:pt-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 md:pt-4 mt-auto">
                       <div className="text-center sm:text-left">
                         {/* Sale Badge */}
                         {trip.isOnSale && (
@@ -1625,20 +1622,17 @@ const JourneyContent = () => {
             </div>
           </div>
 
-          {/* Section 3: مغامرات بروح ثقافية | Cultural Spirit Adventures */}
+          {/* Section 3: مغامرات بروح ثقافية | Cultural Spirit Adventures - UNIQUE_ID_3 */}
           <div className="space-y-6" id="cultural-spirit-adventures">
             <div className="text-center">
               <h2 className={`text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-2 ${isRTL ? 'font-arabic' : 'font-english'}`}>
                 {language === 'en' ? 'Cultural Spirit Adventures' : 'مغامرات بروح ثقافية'}
               </h2>
-              <p className={`text-base sm:text-lg text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                {language === 'en' ? 'Adventure experiences with cultural heritage' : 'تجارب مغامرة مع التراث الثقافي'}
-              </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 justify-items-center">
               {content[language].trips.filter(trip => [2].includes(trip.id)).map((trip) => (
-                <Card key={trip.id} className="card-premium animate-scale-in hover:shadow-glow transition-all duration-300">
+                <Card key={trip.id} className="card-premium animate-scale-in hover:shadow-glow transition-all duration-300 h-full flex flex-col">
                   <CardHeader className="pb-3 md:pb-4 px-4 md:px-6">
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                       <div className="flex-1">
@@ -1676,9 +1670,9 @@ const JourneyContent = () => {
                     </div>
                   </CardHeader>
                   
-                  <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
+                  <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6 flex-1 flex flex-col">
                     <p className={`text-sm sm:text-body text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                      {trip.description}
+                      {trip.fullDescription}
                     </p>
                     
                     <div className="space-y-2">
@@ -1695,7 +1689,7 @@ const JourneyContent = () => {
                       </div>
                     </div>
                     
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 md:pt-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 md:pt-4 mt-auto">
                       <div className="text-center sm:text-left">
                         {/* Sale Badge */}
                         {trip.isOnSale && (
