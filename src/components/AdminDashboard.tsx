@@ -13,9 +13,32 @@ import {
   CalendarDays, UsersIcon, DollarSign, FileText, SortAsc, SortDesc,
   Trash2, AlertTriangle, Clock, CheckCircle, XCircle, LogOut, Calendar, MessageSquare
 } from 'lucide-react';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-import 'pdfmake-unicode';
+// Import pdfmake with proper error handling
+let pdfMake: any;
+let pdfFonts: any;
+
+// Use dynamic imports for better compatibility
+const loadPdfMake = async () => {
+  try {
+    if (!pdfMake) {
+      const pdfMakeModule = await import('pdfmake/build/pdfmake');
+      const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
+      await import('pdfmake-unicode');
+      
+      pdfMake = pdfMakeModule.default;
+      pdfFonts = pdfFontsModule.default;
+      
+      // Initialize fonts
+      if (pdfFonts && pdfFonts.pdfMake) {
+        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+      }
+    }
+    return true;
+  } catch (error) {
+    console.error('Failed to load pdfmake:', error);
+    return false;
+  }
+};
 
 interface FilterState {
   search: string;
@@ -414,6 +437,12 @@ const AdminDashboard = () => {
 
   const handleDownloadReceipt = async (booking: any) => {
     try {
+      // Load pdfMake if not already loaded
+      const isLoaded = await loadPdfMake();
+      if (!isLoaded || !pdfMake) {
+        throw new Error('PDF generation library not loaded. Please refresh the page and try again.');
+      }
+
       // Define the PDF document structure
       const docDefinition = {
         pageSize: 'A4',
