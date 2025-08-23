@@ -13,7 +13,7 @@ import {
   CalendarDays, UsersIcon, DollarSign, FileText, SortAsc, SortDesc,
   Trash2, AlertTriangle, Clock, CheckCircle, XCircle, LogOut, Calendar, MessageSquare
 } from 'lucide-react';
-import jsPDF from 'jspdf';
+import { Document, Page, Text, View, StyleSheet, pdf } from '@react-pdf/renderer';
 
 interface FilterState {
   search: string;
@@ -407,148 +407,210 @@ const AdminDashboard = () => {
     window.open(whatsappUrl, '_blank');
   };
 
-  const handleDownloadReceipt = (booking: any) => {
-    // Create PDF document
-    const doc = new jsPDF();
-    
-    // Helper function to handle Arabic text with proper RTL support
-    const addText = (text: string, x: number, y: number, options?: any) => {
-      // Check if text contains Arabic characters
-      const hasArabic = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(text);
+  // PDF Styles
+  const pdfStyles = StyleSheet.create({
+    page: {
+      padding: 30,
+      backgroundColor: '#ffffff',
+      fontFamily: 'Helvetica',
+    },
+    header: {
+      textAlign: 'center',
+      marginBottom: 20,
+      color: '#8B4513', // Brown color for brand
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      marginBottom: 5,
+    },
+    subtitle: {
+      fontSize: 18,
+      color: '#666666',
+      marginBottom: 20,
+    },
+    section: {
+      marginBottom: 20,
+    },
+    sectionTitle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginBottom: 10,
+      color: '#8B4513',
+    },
+    row: {
+      flexDirection: 'row',
+      marginBottom: 8,
+      alignItems: 'flex-start',
+    },
+    label: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      width: 120,
+      color: '#333333',
+    },
+    value: {
+      fontSize: 12,
+      flex: 1,
+      color: '#333333',
+      textAlign: 'left',
+    },
+    arabicValue: {
+      fontSize: 12,
+      flex: 1,
+      color: '#333333',
+      textAlign: 'right',
+      direction: 'rtl',
+    },
+    divider: {
+      borderBottomWidth: 1,
+      borderBottomColor: '#8B4513',
+      marginVertical: 15,
+    },
+    footer: {
+      textAlign: 'center',
+      marginTop: 20,
+      color: '#8B4513',
+      fontSize: 12,
+    },
+  });
+
+  // PDF Document Component
+  const ReceiptPDF = ({ booking }: { booking: any }) => (
+    <Document>
+      <Page size="A4" style={pdfStyles.page}>
+        {/* Header */}
+        <View style={pdfStyles.header}>
+          <Text style={pdfStyles.title}>RUBY ATHAR HERITAGE STORIES</Text>
+          <Text style={pdfStyles.subtitle}>CONFIRMED BOOKING RECEIPT</Text>
+        </View>
+
+        {/* Customer Information */}
+        <View style={pdfStyles.section}>
+          <Text style={pdfStyles.sectionTitle}>Customer Information:</Text>
+          
+          <View style={pdfStyles.row}>
+            <Text style={pdfStyles.label}>Name:</Text>
+            <Text style={pdfStyles.value}>{booking.name}</Text>
+          </View>
+          
+          <View style={pdfStyles.row}>
+            <Text style={pdfStyles.label}>Email:</Text>
+            <Text style={pdfStyles.value}>{booking.email}</Text>
+          </View>
+          
+          <View style={pdfStyles.row}>
+            <Text style={pdfStyles.label}>Phone:</Text>
+            <Text style={pdfStyles.value}>{booking.phone}</Text>
+          </View>
+          
+          {booking.age && (
+            <View style={pdfStyles.row}>
+              <Text style={pdfStyles.label}>Age:</Text>
+              <Text style={pdfStyles.value}>{booking.age}</Text>
+            </View>
+          )}
+        </View>
+
+        <View style={pdfStyles.divider} />
+
+        {/* Booking Details */}
+        <View style={pdfStyles.section}>
+          <Text style={pdfStyles.sectionTitle}>Booking Details:</Text>
+          
+          <View style={pdfStyles.row}>
+            <Text style={pdfStyles.label}>Trip Title:</Text>
+            <Text style={pdfStyles.value}>{booking.tripTitle}</Text>
+          </View>
+          
+          <View style={pdfStyles.row}>
+            <Text style={pdfStyles.label}>Package:</Text>
+            <Text style={pdfStyles.value}>{booking.packageName}</Text>
+          </View>
+          
+          <View style={pdfStyles.row}>
+            <Text style={pdfStyles.label}>Trip Date:</Text>
+            <Text style={pdfStyles.value}>{new Date(booking.date).toLocaleDateString()}</Text>
+          </View>
+          
+          <View style={pdfStyles.row}>
+            <Text style={pdfStyles.label}>Participants:</Text>
+            <Text style={pdfStyles.value}>{booking.participants}</Text>
+          </View>
+          
+          <View style={pdfStyles.row}>
+            <Text style={pdfStyles.label}>Language:</Text>
+            <Text style={pdfStyles.value}>{booking.language}</Text>
+          </View>
+          
+          {booking.totalPrice && (
+            <View style={pdfStyles.row}>
+              <Text style={pdfStyles.label}>Total Price:</Text>
+              <Text style={pdfStyles.value}>{booking.totalPrice} SAR</Text>
+            </View>
+          )}
+        </View>
+
+        {/* Add-ons */}
+        {booking.addOns && booking.addOns.length > 0 && (
+          <>
+            <View style={pdfStyles.divider} />
+            <View style={pdfStyles.section}>
+              <Text style={pdfStyles.sectionTitle}>Add-ons:</Text>
+              <Text style={pdfStyles.value}>{booking.addOns.join(', ')}</Text>
+            </View>
+          </>
+        )}
+
+        <View style={pdfStyles.divider} />
+
+        {/* Status */}
+        <View style={pdfStyles.section}>
+          <View style={pdfStyles.row}>
+            <Text style={pdfStyles.label}>Status:</Text>
+            <Text style={pdfStyles.value}>CONFIRMED</Text>
+          </View>
+          
+          <View style={pdfStyles.row}>
+            <Text style={pdfStyles.label}>Confirmed Date:</Text>
+            <Text style={pdfStyles.value}>{new Date().toISOString().split('T')[0]}</Text>
+          </View>
+        </View>
+
+        {/* Footer */}
+        <View style={pdfStyles.footer}>
+          <Text>Thank you for choosing Ruby Athar Heritage Stories!</Text>
+        </View>
+      </Page>
+    </Document>
+  );
+
+  const handleDownloadReceipt = async (booking: any) => {
+    try {
+      // Generate PDF blob
+      const blob = await pdf(<ReceiptPDF booking={booking} />).toBlob();
       
-      if (hasArabic) {
-        // For Arabic text, use proper RTL handling
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(options?.fontSize || 12);
-        
-        // Split text into words and reverse them for RTL display
-        const words = text.split(' ');
-        const reversedWords = words.reverse();
-        const arabicText = reversedWords.join(' ');
-        
-        // Calculate text width to position it properly for RTL
-        const textWidth = doc.getTextWidth(arabicText);
-        const adjustedX = x + textWidth;
-        
-        // Use RTL text rendering
-        doc.text(arabicText, adjustedX, y, { 
-          ...options,
-          align: 'right',
-          baseline: 'bottom'
-        });
-      } else {
-        // For English text, use normal font
-        doc.setFont('helvetica', options?.fontWeight || 'normal');
-        doc.setFontSize(options?.fontSize || 12);
-        doc.text(text, x, y, options);
-      }
-    };
-    
-    // Helper function to add Arabic text with better positioning
-    const addArabicText = (text: string, x: number, y: number, options?: any) => {
-      if (/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(text)) {
-        // For Arabic text, position from right to left
-        const textWidth = doc.getTextWidth(text);
-        const adjustedX = 190 - textWidth - 20; // Position from right margin
-        
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(options?.fontSize || 12);
-        doc.text(text, adjustedX, y, { 
-          ...options,
-          align: 'right'
-        });
-      } else {
-        // For English text, use normal positioning
-        doc.setFont('helvetica', options?.fontWeight || 'normal');
-        doc.setFontSize(options?.fontSize || 12);
-        doc.text(text, x, y, options);
-      }
-    };
-    
-    // Set colors
-    doc.setTextColor(139, 69, 19); // Brown color for brand
-    
-    // Header - Always in English for consistency
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(20);
-    doc.text('RUBY ATHAR HERITAGE STORIES', 105, 20, { align: 'center' });
-    
-    // Subtitle - Always in English for consistency
-    doc.setFontSize(16);
-    doc.setTextColor(100, 100, 100);
-    doc.text('CONFIRMED BOOKING RECEIPT', 105, 35, { align: 'center' });
-    
-    // Line separator
-    doc.setDrawColor(139, 69, 19);
-    doc.setLineWidth(0.5);
-    doc.line(20, 40, 190, 40);
-    
-    // Customer Information section
-    doc.setFontSize(14);
-    doc.setTextColor(0, 0, 0);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Customer Information:', 20, 55);
-    
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0);
-    
-    // Add customer details with proper Arabic support
-    addArabicText(`Name: ${booking.name}`, 20, 70);
-    addArabicText(`Email: ${booking.email}`, 20, 80);
-    addArabicText(`Phone: ${booking.phone}`, 20, 90);
-    if (booking.age) {
-      addArabicText(`Age: ${booking.age}`, 20, 100);
-    }
-    
-    // Booking Details section
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
-    doc.text('Booking Details:', 20, 120);
-    
-    doc.setFontSize(12);
-    doc.setTextColor(0, 0, 0);
-    
-    // Add booking details with proper Arabic support
-    addArabicText(`Trip Title: ${booking.tripTitle}`, 20, 135);
-    addArabicText(`Package: ${booking.packageName}`, 20, 145);
-    addArabicText(`Trip Date: ${new Date(booking.date).toLocaleDateString()}`, 20, 155);
-    addArabicText(`Participants: ${booking.participants}`, 20, 165);
-    addArabicText(`Language: ${booking.language}`, 20, 175);
-    
-    if (booking.totalPrice) {
-      const currency = booking.language === 'en' ? 'SAR' : 'SAR';
-      addArabicText(`Total Price: ${booking.totalPrice} ${currency}`, 20, 185);
-    }
-    
-    // Add-ons section
-    if (booking.addOns && booking.addOns.length > 0) {
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(14);
-      doc.text('Add-ons:', 20, 205);
+      // Create download link
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `receipt-${booking.name}-${new Date().toISOString().split('T')[0]}.pdf`;
       
-      doc.setFontSize(12);
-      doc.setTextColor(0, 0, 0);
-      addArabicText(booking.addOns.join(', '), 20, 220);
+      // Trigger download
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Cleanup
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      toast({
+        title: "Error",
+        description: "Failed to generate PDF receipt",
+        variant: "destructive",
+      });
     }
-    
-    // Status section
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
-    doc.text('Status: CONFIRMED', 20, 245);
-    doc.text(`Confirmed Date: ${new Date().toLocaleDateString()}`, 20, 255);
-    
-    // Footer line
-    doc.setDrawColor(139, 69, 19);
-    doc.line(20, 265, 190, 265);
-    
-    // Footer text - Always in English for consistency
-    doc.setFontSize(12);
-    doc.setTextColor(139, 69, 19);
-    doc.text('Thank you for choosing Ruby Athar Heritage Stories!', 105, 275, { align: 'center' });
-    
-    // Save PDF
-    const fileName = `receipt-${booking.name}-${new Date().toISOString().split('T')[0]}.pdf`;
-    doc.save(fileName);
   };
 
   const exportData = () => {
