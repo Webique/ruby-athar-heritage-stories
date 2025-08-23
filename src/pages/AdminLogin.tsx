@@ -22,7 +22,7 @@ const AdminLogin = () => {
 
   // Check if user is already authenticated
   useEffect(() => {
-    const token = localStorage.getItem('adminToken');
+    const token = localStorage.getItem('authToken');
     if (token) {
       // User is already logged in, redirect to dashboard
       navigate('/admin/dashboard');
@@ -96,8 +96,10 @@ const AdminLogin = () => {
           description: "Welcome to the admin panel!",
         });
 
-        // Redirect to admin dashboard
-        navigate('/admin/dashboard');
+        // Redirect to admin dashboard with a small delay to ensure token is stored
+        setTimeout(() => {
+          navigate('/admin/dashboard');
+        }, 100);
       } else {
         throw new Error(response.message);
       }

@@ -14,7 +14,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   useEffect(() => {
     const checkAuth = () => {
-      const token = localStorage.getItem('adminToken');
+      const token = localStorage.getItem('authToken');
       
       if (!token) {
         // No token found, redirect to login
@@ -29,7 +29,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
         setIsAuthenticated(true);
       } catch (error) {
         // Invalid token, remove it and redirect to login
-        localStorage.removeItem('adminToken');
+        localStorage.removeItem('authToken');
         navigate('/admin/login');
         return;
       } finally {
