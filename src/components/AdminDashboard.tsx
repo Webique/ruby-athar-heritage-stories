@@ -13,7 +13,9 @@ import {
   CalendarDays, UsersIcon, DollarSign, FileText, SortAsc, SortDesc,
   Trash2, AlertTriangle, Clock, CheckCircle, XCircle, LogOut, Calendar, MessageSquare
 } from 'lucide-react';
-import { Document, Page, Text, View, StyleSheet, pdf } from '@react-pdf/renderer';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import 'pdfmake-unicode';
 
 interface FilterState {
   search: string;
@@ -407,202 +409,202 @@ const AdminDashboard = () => {
     window.open(whatsappUrl, '_blank');
   };
 
-  // PDF Styles
-  const pdfStyles = StyleSheet.create({
-    page: {
-      padding: 30,
-      backgroundColor: '#ffffff',
-      fontFamily: 'Helvetica',
-    },
-    header: {
-      textAlign: 'center',
-      marginBottom: 20,
-      color: '#8B4513', // Brown color for brand
-    },
-    title: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      marginBottom: 5,
-    },
-    subtitle: {
-      fontSize: 18,
-      color: '#666666',
-      marginBottom: 20,
-    },
-    section: {
-      marginBottom: 20,
-    },
-    sectionTitle: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      marginBottom: 10,
-      color: '#8B4513',
-    },
-    row: {
-      flexDirection: 'row',
-      marginBottom: 8,
-      alignItems: 'flex-start',
-    },
-    label: {
-      fontSize: 12,
-      fontWeight: 'bold',
-      width: 120,
-      color: '#333333',
-    },
-    value: {
-      fontSize: 12,
-      flex: 1,
-      color: '#333333',
-      textAlign: 'left',
-    },
-    arabicValue: {
-      fontSize: 12,
-      flex: 1,
-      color: '#333333',
-      textAlign: 'right',
-      direction: 'rtl',
-    },
-    divider: {
-      borderBottomWidth: 1,
-      borderBottomColor: '#8B4513',
-      marginVertical: 15,
-    },
-    footer: {
-      textAlign: 'center',
-      marginTop: 20,
-      color: '#8B4513',
-      fontSize: 12,
-    },
-  });
-
-  // PDF Document Component
-  const ReceiptPDF = ({ booking }: { booking: any }) => (
-    <Document>
-      <Page size="A4" style={pdfStyles.page}>
-        {/* Header */}
-        <View style={pdfStyles.header}>
-          <Text style={pdfStyles.title}>RUBY ATHAR HERITAGE STORIES</Text>
-          <Text style={pdfStyles.subtitle}>CONFIRMED BOOKING RECEIPT</Text>
-        </View>
-
-        {/* Customer Information */}
-        <View style={pdfStyles.section}>
-          <Text style={pdfStyles.sectionTitle}>Customer Information:</Text>
-          
-          <View style={pdfStyles.row}>
-            <Text style={pdfStyles.label}>Name:</Text>
-            <Text style={pdfStyles.value}>{booking.name}</Text>
-          </View>
-          
-          <View style={pdfStyles.row}>
-            <Text style={pdfStyles.label}>Email:</Text>
-            <Text style={pdfStyles.value}>{booking.email}</Text>
-          </View>
-          
-          <View style={pdfStyles.row}>
-            <Text style={pdfStyles.label}>Phone:</Text>
-            <Text style={pdfStyles.value}>{booking.phone}</Text>
-          </View>
-          
-          {booking.age && (
-            <View style={pdfStyles.row}>
-              <Text style={pdfStyles.label}>Age:</Text>
-              <Text style={pdfStyles.value}>{booking.age}</Text>
-            </View>
-          )}
-        </View>
-
-        <View style={pdfStyles.divider} />
-
-        {/* Booking Details */}
-        <View style={pdfStyles.section}>
-          <Text style={pdfStyles.sectionTitle}>Booking Details:</Text>
-          
-          <View style={pdfStyles.row}>
-            <Text style={pdfStyles.label}>Trip Title:</Text>
-            <Text style={pdfStyles.value}>{booking.tripTitle}</Text>
-          </View>
-          
-          <View style={pdfStyles.row}>
-            <Text style={pdfStyles.label}>Package:</Text>
-            <Text style={pdfStyles.value}>{booking.packageName}</Text>
-          </View>
-          
-          <View style={pdfStyles.row}>
-            <Text style={pdfStyles.label}>Trip Date:</Text>
-            <Text style={pdfStyles.value}>{new Date(booking.date).toLocaleDateString()}</Text>
-          </View>
-          
-          <View style={pdfStyles.row}>
-            <Text style={pdfStyles.label}>Participants:</Text>
-            <Text style={pdfStyles.value}>{booking.participants}</Text>
-          </View>
-          
-          <View style={pdfStyles.row}>
-            <Text style={pdfStyles.label}>Language:</Text>
-            <Text style={pdfStyles.value}>{booking.language}</Text>
-          </View>
-          
-          {booking.totalPrice && (
-            <View style={pdfStyles.row}>
-              <Text style={pdfStyles.label}>Total Price:</Text>
-              <Text style={pdfStyles.value}>{booking.totalPrice} SAR</Text>
-            </View>
-          )}
-        </View>
-
-        {/* Add-ons */}
-        {booking.addOns && booking.addOns.length > 0 && (
-          <>
-            <View style={pdfStyles.divider} />
-            <View style={pdfStyles.section}>
-              <Text style={pdfStyles.sectionTitle}>Add-ons:</Text>
-              <Text style={pdfStyles.value}>{booking.addOns.join(', ')}</Text>
-            </View>
-          </>
-        )}
-
-        <View style={pdfStyles.divider} />
-
-        {/* Status */}
-        <View style={pdfStyles.section}>
-          <View style={pdfStyles.row}>
-            <Text style={pdfStyles.label}>Status:</Text>
-            <Text style={pdfStyles.value}>CONFIRMED</Text>
-          </View>
-          
-          <View style={pdfStyles.row}>
-            <Text style={pdfStyles.label}>Confirmed Date:</Text>
-            <Text style={pdfStyles.value}>{new Date().toISOString().split('T')[0]}</Text>
-          </View>
-        </View>
-
-        {/* Footer */}
-        <View style={pdfStyles.footer}>
-          <Text>Thank you for choosing Ruby Athar Heritage Stories!</Text>
-        </View>
-      </Page>
-    </Document>
-  );
+  // Initialize pdfMake with fonts
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
   const handleDownloadReceipt = async (booking: any) => {
     try {
-      // Generate PDF blob
-      const blob = await pdf(<ReceiptPDF booking={booking} />).toBlob();
+      // Define the PDF document structure
+      const docDefinition = {
+        pageSize: 'A4',
+        pageMargins: [40, 60, 40, 60],
+        defaultStyle: {
+          font: 'Roboto',
+          fontSize: 10,
+        },
+        content: [
+          // Header
+          {
+            text: 'RUBY ATHAR HERITAGE STORIES',
+            style: 'header',
+            alignment: 'center',
+            margin: [0, 0, 0, 10]
+          },
+          {
+            text: 'CONFIRMED BOOKING RECEIPT',
+            style: 'subheader',
+            alignment: 'center',
+            margin: [0, 0, 0, 30]
+          },
+          
+          // Customer Information Section
+          {
+            text: 'Customer Information:',
+            style: 'sectionHeader',
+            margin: [0, 0, 0, 15]
+          },
+          {
+            columns: [
+              { text: 'Name:', width: 80, style: 'label' },
+              { text: booking.name, style: 'value' }
+            ],
+            margin: [0, 0, 0, 8]
+          },
+          {
+            columns: [
+              { text: 'Email:', width: 80, style: 'label' },
+              { text: booking.email, style: 'value' }
+            ],
+            margin: [0, 0, 0, 8]
+          },
+          {
+            columns: [
+              { text: 'Phone:', width: 80, style: 'label' },
+              { text: booking.phone, style: 'value' }
+            ],
+            margin: [0, 0, 0, 8]
+          },
+          ...(booking.age ? [{
+            columns: [
+              { text: 'Age:', width: 80, style: 'label' },
+              { text: booking.age.toString(), style: 'value' }
+            ],
+            margin: [0, 0, 0, 8]
+          }] : []),
+          
+          // Divider
+          { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#8B4513' }], margin: [0, 20, 0, 20] },
+          
+          // Booking Details Section
+          {
+            text: 'Booking Details:',
+            style: 'sectionHeader',
+            margin: [0, 0, 0, 15]
+          },
+          {
+            columns: [
+              { text: 'Trip Title:', width: 80, style: 'label' },
+              { text: booking.tripTitle, style: 'value' }
+            ],
+            margin: [0, 0, 0, 8]
+          },
+          {
+            columns: [
+              { text: 'Package:', width: 80, style: 'label' },
+              { text: booking.packageName, style: 'value' }
+            ],
+            margin: [0, 0, 0, 8]
+          },
+          {
+            columns: [
+              { text: 'Trip Date:', width: 80, style: 'label' },
+              { text: new Date(booking.date).toLocaleDateString(), style: 'value' }
+            ],
+            margin: [0, 0, 0, 8]
+          },
+          {
+            columns: [
+              { text: 'Participants:', width: 80, style: 'label' },
+              { text: booking.participants.toString(), style: 'value' }
+            ],
+            margin: [0, 0, 0, 8]
+          },
+          {
+            columns: [
+              { text: 'Language:', width: 80, style: 'label' },
+              { text: booking.language, style: 'value' }
+            ],
+            margin: [0, 0, 0, 8]
+          },
+          ...(booking.totalPrice ? [{
+            columns: [
+              { text: 'Total Price:', width: 80, style: 'label' },
+              { text: `${booking.totalPrice} SAR`, style: 'value' }
+            ],
+            margin: [0, 0, 0, 8]
+          }] : []),
+          
+          // Add-ons Section (if exists)
+          ...(booking.addOns && booking.addOns.length > 0 ? [
+            { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#8B4513' }], margin: [0, 20, 0, 20] },
+            {
+              text: 'Add-ons:',
+              style: 'sectionHeader',
+              margin: [0, 0, 0, 15]
+            },
+            {
+              text: booking.addOns.join(', '),
+              style: 'value',
+              margin: [0, 0, 0, 8]
+            }
+          ] : []),
+          
+          // Divider
+          { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#8B4513' }], margin: [0, 20, 0, 20] },
+          
+          // Status Section
+          {
+            columns: [
+              { text: 'Status:', width: 80, style: 'label' },
+              { text: 'CONFIRMED', style: 'value' }
+            ],
+            margin: [0, 0, 0, 8]
+          },
+          {
+            columns: [
+              { text: 'Confirmed Date:', width: 80, style: 'label' },
+              { text: new Date().toISOString().split('T')[0], style: 'value' }
+            ],
+            margin: [0, 0, 0, 8]
+          },
+          
+          // Footer
+          { canvas: [{ type: 'line', x1: 0, y1: 0, x2: 515, y2: 0, lineWidth: 1, lineColor: '#8B4513' }], margin: [0, 30, 0, 20] },
+          {
+            text: 'Thank you for choosing Ruby Athar Heritage Stories!',
+            style: 'footer',
+            alignment: 'center'
+          }
+        ],
+        
+        // Styles
+        styles: {
+          header: {
+            fontSize: 24,
+            bold: true,
+            color: '#8B4513',
+            margin: [0, 0, 0, 5]
+          },
+          subheader: {
+            fontSize: 18,
+            color: '#666666',
+            margin: [0, 0, 0, 5]
+          },
+          sectionHeader: {
+            fontSize: 16,
+            bold: true,
+            color: '#8B4513',
+            margin: [0, 0, 0, 10]
+          },
+          label: {
+            fontSize: 12,
+            bold: true,
+            color: '#333333'
+          },
+          value: {
+            fontSize: 12,
+            color: '#333333'
+          },
+          footer: {
+            fontSize: 12,
+            color: '#8B4513'
+          }
+        }
+      };
+
+      // Generate and download PDF
+      pdfMake.createPdf(docDefinition).download(`receipt-${booking.name}-${new Date().toISOString().split('T')[0]}.pdf`);
       
-      // Create download link
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `receipt-${booking.name}-${new Date().toISOString().split('T')[0]}.pdf`;
-      
-      // Trigger download
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      // Cleanup
-      URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Error generating PDF:', error);
       toast({
