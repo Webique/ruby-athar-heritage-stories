@@ -594,8 +594,41 @@ const AdminDashboard = () => {
 
   const handleWhatsApp = (phone: string, name: string) => {
     const message = `Hello ${name}, thank you for your booking request. We will discuss the details and pricing.`;
-    const whatsappUrl = `https://wa.me/${phone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    
+    // Clean the phone number - remove all non-digits and ensure it starts with country code
+    let cleanPhone = phone.replace(/\D/g, '');
+    
+    // If the number doesn't start with a country code, assume it's Saudi (+966)
+    if (!cleanPhone.startsWith('966') && !cleanPhone.startsWith('+966')) {
+      // If it starts with 0, replace with 966, otherwise add 966
+      if (cleanPhone.startsWith('0')) {
+        cleanPhone = '966' + cleanPhone.substring(1);
+      } else {
+        cleanPhone = '966' + cleanPhone;
+      }
+    }
+    
+    // Remove any leading + if present
+    cleanPhone = cleanPhone.replace(/^\+/, '');
+    
+    // Debug logging
+    console.log('Original phone:', phone);
+    console.log('Cleaned phone:', cleanPhone);
+    
+    const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+    console.log('WhatsApp URL:', whatsappUrl);
+    
+    // Try alternative WhatsApp URL format if the first one doesn't work
+    const alternativeUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(message)}`;
+    console.log('Alternative URL:', alternativeUrl);
+    
+    // Try to open the alternative URL first, fallback to wa.me
+    try {
+      window.open(alternativeUrl, '_blank');
+    } catch (error) {
+      console.log('Alternative URL failed, trying wa.me');
+      window.open(whatsappUrl, '_blank');
+    }
   };
 
 
