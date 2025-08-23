@@ -411,35 +411,54 @@ const AdminDashboard = () => {
     // Create PDF document
     const doc = new jsPDF();
     
-    // Helper function to handle Arabic text properly
+    // Helper function to handle Arabic text with proper RTL support
     const addText = (text: string, x: number, y: number, options?: any) => {
       // Check if text contains Arabic characters
       const hasArabic = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(text);
       
       if (hasArabic) {
-        // For Arabic text, we need to handle it differently
-        // Use a simple approach: convert to transliterated text for PDF compatibility
-        const transliteratedText = text
-          .replace(/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/g, (char) => {
-            // Basic Arabic to English transliteration for common characters
-            const arabicMap: { [key: string]: string } = {
-              'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th', 'ج': 'j', 'ح': 'h', 'خ': 'kh',
-              'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z', 'س': 's', 'ش': 'sh', 'ص': 's',
-              'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a', 'غ': 'gh', 'ف': 'f', 'ق': 'q',
-              'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n', 'ه': 'h', 'و': 'w', 'ي': 'y',
-              'ة': 'h', 'ى': 'a', 'ئ': 'a', 'ؤ': 'w', 'إ': 'i', 'أ': 'a', 'آ': 'aa',
-              'ء': 'a', 'َ': 'a', 'ُ': 'u', 'ِ': 'i', 'ّ': '', 'ْ': '', 'ً': 'an',
-              'ٌ': 'un', 'ٍ': 'in', 'ٰ': 'a', 'ٱ': 'a', '٠': '0', '١': '1', '٢': '2',
-              '٣': '3', '٤': '4', '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9'
-            };
-            return arabicMap[char] || char;
-          });
+        // For Arabic text, use proper RTL handling
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(options?.fontSize || 12);
+        
+        // Split text into words and reverse them for RTL display
+        const words = text.split(' ');
+        const reversedWords = words.reverse();
+        const arabicText = reversedWords.join(' ');
+        
+        // Calculate text width to position it properly for RTL
+        const textWidth = doc.getTextWidth(arabicText);
+        const adjustedX = x + textWidth;
+        
+        // Use RTL text rendering
+        doc.text(arabicText, adjustedX, y, { 
+          ...options,
+          align: 'right',
+          baseline: 'bottom'
+        });
+      } else {
+        // For English text, use normal font
+        doc.setFont('helvetica', options?.fontWeight || 'normal');
+        doc.setFontSize(options?.fontSize || 12);
+        doc.text(text, x, y, options);
+      }
+    };
+    
+    // Helper function to add Arabic text with better positioning
+    const addArabicText = (text: string, x: number, y: number, options?: any) => {
+      if (/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]/.test(text)) {
+        // For Arabic text, position from right to left
+        const textWidth = doc.getTextWidth(text);
+        const adjustedX = 190 - textWidth - 20; // Position from right margin
         
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(options?.fontSize || 12);
-        doc.text(transliteratedText, x, y, options);
+        doc.text(text, adjustedX, y, { 
+          ...options,
+          align: 'right'
+        });
       } else {
-        // For English text, use normal font
+        // For English text, use normal positioning
         doc.setFont('helvetica', options?.fontWeight || 'normal');
         doc.setFontSize(options?.fontSize || 12);
         doc.text(text, x, y, options);
@@ -474,11 +493,11 @@ const AdminDashboard = () => {
     doc.setTextColor(0, 0, 0);
     
     // Add customer details with proper Arabic support
-    addText(`Name: ${booking.name}`, 20, 70);
-    addText(`Email: ${booking.email}`, 20, 80);
-    addText(`Phone: ${booking.phone}`, 20, 90);
+    addArabicText(`Name: ${booking.name}`, 20, 70);
+    addArabicText(`Email: ${booking.email}`, 20, 80);
+    addArabicText(`Phone: ${booking.phone}`, 20, 90);
     if (booking.age) {
-      addText(`Age: ${booking.age}`, 20, 100);
+      addArabicText(`Age: ${booking.age}`, 20, 100);
     }
     
     // Booking Details section
@@ -490,15 +509,15 @@ const AdminDashboard = () => {
     doc.setTextColor(0, 0, 0);
     
     // Add booking details with proper Arabic support
-    addText(`Trip Title: ${booking.tripTitle}`, 20, 135);
-    addText(`Package: ${booking.packageName}`, 20, 145);
-    addText(`Trip Date: ${new Date(booking.date).toLocaleDateString()}`, 20, 155);
-    addText(`Participants: ${booking.participants}`, 20, 165);
-    addText(`Language: ${booking.language}`, 20, 175);
+    addArabicText(`Trip Title: ${booking.tripTitle}`, 20, 135);
+    addArabicText(`Package: ${booking.packageName}`, 20, 145);
+    addArabicText(`Trip Date: ${new Date(booking.date).toLocaleDateString()}`, 20, 155);
+    addArabicText(`Participants: ${booking.participants}`, 20, 165);
+    addArabicText(`Language: ${booking.language}`, 20, 175);
     
     if (booking.totalPrice) {
       const currency = booking.language === 'en' ? 'SAR' : 'SAR';
-      addText(`Total Price: ${booking.totalPrice} ${currency}`, 20, 185);
+      addArabicText(`Total Price: ${booking.totalPrice} ${currency}`, 20, 185);
     }
     
     // Add-ons section
@@ -509,7 +528,7 @@ const AdminDashboard = () => {
       
       doc.setFontSize(12);
       doc.setTextColor(0, 0, 0);
-      addText(booking.addOns.join(', '), 20, 220);
+      addArabicText(booking.addOns.join(', '), 20, 220);
     }
     
     // Status section
