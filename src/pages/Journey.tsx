@@ -434,7 +434,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
                         className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
                       />
                       <Label htmlFor={`addon-${idx}`} className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                        {addon.name} (+{addon.price})
+                        {addon.name} {!isMealAddon(addon.name) && `(+${addon.price})`}
                         {addon.name.includes('VIP') || addon.name.includes('باقة VIP') && (
                           <span className="text-xs text-muted-foreground ml-1">
                             {language === 'en' ? '(replaces standard package)' : '(تحل محل الباقة القياسية)'}
@@ -443,7 +443,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
                       </Label>
                     </div>
                     {isMealAddon(addon.name) && (
-                      <p className={`text-xs text-orange-600 font-medium ml-6 ${isRTL ? 'font-arabic text-right mr-6 ml-0' : 'font-english'}`}>
+                      <p className={`text-xs text-orange-600 font-medium ${isRTL ? 'font-arabic text-right mr-6' : 'font-english ml-6'}`}>
                         {language === 'en' 
                           ? '* Not included in total price - pay when you receive the meal' 
                           : '* غير مشمول في السعر الإجمالي - ادفع عند تلقي الوجبة'
@@ -527,7 +527,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
                             </span>
                           </div>
                           {isMeal && (
-                            <p className={`text-xs text-orange-600 ${isRTL ? 'font-arabic text-right' : 'font-english'}`}>
+                            <p className={`text-xs text-orange-600 ${isRTL ? 'font-arabic text-right mr-2' : 'font-english ml-2'}`}>
                               {language === 'en' 
                                 ? 'Pay when you receive the meal' 
                                 : 'ادفع عند تلقي الوجبة'
