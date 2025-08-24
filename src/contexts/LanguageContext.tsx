@@ -21,122 +21,119 @@ interface LanguageProviderProps {
   children: ReactNode;
 }
 
+// Simple function to get language from URL
+const getLanguageFromURL = (): 'en' | 'ar' | null => {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const lang = urlParams.get('lang');
+    return lang === 'en' || lang === 'ar' ? lang : null;
+  } catch {
+    return null;
+  }
+};
+
+// Simple function to get language from storage
+const getLanguageFromStorage = (): 'en' | 'ar' | null => {
+  try {
+    const stored = localStorage.getItem('ruby-athar-language') || sessionStorage.getItem('ruby-athar-language');
+    return stored === 'en' || stored === 'ar' ? stored : null;
+  } catch {
+    return null;
+  }
+};
+
+// Simple function to save language to storage
+const saveLanguageToStorage = (lang: 'en' | 'ar') => {
+  try {
+    localStorage.setItem('ruby-athar-language', lang);
+    sessionStorage.setItem('ruby-athar-language', lang);
+  } catch (error) {
+    console.warn('Failed to save language to storage:', error);
+  }
+};
+
+// Simple function to update URL with language
+const updateURLWithLanguage = (lang: 'en' | 'ar') => {
+  try {
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', lang);
+    window.history.replaceState({}, '', url.toString());
+    console.log('URL updated to:', url.toString());
+  } catch (error) {
+    console.error('Failed to update URL:', error);
+  }
+};
+
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
-  // Initialize language state with a more robust approach
+  // Initialize language with simple priority: URL > Storage > Default
   const [language, setLanguageState] = useState<'en' | 'ar'>(() => {
-    // Try multiple storage methods for maximum compatibility
-    try {
-      // First try sessionStorage (more reliable for page navigation)
-      const sessionLang = sessionStorage.getItem('ruby-athar-language');
-      if (sessionLang === 'en' || sessionLang === 'ar') {
-        return sessionLang;
-      }
-      
-      // Fallback to localStorage
-      const localLang = localStorage.getItem('ruby-athar-language');
-      if (localLang === 'en' || localLang === 'ar') {
-        return localLang;
-      }
-      
-      // Check URL for language parameter
-      const urlParams = new URLSearchParams(window.location.search);
-      const urlLang = urlParams.get('lang');
-      if (urlLang === 'en' || urlLang === 'ar') {
-        return urlLang;
-      }
-      
-      // Check browser language
-      const browserLang = navigator.language.toLowerCase();
-      if (browserLang.startsWith('ar')) {
-        return 'ar';
-      }
-      
-      // Default to English
-      return 'en';
-    } catch (error) {
-      console.warn('Language detection failed, defaulting to English:', error);
-      return 'en';
+    const urlLang = getLanguageFromURL();
+    if (urlLang) {
+      console.log('Language from URL:', urlLang);
+      return urlLang;
     }
+    
+    const storedLang = getLanguageFromStorage();
+    if (storedLang) {
+      console.log('Language from storage:', storedLang);
+      return storedLang;
+    }
+    
+    console.log('Using default language: en');
+    return 'en';
   });
 
-  // Function to save language to both storages
-  const saveLanguage = (lang: 'en' | 'ar') => {
-    try {
-      sessionStorage.setItem('ruby-athar-language', lang);
-      localStorage.setItem('ruby-athar-language', lang);
-      
-      // Also update URL without page reload
-      const url = new URL(window.location.href);
-      url.searchParams.set('lang', lang);
-      window.history.replaceState({}, '', url.toString());
-    } catch (error) {
-      console.warn('Failed to save language preference:', error);
-    }
-  };
-
-  // Function to set language
-  const setLanguage = (lang: 'en' | 'ar') => {
-    setLanguageState(lang);
-    saveLanguage(lang);
-  };
-
-  // Function to toggle language
+  // Simple toggle function
   const toggleLanguage = () => {
     const newLang = language === 'en' ? 'ar' : 'en';
-    setLanguage(newLang);
+    console.log('Toggling language from', language, 'to', newLang);
+    
+    // Update state immediately
+    setLanguageState(newLang);
+    
+    // Save to storage
+    saveLanguageToStorage(newLang);
+    
+    // Update URL
+    updateURLWithLanguage(newLang);
   };
 
-  // Effect to sync language on mount and URL changes
+  // Simple set language function
+  const setLanguage = (lang: 'en' | 'ar') => {
+    console.log('Setting language to:', lang);
+    
+    // Update state immediately
+    setLanguageState(lang);
+    
+    // Save to storage
+    saveLanguageToStorage(lang);
+    
+    // Update URL
+    updateURLWithLanguage(lang);
+  };
+
+  // Effect to sync with URL changes (for back/forward navigation)
   useEffect(() => {
-    const handleUrlChange = () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const urlLang = urlParams.get('lang');
-      if (urlLang === 'en' || urlLang === 'ar') {
+    const handlePopState = () => {
+      const urlLang = getLanguageFromURL();
+      if (urlLang && urlLang !== language) {
+        console.log('URL changed, updating language to:', urlLang);
         setLanguageState(urlLang);
-        saveLanguage(urlLang);
+        saveLanguageToStorage(urlLang);
       }
     };
 
-    // Listen for popstate (back/forward navigation)
-    window.addEventListener('popstate', handleUrlChange);
-    
-    // Check URL on mount
-    handleUrlChange();
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [language]);
 
-    return () => {
-      window.removeEventListener('popstate', handleUrlChange);
-    };
-  }, []);
-
-  // Effect to ensure language is properly set on first load
+  // Effect to ensure URL has language parameter on mount
   useEffect(() => {
-    // If no language is set in URL, check storage and set it
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlLang = urlParams.get('lang');
-    
+    const urlLang = getLanguageFromURL();
     if (!urlLang) {
-      const storedLang = sessionStorage.getItem('ruby-athar-language') || localStorage.getItem('ruby-athar-language');
-      if (storedLang === 'en' || storedLang === 'ar') {
-        // Update URL to reflect the stored language
-        const url = new URL(window.location.href);
-        url.searchParams.set('lang', storedLang);
-        window.history.replaceState({}, '', url.toString());
-      }
+      console.log('No language in URL, adding current language:', language);
+      updateURLWithLanguage(language);
     }
-  }, []);
-
-  // Effect to sync with storage changes from other tabs
-  useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'ruby-athar-language' && e.newValue) {
-        if (e.newValue === 'en' || e.newValue === 'ar') {
-          setLanguageState(e.newValue);
-        }
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   const isRTL = language === 'ar';
@@ -152,6 +149,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
         className={isRTL ? 'rtl font-arabic' : 'ltr font-english'} 
         dir={isRTL ? 'rtl' : 'ltr'}
         data-language={language}
+        key={language} // Force re-render when language changes
       >
         {children}
       </div>
