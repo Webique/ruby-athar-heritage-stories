@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { apiClient, ContactFormData } from '@/lib/api';
-import { Phone, MessageCircle, Mail, MapPin, Send } from 'lucide-react';
+import { Send } from 'lucide-react';
 
 const ContactForm = () => {
   const { language, isRTL } = useLanguage();
@@ -206,59 +206,6 @@ const ContactForm = () => {
           )}
         </Button>
       </form>
-
-      {/* Contact Information */}
-      <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-          <div className="p-3 bg-gradient-primary rounded-lg">
-            <Phone className="h-5 w-5 text-primary-foreground" />
-          </div>
-          <div>
-            <p className={`font-semibold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
-              {language === 'en' ? 'Phone' : 'الهاتف'}
-            </p>
-            <p className="text-muted-foreground" dir="ltr">+966 57 360 0158</p>
-          </div>
-        </div>
-
-        <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-          <div className="p-3 bg-gradient-gold rounded-lg">
-            <Mail className="h-5 w-5 text-secondary-foreground" />
-          </div>
-          <div>
-            <p className={`font-semibold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
-              {language === 'en' ? 'Email' : 'البريد الإلكتروني'}
-            </p>
-            <p className="text-muted-foreground" dir="ltr">atharruby@outlook.com</p>
-          </div>
-        </div>
-
-        <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-          <div className="p-3 bg-gradient-primary rounded-lg">
-            <MapPin className="h-5 w-5 text-primary-foreground" />
-          </div>
-          <div>
-            <p className={`font-semibold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
-              {language === 'en' ? 'Location' : 'الموقع'}
-            </p>
-            <p className={`text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
-              {language === 'en' ? 'Saudi Arabia' : 'المملكة العربية السعودية'}
-            </p>
-          </div>
-        </div>
-
-        <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-          <div className="p-3 bg-gradient-gold rounded-lg">
-            <MessageCircle className="h-5 w-5 text-secondary-foreground" />
-          </div>
-          <div>
-            <p className={`font-semibold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
-              {language === 'en' ? 'WhatsApp' : 'واتساب'}
-            </p>
-            <p className="text-muted-foreground" dir="ltr">+966 57 360 0158</p>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
