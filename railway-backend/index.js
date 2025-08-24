@@ -26,12 +26,14 @@ const corsOptions = {
       'http://localhost:8080',
       'http://localhost:3000',
       'http://localhost:5173',
+      'https://rubyathar.netlify.app',
       process.env.CORS_ORIGIN
     ].filter(Boolean);
     
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
+      console.log('🚫 CORS blocked origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -42,12 +44,25 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Security headers
+app.use((req, res, next) => {
+  res.header('X-Content-Type-Options', 'nosniff');
+  res.header('X-Frame-Options', 'DENY');
+  res.header('X-XSS-Protection', '1; mode=block');
+  res.header('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
+
 // Debug: Log all incoming requests
 app.use((req, res, next) => {
   console.log(`🔍 ${req.method} ${req.originalUrl} - Request received`);
   console.log('🔍 Request headers:', req.headers);
+  console.log('🔍 Origin:', req.headers.origin);
   next();
 });
+
+// Handle preflight requests specifically for Netlify
+app.options('*', cors(corsOptions));
 
 // MongoDB Connection
 let db;
