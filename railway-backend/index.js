@@ -27,6 +27,7 @@ const corsOptions = {
       'http://localhost:3000',
       'http://localhost:5173',
       'https://rubyathar.netlify.app',
+      'https://atharruby.com',
       process.env.CORS_ORIGIN
     ].filter(Boolean);
     
