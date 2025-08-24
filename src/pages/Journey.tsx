@@ -25,6 +25,14 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
   });
   const [showConfirmation, setShowConfirmation] = useState(false);
 
+  // Helper function to check if an add-on is a meal
+  const isMealAddon = (addonName) => {
+    const mealKeywords = ['meal', 'lunch', 'dinner', 'وجبة', 'غداء', 'عشاء'];
+    return mealKeywords.some(keyword => 
+      addonName.toLowerCase().includes(keyword.toLowerCase())
+    );
+  };
+
   // Calculate total price
   const calculateTotalPrice = () => {
     if (!trip || !formData.package || !formData.participants) return 0;
@@ -70,11 +78,11 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
       }
     }
     
-    // Add add-ons
+    // Add add-ons (excluding meals)
     let addOnsTotal = 0;
     formData.addOns.forEach(addonName => {
       const addon = trip?.addOns?.find(a => a.name === addonName);
-      if (addon) {
+      if (addon && !isMealAddon(addon.name)) {
         const addonPriceText = addon.price;
         const addonPriceMatch = addonPriceText.match(/(\d+)/);
         
@@ -396,42 +404,52 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
               </Label>
               <div className="space-y-2">
                 {trip.addOns.map((addon, idx) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id={`addon-${idx}`}
-                      checked={formData.addOns.includes(addon.name)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          // Special handling for VIP package
-                          if (addon.name.includes('VIP') || addon.name.includes('باقة VIP')) {
-                            setFormData(prev => ({
-                              ...prev,
-                              addOns: [addon.name] // Replace all with VIP only
-                            }));
+                  <div key={idx} className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id={`addon-${idx}`}
+                        checked={formData.addOns.includes(addon.name)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            // Special handling for VIP package
+                            if (addon.name.includes('VIP') || addon.name.includes('باقة VIP')) {
+                              setFormData(prev => ({
+                                ...prev,
+                                addOns: [addon.name] // Replace all with VIP only
+                              }));
+                            } else {
+                              setFormData(prev => ({
+                                ...prev,
+                                addOns: [...prev.addOns, addon.name]
+                              }));
+                            }
                           } else {
                             setFormData(prev => ({
                               ...prev,
-                              addOns: [...prev.addOns, addon.name]
+                              addOns: prev.addOns.filter(name => name !== addon.name)
                             }));
                           }
-                        } else {
-                          setFormData(prev => ({
-                            ...prev,
-                            addOns: prev.addOns.filter(name => name !== addon.name)
-                          }));
+                        }}
+                        className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                      />
+                      <Label htmlFor={`addon-${idx}`} className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                        {addon.name} (+{addon.price})
+                        {addon.name.includes('VIP') || addon.name.includes('باقة VIP') && (
+                          <span className="text-xs text-muted-foreground ml-1">
+                            {language === 'en' ? '(replaces standard package)' : '(تحل محل الباقة القياسية)'}
+                          </span>
+                        )}
+                      </Label>
+                    </div>
+                    {isMealAddon(addon.name) && (
+                      <p className={`text-xs text-orange-600 font-medium ml-6 ${isRTL ? 'font-arabic text-right mr-6 ml-0' : 'font-english'}`}>
+                        {language === 'en' 
+                          ? '* Not included in total price - pay when you receive the meal' 
+                          : '* غير مشمول في السعر الإجمالي - ادفع عند تلقي الوجبة'
                         }
-                      }}
-                      className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-                    />
-                    <Label htmlFor={`addon-${idx}`} className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                      {addon.name} (+{addon.price})
-                      {addon.name.includes('VIP') || addon.name.includes('باقة VIP') && (
-                        <span className="text-xs text-muted-foreground ml-1">
-                          {language === 'en' ? '(replaces standard package)' : '(تحل محل الباقة القياسية)'}
-                        </span>
-                      )}
-                    </Label>
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>
@@ -491,14 +509,31 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
                       const addon = trip?.addOns?.find(a => a.name === addonName);
                       if (!addon) return null;
                       
+                      const isMeal = isMealAddon(addon.name);
+                      
                       return (
-                        <div key={idx} className="flex justify-between items-center text-sm">
-                          <span className={isRTL ? 'font-arabic' : 'font-english'}>
-                            {addon.name}
-                          </span>
-                          <span className="font-medium">
-                            +{addon.price} {parseInt(formData.participants) > 1 && `× ${formData.participants}`}
-                          </span>
+                        <div key={idx} className="space-y-1">
+                          <div className={`flex justify-between items-center text-sm ${isMeal ? 'text-orange-600' : ''}`}>
+                            <span className={isRTL ? 'font-arabic' : 'font-english'}>
+                              {addon.name}
+                              {isMeal && (
+                                <span className="text-xs font-normal text-orange-500 ml-1">
+                                  {language === 'en' ? '(not included)' : '(غير مشمول)'}
+                                </span>
+                              )}
+                            </span>
+                            <span className={`font-medium ${isMeal ? 'line-through text-orange-400' : ''}`}>
+                              +{addon.price} {parseInt(formData.participants) > 1 && `× ${formData.participants}`}
+                            </span>
+                          </div>
+                          {isMeal && (
+                            <p className={`text-xs text-orange-600 ${isRTL ? 'font-arabic text-right' : 'font-english'}`}>
+                              {language === 'en' 
+                                ? 'Pay when you receive the meal' 
+                                : 'ادفع عند تلقي الوجبة'
+                              }
+                            </p>
+                          )}
                         </div>
                       );
                     })}

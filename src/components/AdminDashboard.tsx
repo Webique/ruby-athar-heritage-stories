@@ -1096,8 +1096,8 @@ const AdminDashboard = () => {
                               <MapPin className="h-5 w-5 text-primary" />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <h4 className="text-base sm:text-lg font-semibold text-primary truncate">{booking.tripTitle}</h4>
-                              <p className="text-sm text-muted-foreground truncate">{booking.packageName}</p>
+                              <h4 className="text-base sm:text-lg font-semibold text-primary break-words">{booking.tripTitle}</h4>
+                              <p className="text-sm text-muted-foreground break-words">{booking.packageName}</p>
                             </div>
                           </div>
                           <div className="flex items-center gap-2 self-start sm:self-auto">
@@ -1153,7 +1153,7 @@ const AdminDashboard = () => {
                               <div className="flex items-center gap-2">
                                 <Package className="h-4 w-4 flex-shrink-0" />
                                 <span className="font-medium min-w-[80px]">Package:</span>
-                                <span className="truncate">{booking.packageName}</span>
+                                <span className="break-words">{booking.packageName}</span>
                               </div>
                               <div className="flex items-center gap-2">
                                 <FileText className="h-4 w-4 flex-shrink-0" />
