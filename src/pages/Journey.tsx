@@ -77,50 +77,42 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
       }
     }
     
-    // Add add-ons (excluding meals)
-    let addOnsTotal = 0;
-    let hasCustomTiming = false;
-    
+    // Exclusive base options (VIP / Custom timing / Morning-Evening)
+    let exclusiveBasePrices: number[] = [];
     formData.addOns.forEach(addonName => {
       const addon = trip?.addOns?.find(a => a.name === addonName);
-      if (addon && !isMealAddon(addon.name)) {
-        const addonPriceText = addon.price;
-        const addonPriceMatch = addonPriceText.match(/(\d+)/);
-        
-        if (addonPriceMatch) {
-          const addonPrice = parseInt(addonPriceMatch[1]);
-          
-          // Check for custom timing add-ons
-          if (addon.name.includes('Custom Timing') || addon.name.includes('توقيت خاص')) {
-            hasCustomTiming = true;
-            if (addon.name.includes('Group') || addon.name.includes('مجموعة')) {
-              // Group custom timing - fixed price
-              addOnsTotal = addonPrice;
-            } else {
-              // Individual custom timing - per person
-              addOnsTotal = addonPrice * participants;
-            }
-          } else if (addon.name.includes('VIP') || addon.name.includes('باقة VIP')) {
-            // VIP package replaces base price
-            addOnsTotal = addonPrice * participants;
-          } else {
-            // Regular add-on (per person)
-            addOnsTotal += addonPrice * participants;
-          }
-        }
+      if (!addon) return;
+      const priceMatch = addon.price.match(/(\d+)/);
+      if (!priceMatch) return;
+      const addonPrice = parseInt(priceMatch[1]);
+      const isVip = addon.name.includes('VIP') || addon.name.includes('باقة VIP');
+      const isCustom = addon.name.includes('Custom Timing') || addon.name.includes('توقيت خاص') || addon.name.includes('Morning Trip') || addon.name.includes('Evening Trip') || addon.name.includes('رحلة الصبح') || addon.name.includes('رحلة العصر');
+      if (isVip || isCustom) {
+        const isGroupCustom = addon.name.includes('Group') || addon.name.includes('مجموعة');
+        const computed = isGroupCustom ? addonPrice : addonPrice * participants;
+        exclusiveBasePrices.push(computed);
       }
     });
-    
-    // If custom timing is selected, it replaces the base package price
-    if (hasCustomTiming) {
-      return addOnsTotal;
+
+    if (exclusiveBasePrices.length > 0) {
+      // Choose the highest exclusive base if multiple selected
+      basePrice = Math.max(...exclusiveBasePrices);
     }
-    
-    // If VIP is selected, return only VIP price
-    if (formData.addOns.some(addon => addon.includes('VIP'))) {
-      return addOnsTotal;
-    }
-    
+
+    // Add non-exclusive, non-meal add-ons (per person)
+    let addOnsTotal = 0;
+    formData.addOns.forEach(addonName => {
+      const addon = trip?.addOns?.find(a => a.name === addonName);
+      if (!addon) return;
+      if (isMealAddon(addon.name)) return; // meals are pay-on-site
+      const isVip = addon.name.includes('VIP') || addon.name.includes('باقة VIP');
+      const isCustom = addon.name.includes('Custom Timing') || addon.name.includes('توقيت خاص') || addon.name.includes('Morning Trip') || addon.name.includes('Evening Trip') || addon.name.includes('رحلة الصبح') || addon.name.includes('رحلة العصر');
+      if (isVip || isCustom) return; // already reflected in base
+      const priceMatch = addon.price.match(/(\d+)/);
+      if (!priceMatch) return;
+      addOnsTotal += parseInt(priceMatch[1]) * participants;
+    });
+
     return basePrice + addOnsTotal;
   };
 
@@ -486,18 +478,10 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
                         checked={formData.addOns.includes(addon.name)}
                         onChange={(e) => {
                           if (e.target.checked) {
-                            // Special handling for VIP package
-                            if (addon.name.includes('VIP') || addon.name.includes('باقة VIP')) {
-                              setFormData(prev => ({
-                                ...prev,
-                                addOns: [addon.name] // Replace all with VIP only
-                              }));
-                            } else {
-                              setFormData(prev => ({
-                                ...prev,
-                                addOns: [...prev.addOns, addon.name]
-                              }));
-                            }
+                            setFormData(prev => ({
+                              ...prev,
+                              addOns: [...prev.addOns, addon.name]
+                            }));
                           } else {
                             setFormData(prev => ({
                               ...prev,
@@ -509,11 +493,6 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
                       />
                       <Label htmlFor={`addon-${idx}`} className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
                         {addon.name} {!isMealAddon(addon.name) && `(+${addon.price})`}
-                        {addon.name.includes('VIP') || addon.name.includes('باقة VIP') && (
-                          <span className="text-xs text-muted-foreground ml-1">
-                            {language === 'en' ? '(replaces standard package)' : '(تحل محل الباقة القياسية)'}
-                          </span>
-                        )}
                       </Label>
                     </div>
                     {isMealAddon(addon.name) && (
