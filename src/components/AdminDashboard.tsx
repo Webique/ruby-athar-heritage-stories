@@ -209,6 +209,7 @@ const generateReceiptHTML = (booking: any) => {
 interface FilterState {
   search: string;
   tripType: string | 'all';
+  tourType: string | 'all';
   status: string | 'all';
   package: string | 'all';
   dateFrom: string;
@@ -234,6 +235,7 @@ const AdminDashboard = () => {
   const [filters, setFilters] = useState<FilterState>({
     search: '',
     tripType: 'all',
+    tourType: 'all',
     status: 'all',
     package: 'all',
     dateFrom: '',
@@ -301,6 +303,8 @@ const AdminDashboard = () => {
       deleteError: "Failed to delete item",
       // Add-ons
       addOns: "Add-ons",
+      // Tour Type
+      tourType: "Tour Type",
       // Customer and booking info
       customerInfo: "Customer Information",
       bookingInfo: "Booking Information",
@@ -367,6 +371,8 @@ const AdminDashboard = () => {
       deleteError: "فشل في الحذف",
       // Add-ons
       addOns: "إضافات",
+      // Tour Type
+      tourType: "نوع الجولة",
       // Customer and booking info
       customerInfo: "معلومات العميل",
       bookingInfo: "معلومات الحجز",
@@ -452,6 +458,11 @@ const AdminDashboard = () => {
     // Apply package filter
     if (filters.package && filters.package !== 'all') {
       filtered = filtered.filter(booking => booking.packageName === filters.package);
+    }
+
+    // Apply tour type filter
+    if (filters.tourType && filters.tourType !== 'all') {
+      filtered = filtered.filter(booking => booking.tourType === filters.tourType);
     }
 
     // Apply date range filter
@@ -576,6 +587,7 @@ const AdminDashboard = () => {
     setFilters({
       search: '',
       tripType: 'all',
+      tourType: 'all',
       status: 'all',
       package: 'all',
       dateFrom: '',
@@ -669,12 +681,13 @@ const AdminDashboard = () => {
 
   const exportData = () => {
     const csvContent = [
-      ['Name', 'Email', 'Phone', 'Trip Title', 'Package', 'Date', 'Participants', 'Status', 'Language', 'Total Price', 'Created'],
+      ['Name', 'Email', 'Phone', 'Trip Title', 'Tour Type', 'Package', 'Date', 'Participants', 'Status', 'Language', 'Total Price', 'Created'],
       ...filteredBookings.map(booking => [
         booking.name,
         booking.email,
         booking.phone,
         booking.tripTitle,
+        booking.tourType ? (booking.tourType === 'private' ? 'Private Tour' : 'Group Tour') : 'N/A',
         booking.packageName,
         new Date(booking.date).toLocaleDateString(),
         booking.participants,
@@ -952,6 +965,18 @@ const AdminDashboard = () => {
                     </SelectContent>
                   </Select>
 
+                  {/* Tour Type (Private vs Group) */}
+                  <Select value={filters.tourType || 'all'} onValueChange={(value) => setFilters({...filters, tourType: value})}>
+                    <SelectTrigger>
+                      <SelectValue placeholder={content[language].tourType} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">{content[language].all}</SelectItem>
+                      <SelectItem value="private">{language === 'en' ? 'Private Tour' : 'جولة خاصة'}</SelectItem>
+                      <SelectItem value="group">{language === 'en' ? 'Group Tour' : 'جولة مجموعة'}</SelectItem>
+                    </SelectContent>
+                  </Select>
+
                   {/* Status */}
                   {filters.status === 'all' && (
                     <Select value={filters.status} onValueChange={(value) => setFilters({...filters, status: value})}>
@@ -1155,6 +1180,18 @@ const AdminDashboard = () => {
                                 <span className="font-medium min-w-[80px]">Package:</span>
                                 <span className="break-words">{booking.packageName}</span>
                               </div>
+                              {booking.tourType && (
+                                <div className="flex items-center gap-2">
+                                  <MapPin className="h-4 w-4 flex-shrink-0" />
+                                  <span className="font-medium min-w-[80px]">{content[language].tourType}:</span>
+                                  <Badge variant={booking.tourType === 'private' ? 'default' : 'secondary'}>
+                                    {booking.tourType === 'private' 
+                                      ? (booking.language === 'en' ? 'Private Tour' : 'جولة خاصة')
+                                      : (booking.language === 'en' ? 'Group Tour' : 'جولة مجموعة')
+                                    }
+                                  </Badge>
+                                </div>
+                              )}
                               <div className="flex items-center gap-2">
                                 <FileText className="h-4 w-4 flex-shrink-0" />
                                 <span className="font-medium min-w-[80px]">Language:</span>
