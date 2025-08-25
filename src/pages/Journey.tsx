@@ -14,11 +14,10 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    
     email: '',
     age: '',
     date: '',
-
+    tourType: '', // New field for Private Tour vs Group Tour
     package: '',
     participants: '1',
     addOns: []
@@ -80,6 +79,8 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
     
     // Add add-ons (excluding meals)
     let addOnsTotal = 0;
+    let hasCustomTiming = false;
+    
     formData.addOns.forEach(addonName => {
       const addon = trip?.addOns?.find(a => a.name === addonName);
       if (addon && !isMealAddon(addon.name)) {
@@ -89,7 +90,17 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
         if (addonPriceMatch) {
           const addonPrice = parseInt(addonPriceMatch[1]);
           
-          if (addon.name.includes('VIP') || addon.name.includes('باقة VIP')) {
+          // Check for custom timing add-ons
+          if (addon.name.includes('Custom Timing') || addon.name.includes('توقيت خاص')) {
+            hasCustomTiming = true;
+            if (addon.name.includes('Group') || addon.name.includes('مجموعة')) {
+              // Group custom timing - fixed price
+              addOnsTotal = addonPrice;
+            } else {
+              // Individual custom timing - per person
+              addOnsTotal = addonPrice * participants;
+            }
+          } else if (addon.name.includes('VIP') || addon.name.includes('باقة VIP')) {
             // VIP package replaces base price
             addOnsTotal = addonPrice * participants;
           } else {
@@ -99,6 +110,11 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
         }
       }
     });
+    
+    // If custom timing is selected, it replaces the base package price
+    if (hasCustomTiming) {
+      return addOnsTotal;
+    }
     
     // If VIP is selected, return only VIP price
     if (formData.addOns.some(addon => addon.includes('VIP'))) {
@@ -137,6 +153,17 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
     }));
   };
 
+  // Handle tour type change
+  const handleTourTypeChange = (e) => {
+    const { value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      tourType: value,
+      package: '', // Reset package when tour type changes
+      addOns: [] // Reset add-ons when tour type changes
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -148,6 +175,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
         email: formData.email,
         age: formData.age,
         date: formData.date,
+        tourType: formData.tourType,
         package: formData.package,
         participants: formData.participants,
         addOns: formData.addOns,
@@ -174,6 +202,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
           email: '',
           age: '',
           date: '',
+          tourType: '',
           package: '',
           participants: '1',
           addOns: []
@@ -201,6 +230,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
       email: 'Email Address',
       age: 'Age',
       date: 'Preferred Date',
+      tourType: 'Tour Type',
       package: 'Select Package',
       participants: 'Number of Participants',
       addOns: 'Add-Ons (Optional)',
@@ -216,6 +246,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
       email: 'البريد الإلكتروني',
       age: 'العمر',
       date: 'التاريخ المفضل',
+      tourType: 'نوع الجولة',
       package: 'اختر الباقة',
       participants: 'عدد المشاركين',
       addOns: 'إضافات اختيارية',
@@ -357,6 +388,31 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
           </div>
 
           <div className="space-y-2">
+            <Label htmlFor="tourType" className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
+              {content[language].tourType}
+            </Label>
+            <select
+              id="tourType"
+              name="tourType"
+              required
+              value={formData.tourType}
+              onChange={handleTourTypeChange}
+              className={`w-full px-3 py-2 border border-input rounded-md text-sm bg-background ${isRTL ? 'text-right' : 'text-left'}`}
+              dir={isRTL ? 'rtl' : 'ltr'}
+            >
+              <option value="">{language === 'en' ? 'Select Tour Type' : 'اختر نوع الجولة'}</option>
+              <option value="private">{language === 'en' ? 'Private Tour' : 'جولة خاصة'}</option>
+              <option value="group">{language === 'en' ? 'Group Tour' : 'جولة مجموعة'}</option>
+            </select>
+            <p className={`text-xs text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
+              {language === 'en' 
+                ? 'Private Tour: Exclusive for you and your chosen companions. Group Tour: Join other travelers on the same package.' 
+                : 'جولة خاصة: حصرية لك ولرفقائك المختارين. جولة مجموعة: انضم إلى مسافرين آخرين في نفس الباقة.'
+              }
+            </p>
+          </div>
+
+          <div className="space-y-2">
             <Label htmlFor="package" className={`text-sm ${isRTL ? 'font-arabic' : 'font-english'}`}>
               {content[language].package}
             </Label>
@@ -368,14 +424,32 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
               onChange={handlePackageChange}
               className={`w-full px-3 py-2 border border-input rounded-md text-sm bg-background ${isRTL ? 'text-right' : 'text-left'}`}
               dir={isRTL ? 'rtl' : 'ltr'}
+              disabled={!formData.tourType}
             >
               <option value="">{language === 'en' ? 'Select Package' : 'اختر الباقة'}</option>
-              {trip?.pricing?.map((pkg, idx) => (
+              {trip?.pricing?.filter(pkg => {
+                if (!formData.tourType) return false;
+                if (formData.tourType === 'private') {
+                  return pkg.name.includes('Private Tour') || pkg.name.includes('جولة خاصة') || 
+                         pkg.name.includes('Individual') || pkg.name.includes('Couple') || 
+                         pkg.name.includes('Three People') || pkg.name.includes('باقة الفرد') ||
+                         pkg.name.includes('باقة الزوجين') || pkg.name.includes('باقة ثلاثة أشخاص');
+                } else if (formData.tourType === 'group') {
+                  return pkg.name.includes('Group Tour') || pkg.name.includes('جولة مجموعة') ||
+                         pkg.name.includes('Group Package') || pkg.name.includes('باقة المجموعات');
+                }
+                return false;
+              }).map((pkg, idx) => (
                 <option key={idx} value={pkg.name}>
                   {pkg.name} - {pkg.price}
                 </option>
               ))}
             </select>
+            {!formData.tourType && (
+              <p className={`text-xs text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                {language === 'en' ? 'Please select a tour type first' : 'يرجى اختيار نوع الجولة أولاً'}
+              </p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -477,6 +551,21 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
                       </span>
                     </div>
                   )}
+
+                  {/* Tour Type */}
+                  {formData.tourType && (
+                    <div className="flex justify-between items-center text-sm bg-secondary/5 p-2 rounded">
+                      <span className={`text-secondary font-medium ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                        {language === 'en' ? 'Tour Type' : 'نوع الجولة'}
+                      </span>
+                      <span className="font-medium text-secondary">
+                        {formData.tourType === 'private' 
+                          ? (language === 'en' ? 'Private Tour' : 'جولة خاصة')
+                          : (language === 'en' ? 'Group Tour' : 'جولة مجموعة')
+                        }
+                      </span>
+                    </div>
+                  )}
                   
                   <div className="flex justify-between items-center text-sm">
                     <span className={isRTL ? 'font-arabic' : 'font-english'}>
@@ -562,7 +651,7 @@ const BookingForm = ({ trip, isOpen, onClose, language, isRTL }) => {
             <Button 
               type="submit" 
               className="btn-primary w-full sm:w-auto text-sm py-2"
-              disabled={!formData.date || !formData.package}
+              disabled={!formData.date || !formData.tourType || !formData.package}
             >
               {content[language].submit}
             </Button>
@@ -813,7 +902,8 @@ const JourneyContent = () => {
             "Duration: 2–3 hours",
             "Location: Wadi Hanifah – Riyadh",
             "Language: Arabic (English translation available upon request)",
-            "Participants: 5–15 people"
+            "Participants: 5–15 people",
+            "Timing: Every Saturday from 6:15 PM to 8:00 PM"
           ],
           included: [
             "🗺️ Guided field tour led by a guide sharing Al-A'sha's poems and stories",
@@ -823,22 +913,39 @@ const JourneyContent = () => {
             "🌅 Closing session in the heart of the valley with a poetic farewell",
             "🛠️ Full organization and preparation of all stops and the route"
           ],
+          addOns: [
+            {
+              name: "Custom Timing - Basic",
+              price: "400 SAR per person",
+              description: "Special/custom timings as requested by the client"
+            },
+            {
+              name: "Custom Timing - Premium",
+              price: "450 SAR per person",
+              description: "Premium custom timings with enhanced services"
+            },
+            {
+              name: "Custom Timing - Group",
+              price: "3700 SAR",
+              description: "Special/custom timings for groups"
+            }
+          ],
           pricing: [
             {
-              name: "Standard Experience",
+              name: "Private Tour - Standard Experience",
               price: "85 SAR per person",
               originalPrice: "120 SAR per person",
               description: "Basic package with all included features - LIMITED TIME OFFER!",
               optional: ""
             },
             {
-              name: "Premium Package",
+              name: "Private Tour - Premium Package",
               price: "150 SAR per person",
               description: "Private session + additional hospitality",
               optional: ""
             },
             {
-              name: "Group Package (10 people)",
+              name: "Group Tour (10 people)",
               price: "1300 SAR",
               description: "Best value for groups",
               optional: ""
@@ -847,12 +954,13 @@ const JourneyContent = () => {
           notes: [
             "The experience does not include transportation to/from the meeting point",
             "Comfortable clothing and shoes recommended for walking",
-            "Advance booking is required to confirm participation"
+            "Advance booking is required to confirm participation",
+            "Available every Saturday from 6:15 PM to 8:00 PM"
           ]
         },
         {
           id: 2,
-          title: "Noor Al-Manjour Experience: Legend's Journey – Athar Ruby",
+          title: "Noor Al-Manjour Tour",
           location: "Darb Al-Manjour, between East and West Tuwaiq Mountains",
           duration: "4-5 Hours",
           groupSize: "5-20 People",
@@ -888,34 +996,64 @@ const JourneyContent = () => {
           ],
           pricing: [
             {
-              name: "Standard Experience",
+              name: "Private Tour - Standard Experience",
               price: "300 SAR per person",
               description: "Includes: transportation, guide, drinks, activities, and full organization",
               optional: ""
             },
             {
-              name: "Premium Package",
+              name: "Private Tour - Premium Package",
               price: "350 SAR per person",
               description: "Private session or additional hospitality",
               optional: ""
             },
             {
-              name: "Group Package (10 people)",
-              price: "3,000 SAR",
+              name: "Group Tour (10 people)",
+              price: "2700 SAR",
               description: "Best value for groups",
               optional: ""
             }
           ],
+          addOns: [
+            {
+              name: "Morning Trip (Sunrise)",
+              price: "400 SAR per person",
+              description: "Special morning timing from 4:00 AM to 8:00 AM"
+            },
+            {
+              name: "Evening Trip",
+              price: "400 SAR per person",
+              description: "Special evening timing from 4:00 PM to 7:00 PM"
+            },
+            {
+              name: "Custom Timing - Basic",
+              price: "400 SAR per person",
+              description: "Special/custom timings as requested by the client"
+            },
+            {
+              name: "Custom Timing - Premium",
+              price: "450 SAR per person",
+              description: "Premium custom timings with enhanced services"
+            },
+            {
+              name: "Custom Timing - Group",
+              price: "3700 SAR",
+              description: "Special/custom timings for groups"
+            }
+          ],
           notes: [
             "Comfortable clothing and shoes recommended for walking",
-            "Advance booking required to confirm participation"
+            "Advance booking required to confirm participation",
+            "Morning trip: at sunrise, from 4:00 AM to 8:00 AM",
+            "Evening trip: from 4:00 PM to 7:00 PM",
+            "Special/custom timings available upon request"
           ]
         },
         {
           id: 3,
-          title: "Diriyah Experience – Journey Through History",
+          title: "Diriyah Tour",
           location: "Diriyah, Riyadh",
-          duration: "3-4 Hours",
+          duration: "2.5-3 Hours",
           groupSize: "1-10 People",
           rating: 4.9,
           highlights: ["Ancient mud-brick streets", "Historic palaces", "Heritage stories", "Leadership history"],
@@ -923,7 +1061,7 @@ const JourneyContent = () => {
           image: "/src/assets/gallery/desert-ruins.jpg",
           fullDescription: "Discover the historic heart of Saudi Arabia with a cultural and historical adventure in Diriyah, the birthplace of the Saudi state. Walk through its ancient mud-brick streets, explore historic palaces, and immerse yourself in stories of heritage, leadership, and resilience.",
           details: [
-            "Duration: 3–4 hours",
+            "Duration: 2.5–3 hours",
             "Location: Diriyah, Riyadh",
             "Difficulty: Easy to moderate",
             "Participants: 1–10 people",
@@ -942,33 +1080,56 @@ const JourneyContent = () => {
               name: "Lunch/Dinner",
               price: "150 SAR per person",
               description: "Delicious local cuisine at a traditional restaurant"
+            },
+            {
+              name: "Custom Timing - Basic",
+              price: "400 SAR per person",
+              description: "Special/custom timings as requested by the client"
+            },
+            {
+              name: "Custom Timing - Premium",
+              price: "450 SAR per person",
+              description: "Premium custom timings with enhanced services"
+            },
+            {
+              name: "Custom Timing - Group",
+              price: "3700 SAR",
+              description: "Special/custom timings for groups"
             }
           ],
           pricing: [
             {
-              name: "Individual Package",
+              name: "Private Tour - Individual Package",
               price: "250 SAR per person",
               description: "Base package with all included features",
               optional: ""
             },
             {
-              name: "Group Package (4–10 people)",
+              name: "Private Tour - Group Package (4–10 people)",
               price: "200 SAR per person",
               description: "Discounted rate for groups",
+              optional: ""
+            },
+            {
+              name: "Group Tour (4–10 people)",
+              price: "200 SAR per person",
+              description: "Group tour with other participants",
               optional: ""
             }
           ],
           notes: [
             "Comfortable walking shoes recommended",
             "Advance booking required to confirm participation",
-            "Price includes transportation"
+            "Price includes transportation",
+            "Diriyah timings: Saturday to Tuesday: 9:00 AM to 12:00 midnight; Wednesday to Friday: 9:00 AM to 1:00 AM",
+            "Turaif District: daily from 5:00 PM to 12:00 midnight"
           ]
         },
         {
           id: 4,
-          title: "Al-Masmak & Al-Zal Market Experience – Discover Historical Riyadh",
+          title: "Masmak Tour",
           location: "Central Riyadh – Al-Masmak & Al-Zal Market",
-          duration: "3-4 Hours",
+          duration: "2-4 Hours",
           groupSize: "5-15 People",
           rating: 4.9,
           highlights: ["Historical Riyadh", "Al-Masmak Fortress", "Al-Zal Market", "Cultural heritage"],
@@ -976,7 +1137,7 @@ const JourneyContent = () => {
           image: "/src/assets/gallery/trade-route.jpg",
           fullDescription: "Explore the history and culture of Riyadh in a unique journey from Al-Masmak Fortress, where the story of the capture of Riyadh began, to Al-Zal Market, one of the oldest traditional markets in the region. Learn about key historical events and immerse yourself in the vibrant heritage while enjoying shopping at the historic market.",
           details: [
-            "Duration: 3–4 hours",
+            "Duration: 2–4 hours",
             "Location: Central Riyadh – Al-Masmak & Al-Zal Market",
             "Participants: 5–15 people",
             "Language: English (Arabic translation available upon request)",
@@ -990,29 +1151,55 @@ const JourneyContent = () => {
             "Light refreshments",
             "Opportunities to shop at Al-Zal Market and take photos"
           ],
+          addOns: [
+            {
+              name: "Custom Timing - Basic",
+              price: "400 SAR per person",
+              description: "Special/custom timings as requested by the client"
+            },
+            {
+              name: "Custom Timing - Premium",
+              price: "450 SAR per person",
+              description: "Premium custom timings with enhanced services"
+            },
+            {
+              name: "Custom Timing - Group",
+              price: "3700 SAR",
+              description: "Special/custom timings for groups"
+            }
+          ],
           pricing: [
             {
-              name: "Individual Package",
+              name: "Private Tour - Individual Package",
               price: "250 SAR per person",
               description: "Base package with all included features",
               optional: ""
             },
             {
-              name: "Group Package (4–15 people)",
+              name: "Private Tour - Group Package (4–15 people)",
               price: "200 SAR per person",
               description: "Discounted rate for groups",
+              optional: ""
+            },
+            {
+              name: "Group Tour (4–15 people)",
+              price: "200 SAR per person",
+              description: "Group tour with other participants",
               optional: ""
             }
           ],
           notes: [
             "Comfortable clothing and shoes recommended for walking",
             "Advance booking required to confirm participation",
-            "Price includes guided tour, organization, and light refreshments"
+            "Price includes guided tour, organization, and light refreshments",
+            "Sunday to Thursday: 8:00 AM to 9:00 PM",
+            "Friday: 4:00 PM to 8:00 PM",
+            "Saturday: 9:00 AM to 8:00 PM"
           ]
         },
         {
           id: 5,
-          title: "Riyadh Full-Day Experience – Discover the Capital",
+          title: "Riyadh Full Tour",
           location: "Riyadh – Multiple Locations",
           duration: "8-9 Hours",
           groupSize: "1-10 People",
@@ -1049,33 +1236,54 @@ const JourneyContent = () => {
             },
             {
               name: "VIP Package",
-              price: "550 SAR per person",
+              price: "700 SAR per person",
               description: "Private car + Personal guide + Photography + Gifts (replaces standard package)"
+            },
+            {
+              name: "Custom Timing - Basic",
+              price: "400 SAR per person",
+              description: "Special/custom timings as requested by the client"
+            },
+            {
+              name: "Custom Timing - Premium",
+              price: "450 SAR per person",
+              description: "Premium custom timings with enhanced services"
+            },
+            {
+              name: "Custom Timing - Group",
+              price: "3700 SAR",
+              description: "Special/custom timings for groups"
             }
           ],
           pricing: [
             {
-              name: "Individual Package",
+              name: "Private Tour - Individual Package",
               price: "600 SAR per person",
               description: "Base package with all included features",
               optional: ""
             },
             {
-              name: "Couple Package (2 people)",
+              name: "Private Tour - Couple Package (2 people)",
               price: "550 SAR per person",
               description: "Discounted rate for couples",
               optional: "Total: 1100 SAR"
             },
             {
-              name: "Three People Package",
+              name: "Private Tour - Three People Package",
               price: "500 SAR per person",
               description: "Special rate for three people",
               optional: "Total: 1500 SAR"
             },
             {
-              name: "Group Package (4–10 people)",
+              name: "Private Tour - Group Package (4–10 people)",
               price: "450 SAR per person",
               description: "Best value for groups",
+              optional: "Total: 1800–4500 SAR"
+            },
+            {
+              name: "Group Tour (4–10 people)",
+              price: "450 SAR per person",
+              description: "Group tour with other participants",
               optional: "Total: 1800–4500 SAR"
             }
           ],
@@ -1112,7 +1320,8 @@ const JourneyContent = () => {
             "المدة: ساعتان – 3 ساعات",
             "الموقع: وادي حنيفة – الرياض",
             "اللغة: العربية (مع إمكانية توفير ترجمة بالإنجليزية عند الطلب)",
-            "عدد المشاركين: 5 – 15 شخص"
+            "عدد المشاركين: 5 – 15 شخص",
+            "التوقيت: كل سبت من 6:15 م إلى 8:00 م"
           ],
           included: [
             "🗺️ جولة إرشادية ميدانية بقيادة مرشد/قائد يروي قصائد وقصص الأعشى",
@@ -1122,22 +1331,39 @@ const JourneyContent = () => {
             "🌅 جلسة ختامية في قلب الوادي مع وداع شعري",
             "🛠️ تنظيم وتجهيز كامل لنقاط التوقف ومسار الرحلة"
           ],
+          addOns: [
+            {
+              name: "توقيت خاص - أساسي",
+              price: "400 ريال للشخص",
+              description: "توقيت خاص على طلب العميل"
+            },
+            {
+              name: "توقيت خاص - بريميوم",
+              price: "450 ريال للشخص",
+              description: "توقيت خاص بريميوم مع خدمات محسنة"
+            },
+            {
+              name: "توقيت خاص - مجموعة",
+              price: "3700 ريال",
+              description: "توقيت خاص لمجموعات"
+            }
+          ],
           pricing: [
             {
-              name: "التجربة القياسية",
+              name: "جولة خاصة - التجربة القياسية",
               price: "85 ريال للشخص",
               originalPrice: "120 ريال للشخص",
               description: "الباقة الأساسية مع جميع المميزات المدرجة - عرض محدود الوقت!",
               optional: ""
             },
             {
-              name: "باقة بريميوم",
+              name: "جولة خاصة - باقة بريميوم",
               price: "150 ريال للشخص",
               description: "جلسة خاصة + ضيافة إضافية",
               optional: ""
             },
             {
-              name: "باقة المجموعات (10 أشخاص)",
+              name: "جولة مجموعة (10 أشخاص)",
               price: "1300 ريال",
               description: "أفضل قيمة للمجموعات",
               optional: ""
@@ -1146,12 +1372,13 @@ const JourneyContent = () => {
           notes: [
             "التجربة لا تشمل المواصلات من/إلى نقطة اللقاء",
             "ينصح بارتداء ملابس وأحذية مريحة للمشي",
-            "الحجز المسبق مطلوب لتأكيد مشاركتك"
+            "الحجز المسبق مطلوب لتأكيد مشاركتك",
+            "متاح كل سبت من 6:15 م إلى 8:00 م"
           ]
         },
         {
           id: 2,
-          title: "تجربة نور المنجور: رحلة الأسطورة – أثر روبي",
+          title: "جولة نور المنجور",
           location: "درب المنجور، بين شرق وغرب جبال طويق",
           duration: "4-5 ساعات",
           groupSize: "5-20 شخص",
@@ -1187,34 +1414,64 @@ const JourneyContent = () => {
           ],
           pricing: [
             {
-              name: "التجربة القياسية",
+              name: "جولة خاصة - التجربة القياسية",
               price: "300 ريال للشخص",
               description: "تشمل: النقل، المرشد، المشروبات، الأنشطة، والتنظيم الكامل",
               optional: ""
             },
             {
-              name: "باقة بريميوم",
+              name: "جولة خاصة - باقة بريميوم",
               price: "350 ريال للشخص",
               description: "جلسة خاصة أو ضيافة إضافية",
               optional: ""
             },
             {
-              name: "باقة المجموعات (10 أشخاص)",
-              price: "3000 ريال",
+              name: "جولة مجموعة (10 أشخاص)",
+              price: "2700 ريال",
               description: "أفضل قيمة للمجموعات",
               optional: ""
             }
           ],
+          addOns: [
+            {
+              name: "رحلة الصبح",
+              price: "400 ريال للشخص",
+              description: "توقيت صبحي خاص من 4:00 ص إلى 8:00 ص"
+            },
+            {
+              name: "رحلة العصر",
+              price: "400 ريال للشخص",
+              description: "توقيت عصري خاص من 4:00 م إلى 7:00 م"
+            },
+            {
+              name: "توقيت خاص - أساسي",
+              price: "400 ريال للشخص",
+              description: "توقيت خاص على طلب العميل"
+            },
+            {
+              name: "توقيت خاص - بريميوم",
+              price: "450 ريال للشخص",
+              description: "توقيت خاص بريميوم مع خدمات محسنة"
+            },
+            {
+              name: "توقيت خاص - مجموعة",
+              price: "3700 ريال",
+              description: "توقيت خاص لمجموعات"
+            }
+          ],
           notes: [
             "ينصح بارتداء ملابس وأحذية مريحة للمشي",
-            "الحجز المسبق مطلوب لتأكيد المشاركة"
+            "الحجز المسبق مطلوب لتأكيد المشاركة",
+            "رحلة الصبح: من 4:00 ص إلى 8:00 ص",
+            "رحلة العصر: من 4:00 م إلى 7:00 م",
+            "توقيت خاص متاح على طلب العميل"
           ]
         },
         {
           id: 3,
-          title: "تجربة الدرعية – رحلة عبر التاريخ",
+          title: "جولة الدرعية",
           location: "الدرعية، الرياض",
-          duration: "3-4 ساعات",
+          duration: "2.5-3 ساعات",
           groupSize: "1-10 أشخاص",
           rating: 4.9,
           highlights: ["شوارع طينية قديمة", "قصور تاريخية", "قصص التراث", "تاريخ القيادة"],
@@ -1222,7 +1479,7 @@ const JourneyContent = () => {
           image: "/src/assets/gallery/desert-ruins.jpg",
           fullDescription: "اكتشف قلب التاريخ في المملكة العربية السعودية مع مغامرة ثقافية وتاريخية في الدرعية، مسقط رأس الدولة السعودية. تجول في شوارعها الطينية القديمة، استكشف القصور القديمة، وانغمس في قصص التراث والقيادة والصمود.",
           details: [
-            "المدة: 3–4 ساعات",
+            "المدة: 2.5–3 ساعات",
             "الموقع: الدرعية، الرياض",
             "الصعوبة: سهلة إلى متوسطة",
             "عدد المشاركين: 1–10 أشخاص",
@@ -1240,33 +1497,56 @@ const JourneyContent = () => {
               name: "الغداء/العشاء",
               price: "150 ريال للشخص",
               description: "مأكولات محلية لذيذة في مطعم تقليدي"
+            },
+            {
+              name: "توقيت خاص - أساسي",
+              price: "400 ريال للشخص",
+              description: "توقيت خاص على طلب العميل"
+            },
+            {
+              name: "توقيت خاص - بريميوم",
+              price: "450 ريال للشخص",
+              description: "توقيت خاص بريميوم مع خدمات محسنة"
+            },
+            {
+              name: "توقيت خاص - مجموعة",
+              price: "3700 ريال",
+              description: "توقيت خاص لمجموعات"
             }
           ],
           pricing: [
             {
-              name: "باقة الفرد الواحد",
+              name: "جولة خاصة - باقة الفرد الواحد",
               price: "250 ريال للشخص",
               description: "الباقة الأساسية مع جميع المميزات المدرجة",
               optional: ""
             },
             {
-              name: "باقة المجموعات (4–10 أشخاص)",
+              name: "جولة خاصة - باقة المجموعات (4–10 أشخاص)",
               price: "200 ريال للشخص",
               description: "سعر مخفض للمجموعات",
+              optional: ""
+            },
+            {
+              name: "جولة مجموعة (4–10 أشخاص)",
+              price: "200 ريال للشخص",
+              description: "جولة مجموعة مع مشاركين آخرين",
               optional: ""
             }
           ],
           notes: [
             "ينصح بارتداء أحذية مريحة للمشي",
             "الحجز المسبق مطلوب لتأكيد المشاركة",
-            "السعر يشمل النقل"
+            "السعر يشمل النقل",
+            "أوقات الدرعية: من السبت إلى الثلاثاء: من 9:00 ص إلى 12:00 منتصف الليل؛ من الأربعاء إلى الجمعة: من 9:00 ص إلى 1:00 ص",
+            "حي الطريف: يومياً من 5:00 م إلى 12:00 منتصف الليل"
           ]
         },
         {
           id: 4,
-          title: "تجربة المصمك وسوق الزل – اكتشف الرياض التاريخية",
+          title: "جولة المصمك",
           location: "وسط الرياض – المصمك وسوق الزل",
-          duration: "3-4 ساعات",
+          duration: "2-4 ساعات",
           groupSize: "5-15 شخص",
           rating: 4.9,
           highlights: ["الرياض التاريخية", "قلعة المصمك", "سوق الزل", "التراث الثقافي"],
@@ -1274,7 +1554,7 @@ const JourneyContent = () => {
           image: "/src/assets/gallery/trade-route.jpg",
           fullDescription: "استكشف تاريخ وثقافة الرياض في رحلة فريدة من قلعة المصمك، حيث بدأت قصة استعادة الرياض، إلى سوق الزل، أحد أقدم الأسواق التقليدية في المنطقة. تعلم عن الأحداث التاريخية المهمة وانغمس في التراث النابض بالحياة مع الاستمتاع بالتسوق في السوق التاريخي.",
           details: [
-            "المدة: 3–4 ساعات",
+            "المدة: 2–4 ساعات",
             "الموقع: وسط الرياض – المصمك وسوق الزل",
             "عدد المشاركين: 5–15 شخص",
             "اللغة: الإنجليزية (مع إمكانية توفير ترجمة بالعربية عند الطلب)",
@@ -1288,29 +1568,55 @@ const JourneyContent = () => {
             "مشروبات خفيفة",
             "فرص للتسوق في سوق الزل والتقاط الصور"
           ],
+          addOns: [
+            {
+              name: "توقيت خاص - أساسي",
+              price: "400 ريال للشخص",
+              description: "توقيت خاص على طلب العميل"
+            },
+            {
+              name: "توقيت خاص - بريميوم",
+              price: "450 ريال للشخص",
+              description: "توقيت خاص بريميوم مع خدمات محسنة"
+            },
+            {
+              name: "توقيت خاص - مجموعة",
+              price: "3700 ريال",
+              description: "توقيت خاص لمجموعات"
+            }
+          ],
           pricing: [
             {
-              name: "باقة الفرد الواحد",
+              name: "جولة خاصة - باقة الفرد الواحد",
               price: "250 ريال للشخص",
               description: "الباقة الأساسية مع جميع المميزات المدرجة",
               optional: ""
             },
             {
-              name: "باقة المجموعات (4–15 شخص)",
+              name: "جولة خاصة - باقة المجموعات (4–15 شخص)",
               price: "200 ريال للشخص",
               description: "سعر مخفض للمجموعات",
+              optional: ""
+            },
+            {
+              name: "جولة مجموعة (4–15 شخص)",
+              price: "200 ريال للشخص",
+              description: "جولة مجموعة مع مشاركين آخرين",
               optional: ""
             }
           ],
           notes: [
             "ينصح بارتداء ملابس وأحذية مريحة للمشي",
             "الحجز المسبق مطلوب لتأكيد المشاركة",
-            "السعر يشمل الجولة الإرشادية والتنظيم والمشروبات الخفيفة"
+            "السعر يشمل الجولة الإرشادية والتنظيم والمشروبات الخفيفة",
+            "الأحد إلى الخميس: من 8:00 ص إلى 9:00 م",
+            "الجمعة: من 4:00 م إلى 8:00 م",
+            "السبت: من 9:00 ص إلى 8:00 م"
           ]
         },
         {
           id: 5,
-          title: "تجربة الرياض ليوم كامل – اكتشف العاصمة",
+          title: "جولة الرياض الكاملة",
           location: "الرياض – مواقع متعددة",
           duration: "8-9 ساعات",
           groupSize: "1-10 أشخاص",
@@ -1347,33 +1653,54 @@ const JourneyContent = () => {
             },
             {
               name: "باقة VIP",
-              price: "550 ريال للشخص",
+              price: "700 ريال للشخص",
               description: "سيارة خاصة + مرشد شخصي + تصوير + هدايا (تحل محل الباقة القياسية)"
+            },
+            {
+              name: "توقيت خاص - أساسي",
+              price: "400 ريال للشخص",
+              description: "توقيت خاص على طلب العميل"
+            },
+            {
+              name: "توقيت خاص - بريميوم",
+              price: "450 ريال للشخص",
+              description: "توقيت خاص بريميوم مع خدمات محسنة"
+            },
+            {
+              name: "توقيت خاص - مجموعة",
+              price: "3700 ريال",
+              description: "توقيت خاص لمجموعات"
             }
           ],
           pricing: [
             {
-              name: "باقة الفرد الواحد",
+              name: "جولة خاصة - باقة الفرد الواحد",
               price: "600 ريال للشخص",
               description: "الباقة الأساسية مع جميع المميزات المدرجة",
               optional: ""
             },
             {
-              name: "باقة الزوجين (شخصان)",
+              name: "جولة خاصة - باقة الزوجين (شخصان)",
               price: "550 ريال للشخص",
               description: "سعر مخفض للزوجين",
               optional: "المجموع: 1100 ريال"
             },
             {
-              name: "باقة ثلاثة أشخاص",
+              name: "جولة خاصة - باقة ثلاثة أشخاص",
               price: "500 ريال للشخص",
               description: "سعر خاص لثلاثة أشخاص",
               optional: "المجموع: 1500 ريال"
             },
             {
-              name: "باقة المجموعات (4–10 أشخاص)",
+              name: "جولة خاصة - باقة المجموعات (4–10 أشخاص)",
               price: "450 ريال للشخص",
               description: "أفضل قيمة للمجموعات",
+              optional: "المجموع: 1800–4500 ريال"
+            },
+            {
+              name: "جولة مجموعة (4–10 أشخاص)",
+              price: "450 ريال للشخص",
+              description: "جولة مجموعة مع مشاركين آخرين",
               optional: "المجموع: 1800–4500 ريال"
             }
           ],
