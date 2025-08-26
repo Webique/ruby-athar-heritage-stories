@@ -1178,15 +1178,15 @@ const JourneyContent = () => {
         },
         {
           id: 5,
-          title: "Riyadh Full Tour",
+          title: "Riyadh Full Tour - Private Experience",
           location: "Riyadh – Multiple Locations",
           duration: "8-9 Hours",
           groupSize: "1-10 People",
           rating: 5.0,
           highlights: ["Al-Masmak Palace", "Al-Zal Market", "National Museum", "Al-Murabba", "Traditional Cuisine"],
-          price: "From 450 SAR",
+          price: "From 600 SAR",
           image: "/src/assets/gallery/calligraphy.jpg",
-          fullDescription: "A comprehensive full-day experience exploring the heart of Saudi Arabia's capital. Discover the rich history and culture of Riyadh through visits to iconic landmarks, traditional markets, and cultural institutions.",
+          fullDescription: "A comprehensive full-day private experience exploring the heart of Saudi Arabia's capital. Discover the rich history and culture of Riyadh through visits to iconic landmarks, traditional markets, and cultural institutions.",
           details: [
             "Duration: 8–9 hours",
             "Location: Riyadh – Multiple Locations",
@@ -1258,7 +1258,69 @@ const JourneyContent = () => {
               price: "450 SAR per person",
               description: "Best value for groups",
               optional: "Total: 1800–4500 SAR"
+            }
+          ],
+          notes: [
+            "Personal purchases not included",
+            "Optional meal available as add-on",
+            "VIP services available as separate package",
+            "Comfortable clothing and walking shoes recommended"
+          ]
+        },
+        {
+          id: 6,
+          title: "Riyadh Full Tour - Public Group Experience",
+          location: "Riyadh – Multiple Locations",
+          duration: "8-9 Hours",
+          groupSize: "1+ People",
+          rating: 5.0,
+          highlights: ["Al-Masmak Palace", "Al-Zal Market", "National Museum", "Al-Murabba", "Traditional Cuisine"],
+          price: "From 450 SAR",
+          image: "/src/assets/gallery/calligraphy.jpg",
+          fullDescription: "A comprehensive full-day public group experience exploring the heart of Saudi Arabia's capital. Book as an individual or small group, and join other travelers to discover the rich history and culture of Riyadh through visits to iconic landmarks, traditional markets, and cultural institutions.",
+          details: [
+            "Duration: 8–9 hours",
+            "Location: Riyadh – Multiple Locations",
+            "Difficulty: Easy",
+            "Participants: 1+ people (joined with other travelers)",
+            "Language: Arabic/English",
+            "Includes transportation and certified guide"
+          ],
+          included: [
+            "Certified tour guide (Arabic/English)",
+            "Transportation to/from meeting point + during the tour",
+            "Full organization of the itinerary",
+            "Water and light refreshments"
+          ],
+          experienceStations: [
+            "Al-Masmak Palace – Learn about the recapture of Riyadh and the beginning of Saudi unification",
+            "Al-Zal Market – Explore Riyadh's oldest traditional market + shopping time",
+            "National Museum – Discover the history of the Arabian Peninsula through interactive exhibits",
+            "Al-Murabba – Walk through the historic district and take photos"
+          ],
+          addOns: [
+            {
+              name: "Traditional Meal",
+              price: "150 SAR per person",
+              description: "Taste authentic Saudi cuisine at a traditional restaurant"
             },
+            {
+              name: "Custom Timing - Basic",
+              price: "400 SAR per person",
+              description: "Special/custom timings as requested by the client"
+            },
+            {
+              name: "Custom Timing - Premium",
+              price: "450 SAR per person",
+              description: "Premium custom timings with enhanced services"
+            },
+            {
+              name: "Custom Timing - Group",
+              price: "3700 SAR",
+              description: "Special/custom timings for groups"
+            }
+          ],
+          pricing: [
             {
               name: "Group Tour (4–10 people)",
               price: "450 SAR per person",
@@ -1269,8 +1331,8 @@ const JourneyContent = () => {
           notes: [
             "Personal purchases not included",
             "Optional meal available as add-on",
-            "VIP services available as separate package",
-            "Comfortable clothing and walking shoes recommended"
+            "Comfortable clothing and walking shoes recommended",
+            "Meet and travel with other travelers"
           ]
         }
       ],
@@ -1595,15 +1657,15 @@ const JourneyContent = () => {
         },
         {
           id: 5,
-          title: "جولة الرياض الكاملة",
+          title: "جولة الرياض الكاملة - تجربة خاصة",
           location: "الرياض – مواقع متعددة",
           duration: "8-9 ساعات",
           groupSize: "1-10 أشخاص",
           rating: 5.0,
           highlights: ["قصر المصمك", "سوق الزل", "المتحف الوطني", "حي المربع", "المأكولات التقليدية"],
-          price: "ابتداءً من 450 ريال",
+          price: "ابتداءً من 600 ريال",
           image: "/src/assets/gallery/calligraphy.jpg",
-          fullDescription: "تجربة شاملة ليوم كامل تستكشف قلب عاصمة المملكة العربية السعودية. اكتشف التاريخ والثقافة الغنية للرياض من خلال زيارة المعالم الشهيرة والأسواق التقليدية والمؤسسات الثقافية.",
+          fullDescription: "تجربة شاملة خاصة ليوم كامل تستكشف قلب عاصمة المملكة العربية السعودية. اكتشف التاريخ والثقافة الغنية للرياض من خلال زيارة المعالم الشهيرة والأسواق التقليدية والمؤسسات الثقافية.",
           details: [
             "المدة: 8–9 ساعات",
             "الموقع: الرياض – مواقع متعددة",
@@ -1675,7 +1737,69 @@ const JourneyContent = () => {
               price: "450 ريال للشخص",
               description: "أفضل قيمة للمجموعات",
               optional: "المجموع: 1800–4500 ريال"
+            }
+          ],
+          notes: [
+            "المشتريات الشخصية غير مشمولة",
+            "الوجبة الاختيارية متاحة كإضافة",
+            "خدمات VIP متاحة كباقة منفصلة",
+            "ينصح بارتداء ملابس وأحذية مريحة للمشي"
+          ]
+        },
+        {
+          id: 6,
+          title: "جولة الرياض الكاملة - تجربة مجموعة عامة",
+          location: "الرياض – مواقع متعددة",
+          duration: "8-9 ساعات",
+          groupSize: "1+ أشخاص",
+          rating: 5.0,
+          highlights: ["قصر المصمك", "سوق الزل", "المتحف الوطني", "حي المربع", "المأكولات التقليدية"],
+          price: "ابتداءً من 450 ريال",
+          image: "/src/assets/gallery/calligraphy.jpg",
+          fullDescription: "تجربة شاملة لمجموعة عامة ليوم كامل تستكشف قلب عاصمة المملكة العربية السعودية. احجز كفرد أو مجموعة صغيرة، وانضم إلى مسافرين آخرين لاكتشاف التاريخ والثقافة الغنية للرياض من خلال زيارة المعالم الشهيرة والأسواق التقليدية والمؤسسات الثقافية.",
+          details: [
+            "المدة: 8–9 ساعات",
+            "الموقع: الرياض – مواقع متعددة",
+            "الصعوبة: سهلة",
+            "عدد المشاركين: 1+ أشخاص (مع مسافرين آخرين)",
+            "اللغة: العربية/الإنجليزية",
+            "يشمل النقل والمرشد المعتمد"
+          ],
+          included: [
+            "مرشد سياحي معتمد (عربي/إنجليزي)",
+            "النقل من وإلى نقطة اللقاء + أثناء الجولة",
+            "تنظيم كامل للمسار",
+            "ماء ومشروبات خفيفة"
+          ],
+          experienceStations: [
+            "قصر المصمك – تعلم عن استعادة الرياض وبداية توحيد المملكة",
+            "سوق الزل – استكشف أقدم سوق تقليدي في الرياض + وقت للتسوق",
+            "المتحف الوطني – اكتشف تاريخ شبه الجزيرة العربية من خلال المعارض التفاعلية",
+            "حي المربع – تجول في الحي التاريخي والتقط الصور"
+          ],
+          addOns: [
+            {
+              name: "وجبة تقليدية",
+              price: "150 ريال للشخص",
+              description: "تذوق المأكولات السعودية الأصيلة في مطعم تقليدي"
             },
+            {
+              name: "توقيت خاص - أساسي",
+              price: "400 ريال للشخص",
+              description: "توقيت خاص على طلب العميل"
+            },
+            {
+              name: "توقيت خاص - بريميوم",
+              price: "450 ريال للشخص",
+              description: "توقيت خاص بريميوم مع خدمات محسنة"
+            },
+            {
+              name: "توقيت خاص - مجموعة",
+              price: "3700 ريال",
+              description: "توقيت خاص لمجموعات"
+            }
+          ],
+          pricing: [
             {
               name: "جولة مجموعة (4–10 أشخاص)",
               price: "450 ريال للشخص",
@@ -1686,8 +1810,8 @@ const JourneyContent = () => {
           notes: [
             "المشتريات الشخصية غير مشمولة",
             "الوجبة الاختيارية متاحة كإضافة",
-            "خدمات VIP متاحة كباقة منفصلة",
-            "ينصح بارتداء ملابس وأحذية مريحة للمشي"
+            "ينصح بارتداء ملابس وأحذية مريحة للمشي",
+            "التقاء والسفر مع مسافرين آخرين"
           ]
         }
       ],
@@ -1720,7 +1844,7 @@ const JourneyContent = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 justify-items-center">
-              {content[language].trips.filter(trip => [3, 4, 5].includes(trip.id)).map((trip) => (
+              {content[language].trips.filter(trip => [3, 4, 5, 6].includes(trip.id)).map((trip) => (
                 <Card key={trip.id} className="card-premium animate-scale-in hover:shadow-glow transition-all duration-300 h-full flex flex-col">
                   <CardHeader className="pb-3 md:pb-4 px-4 md:px-6">
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
