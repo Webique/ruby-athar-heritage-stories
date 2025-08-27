@@ -719,14 +719,26 @@ const TripModal = ({ trip, isOpen, onClose, language, isRTL }) => {
             </div>
           )}
 
-          {/* Add-Ons */}
-          {trip.addOns && (
+          {/* Add-Ons - Only Show Meal Options */}
+          {trip.addOns && trip.addOns.filter(addon => {
+            // Only show meal-related add-ons
+            const mealKeywords = ['meal', 'lunch', 'dinner', 'وجبة', 'غداء', 'عشاء', 'Traditional Meal', 'وجبة تقليدية', 'Lunch/Dinner', 'الغداء/العشاء'];
+            return mealKeywords.some(keyword => 
+              addon.name.toLowerCase().includes(keyword.toLowerCase())
+            );
+          }).length > 0 && (
             <div className="space-y-2 md:space-y-3">
               <h3 className={`text-base md:text-lg font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
-                {language === 'en' ? 'Add-Ons' : 'إضافات اختيارية'}
+                {language === 'en' ? 'Optional Meals' : 'الوجبات الاختيارية'}
               </h3>
               <div className={`grid grid-cols-1 gap-3 md:gap-4 ${isRTL ? 'text-right' : 'text-left'}`}>
-                {trip.addOns.map((addon, idx) => (
+                {trip.addOns.filter(addon => {
+                  // Only show meal-related add-ons
+                  const mealKeywords = ['meal', 'lunch', 'dinner', 'وجبة', 'غداء', 'عشاء', 'Traditional Meal', 'وجبة تقليدية', 'Lunch/Dinner', 'الغداء/العشاء'];
+                  return mealKeywords.some(keyword => 
+                    addon.name.toLowerCase().includes(keyword.toLowerCase())
+                  );
+                }).map((addon, idx) => (
                   <div key={idx} className={`border border-border rounded-lg p-3 md:p-4 bg-card ${isRTL ? 'text-right' : 'text-left'}`}>
                     <div className="flex items-center justify-between mb-2">
                       <h4 className={`text-sm md:text-base font-semibold text-primary ${isRTL ? 'font-arabic text-right' : 'font-english text-left'}`}>
