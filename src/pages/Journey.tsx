@@ -947,7 +947,7 @@ const JourneyContent = () => {
           groupSize: "5-20 People",
           rating: 4.8,
           highlights: ["Interactive activities", "Sunset viewpoint", "Abu Fanous legend", "Cultural insights"],
-          price: "From 300 SAR",
+          price: "From 400 SAR",
           image: "/src/assets/gallery/marketplace.jpg",
           fullDescription: "Embark on a cultural, historical, and field adventure through Darb Al-Manjour, where nature meets legends and heritage. Experience an exploratory journey between past and present, with interactive activities and a closing session that deepens your connection to the land and its stories.",
           details: [
@@ -978,13 +978,13 @@ const JourneyContent = () => {
           pricing: [
             {
               name: "Private Tour - Standard Experience",
-              price: "300 SAR per person",
+              price: "400 SAR per person",
               description: "Includes: transportation, guide, drinks, activities, and full organization",
               optional: ""
             },
             {
               name: "Private Tour - Premium Package",
-              price: "350 SAR per person",
+              price: "450 SAR per person",
               description: "Private session or additional hospitality",
               optional: ""
             },
@@ -1379,7 +1379,7 @@ const JourneyContent = () => {
           groupSize: "5-20 شخص",
           rating: 4.8,
           highlights: ["أنشطة تفاعلية", "نقطة الغروب", "أسطورة أبو فانوس", "رؤى ثقافية"],
-          price: "ابتداءً من 300 ريال",
+          price: "ابتداءً من 400 ريال",
           image: "/src/assets/gallery/marketplace.jpg",
           fullDescription: "انطلق في رحلة ثقافية وتاريخية ومغامرة ميدانية عبر درب المنجور، حيث الطبيعة تلتقي بالأساطير والتراث. عش تجربة استكشافية بين الماضي والحاضر، مع أنشطة تفاعلية وجلسة ختامية تعزز ارتباطك بالأرض وقصصها.",
           details: [
@@ -1410,13 +1410,13 @@ const JourneyContent = () => {
           pricing: [
             {
               name: "جولة خاصة - التجربة القياسية",
-              price: "300 ريال للشخص",
+              price: "400 ريال للشخص",
               description: "تشمل: النقل، المرشد، المشروبات، الأنشطة، والتنظيم الكامل",
               optional: ""
             },
             {
               name: "جولة خاصة - باقة بريميوم",
-              price: "350 ريال للشخص",
+              price: "450 ريال للشخص",
               description: "جلسة خاصة أو ضيافة إضافية",
               optional: ""
             },
