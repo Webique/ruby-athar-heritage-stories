@@ -906,19 +906,9 @@ const JourneyContent = () => {
           ],
           addOns: [
             {
-              name: "Custom Timing - Basic",
-              price: "400 SAR per person",
-              description: "Special/custom timings as requested by the client"
-            },
-            {
-              name: "Custom Timing - Premium",
-              price: "450 SAR per person",
-              description: "Premium custom timings with enhanced services"
-            },
-            {
-              name: "Custom Timing - Group",
-              price: "3700 SAR",
-              description: "Special/custom timings for groups"
+              name: "Traditional Meal",
+              price: "Pay at restaurant",
+              description: "We'll take you to a traditional restaurant where you can taste authentic Saudi cuisine. You pay for your meal directly at the restaurant."
             }
           ],
           pricing: [
@@ -951,7 +941,7 @@ const JourneyContent = () => {
         },
         {
           id: 2,
-          title: "Noor Al-Manjour Tour",
+          title: "Noor Al-Manjour Tour - Private Experience",
           location: "Darb Al-Manjour, between East and West Tuwaiq Mountains",
           duration: "4-5 Hours",
           groupSize: "5-20 People",
@@ -999,45 +989,79 @@ const JourneyContent = () => {
               optional: ""
             },
             {
-              name: "Group Tour (10 people)",
+              name: "Private Tour - Group Package (10 people)",
               price: "2700 SAR",
-              description: "Best value for groups",
+              description: "Best value for private groups",
               optional: ""
             }
           ],
           addOns: [
             {
-              name: "Morning Trip (Sunrise)",
-              price: "400 SAR per person",
-              description: "Special morning timing from 4:00 AM to 8:00 AM"
-            },
+              name: "Traditional Meal",
+              price: "Pay at restaurant",
+              description: "We'll take you to a traditional restaurant where you can taste authentic Saudi cuisine. You pay for your meal directly at the restaurant."
+            }
+          ],
+          notes: [
+            "Comfortable clothing and shoes recommended for walking",
+            "Advance booking required to confirm participation"
+          ]
+        },
+        {
+          id: 7,
+          title: "Noor Al-Manjour Tour - Public Group Experience",
+          location: "Darb Al-Manjour, between East and West Tuwaiq Mountains",
+          duration: "4-5 Hours",
+          groupSize: "1+ People",
+          rating: 4.8,
+          highlights: ["Interactive activities", "Sunset viewpoint", "Abu Fanous legend", "Cultural insights"],
+          price: "From 300 SAR",
+          image: "/src/assets/gallery/marketplace.jpg",
+          fullDescription: "Embark on a cultural, historical, and field adventure through Darb Al-Manjour, where nature meets legends and heritage. Book as an individual or small group, and join other travelers to experience an exploratory journey between past and present, with interactive activities and a closing session that deepens your connection to the land and its stories.",
+          details: [
+            "Duration: 4–5 hours (1.5 hours transfer – 1–2 hours on site – 1.5 hours return)",
+            "Location: Darb Al-Manjour, between East and West Tuwaiq Mountains",
+            "Distance: 6 km",
+            "Difficulty: Moderate",
+            "Elevations: Highest point 965 m – Lowest point 702 m",
+            "Participants: 1+ people (joined with other travelers)",
+            "Language: Arabic (English translation available upon request)",
+            "Target Audience: History lovers, nature enthusiasts, and cultural adventure seekers"
+          ],
+          included: [
+            "🚗 Transportation to/from Riyadh",
+            "🗺️ Guided tour narrating legends and heritage along the path",
+            "☕ Drinks and light snacks",
+            "📜 Interactive activity cards and brochures",
+            "✍️ Group \"Abu Fanous Letter\" writing session",
+            "🛠️ Full organization of the route and stops"
+          ],
+          experienceStations: [
+            "Welcome and introduction to the plan and precautions",
+            "Abu Fanous Station: Legend narration",
+            "Walking through rocky terrain while sharing heritage and historical information",
+            "Reaching the sunset viewpoint and panoramic view",
+            "Closing session: hospitality, participant sharing, and writing \"Abu Fanous Letter\""
+          ],
+          pricing: [
             {
-              name: "Evening Trip",
-              price: "400 SAR per person",
-              description: "Special evening timing from 4:00 PM to 7:00 PM"
-            },
+              name: "Per Person",
+              price: "300 SAR per person",
+              description: "Book individually and join other travelers",
+              optional: ""
+            }
+          ],
+          addOns: [
             {
-              name: "Custom Timing - Basic",
-              price: "400 SAR per person",
-              description: "Special/custom timings as requested by the client"
-            },
-            {
-              name: "Custom Timing - Premium",
-              price: "450 SAR per person",
-              description: "Premium custom timings with enhanced services"
-            },
-            {
-              name: "Custom Timing - Group",
-              price: "3700 SAR",
-              description: "Special/custom timings for groups"
+              name: "Traditional Meal",
+              price: "Pay at restaurant",
+              description: "We'll take you to a traditional restaurant where you can taste authentic Saudi cuisine. You pay for your meal directly at the restaurant."
             }
           ],
           notes: [
             "Comfortable clothing and shoes recommended for walking",
             "Advance booking required to confirm participation",
-            "Morning trip: at sunrise, from 4:00 AM to 8:00 AM",
-            "Evening trip: from 4:00 PM to 7:00 PM",
-            "Special/custom timings available upon request"
+            "Book as individual or small group, join other travelers"
           ]
         },
         {
@@ -1071,21 +1095,6 @@ const JourneyContent = () => {
               name: "Lunch/Dinner",
               price: "Pay at restaurant",
               description: "We'll take you to a traditional restaurant where you can enjoy delicious local cuisine. You pay for your meal directly at the restaurant."
-            },
-            {
-              name: "Custom Timing - Basic",
-              price: "400 SAR per person",
-              description: "Special/custom timings as requested by the client"
-            },
-            {
-              name: "Custom Timing - Premium",
-              price: "450 SAR per person",
-              description: "Premium custom timings with enhanced services"
-            },
-            {
-              name: "Custom Timing - Group",
-              price: "3700 SAR",
-              description: "Special/custom timings for groups"
             }
           ],
           pricing: [
@@ -1144,19 +1153,9 @@ const JourneyContent = () => {
           ],
           addOns: [
             {
-              name: "Custom Timing - Basic",
-              price: "400 SAR per person",
-              description: "Special/custom timings as requested by the client"
-            },
-            {
-              name: "Custom Timing - Premium",
-              price: "450 SAR per person",
-              description: "Premium custom timings with enhanced services"
-            },
-            {
-              name: "Custom Timing - Group",
-              price: "3700 SAR",
-              description: "Special/custom timings for groups"
+              name: "Traditional Meal",
+              price: "Pay at restaurant",
+              description: "We'll take you to a traditional restaurant where you can taste authentic Saudi cuisine. You pay for your meal directly at the restaurant."
             }
           ],
           pricing: [
@@ -1224,26 +1223,6 @@ const JourneyContent = () => {
               name: "Traditional Meal",
               price: "Pay at restaurant",
               description: "We'll take you to a traditional restaurant where you can taste authentic Saudi cuisine. You pay for your meal directly at the restaurant."
-            },
-            {
-              name: "VIP Package",
-              price: "700 SAR per person",
-              description: "Private car + Personal guide + Photography + Gifts (replaces standard package)"
-            },
-            {
-              name: "Custom Timing - Basic",
-              price: "400 SAR per person",
-              description: "Special/custom timings as requested by the client"
-            },
-            {
-              name: "Custom Timing - Premium",
-              price: "450 SAR per person",
-              description: "Premium custom timings with enhanced services"
-            },
-            {
-              name: "Custom Timing - Group",
-              price: "3700 SAR",
-              description: "Special/custom timings for groups"
             }
           ],
           pricing: [
@@ -1315,21 +1294,6 @@ const JourneyContent = () => {
               name: "Traditional Meal",
               price: "Pay at restaurant",
               description: "We'll take you to a traditional restaurant where you can taste authentic Saudi cuisine. You pay for your meal directly at the restaurant."
-            },
-            {
-              name: "Custom Timing - Basic",
-              price: "400 SAR per person",
-              description: "Special/custom timings as requested by the client"
-            },
-            {
-              name: "Custom Timing - Premium",
-              price: "450 SAR per person",
-              description: "Premium custom timings with enhanced services"
-            },
-            {
-              name: "Custom Timing - Group",
-              price: "3700 SAR",
-              description: "Special/custom timings for groups"
             }
           ],
           pricing: [
@@ -1386,19 +1350,9 @@ const JourneyContent = () => {
           ],
           addOns: [
             {
-              name: "توقيت خاص - أساسي",
-              price: "400 ريال للشخص",
-              description: "توقيت خاص على طلب العميل"
-            },
-            {
-              name: "توقيت خاص - بريميوم",
-              price: "450 ريال للشخص",
-              description: "توقيت خاص بريميوم مع خدمات محسنة"
-            },
-            {
-              name: "توقيت خاص - مجموعة",
-              price: "3700 ريال",
-              description: "توقيت خاص لمجموعات"
+              name: "وجبة تقليدية",
+              price: "ادفع في المطعم",
+              description: "سنأخذك إلى مطعم تقليدي حيث يمكنك تذوق المأكولات السعودية الأصيلة. تدفع ثمن وجبتك مباشرة في المطعم."
             }
           ],
           pricing: [
@@ -1431,7 +1385,7 @@ const JourneyContent = () => {
         },
         {
           id: 2,
-          title: "جولة نور المنجور",
+          title: "جولة نور المنجور - تجربة خاصة",
           location: "درب المنجور، بين شرق وغرب جبال طويق",
           duration: "4-5 ساعات",
           groupSize: "5-20 شخص",
@@ -1479,45 +1433,79 @@ const JourneyContent = () => {
               optional: ""
             },
             {
-              name: "جولة مجموعة (10 أشخاص)",
+              name: "جولة خاصة - باقة مجموعة (10 أشخاص)",
               price: "2700 ريال",
-              description: "أفضل قيمة للمجموعات",
+              description: "أفضل قيمة للمجموعات الخاصة",
               optional: ""
             }
           ],
           addOns: [
             {
-              name: "رحلة الصبح",
-              price: "400 ريال للشخص",
-              description: "توقيت صبحي خاص من 4:00 ص إلى 8:00 ص"
-            },
+              name: "وجبة تقليدية",
+              price: "ادفع في المطعم",
+              description: "سنأخذك إلى مطعم تقليدي حيث يمكنك تذوق المأكولات السعودية الأصيلة. تدفع ثمن وجبتك مباشرة في المطعم."
+            }
+          ],
+          notes: [
+            "ينصح بارتداء ملابس وأحذية مريحة للمشي",
+            "الحجز المسبق مطلوب لتأكيد المشاركة"
+          ]
+        },
+        {
+          id: 7,
+          title: "جولة نور المنجور - تجربة مجموعة عامة",
+          location: "درب المنجور، بين شرق وغرب جبال طويق",
+          duration: "4-5 ساعات",
+          groupSize: "1+ أشخاص",
+          rating: 4.8,
+          highlights: ["أنشطة تفاعلية", "نقطة الغروب", "أسطورة أبو فانوس", "رؤى ثقافية"],
+          price: "ابتداءً من 300 ريال",
+          image: "/src/assets/gallery/marketplace.jpg",
+          fullDescription: "انطلق في رحلة ثقافية وتاريخية ومغامرة ميدانية عبر درب المنجور، حيث الطبيعة تلتقي بالأساطير والتراث. احجز كفرد أو مجموعة صغيرة، وانضم إلى مسافرين آخرين لعيش تجربة استكشافية بين الماضي والحاضر، مع أنشطة تفاعلية وجلسة ختامية تعزز ارتباطك بالأرض وقصصها.",
+          details: [
+            "المدة: 4–5 ساعات (ساعة ونصف انتقال – 1–2 ساعة في الموقع – ساعة ونصف للعودة)",
+            "الموقع: درب المنجور، بين شرق وغرب جبال طويق",
+            "المسافة: 6 كم",
+            "الصعوبة: متوسطة",
+            "ارتفاعات: أعلى نقطة 965 م – أدنى نقطة 702 م",
+            "عدد المشاركين: 1+ أشخاص (مع مسافرين آخرين)",
+            "اللغة: العربية (مع إمكانية ترجمة بالإنجليزية عند الطلب)",
+            "الفئة المستهدفة: عشاق التاريخ والطبيعة والمغامرة الثقافية"
+          ],
+          included: [
+            "🚗 النقل من وإلى الرياض",
+            "🗺️ مرشد سياحي يروي الأساطير والتراث خلال المسار",
+            "☕ مشروبات ووجبات خفيفة",
+            "📜 بطاقات وبروشور تفاعلي للأنشطة",
+            "✍️ جلسة كتابة \"رسالة أبو فانوس\" الجماعية",
+            "🛠️ تنظيم كامل للمسار ونقاط التوقف"
+          ],
+          experienceStations: [
+            "استقبال وتعريف بالخطة والاحتياطات",
+            "محطة أبو فانوس: سرد الأسطورة",
+            "المشي عبر التضاريس الصخرية وسرد المعلومات التراثية والتاريخية",
+            "الوصول إلى نقطة الغروب ومشاهدة المنظر البانورامي",
+            "الجلسة الختامية: ضيافة، مشاركة المشاركين، وكتابة \"رسالة أبو فانوس\""
+          ],
+          pricing: [
             {
-              name: "رحلة العصر",
-              price: "400 ريال للشخص",
-              description: "توقيت عصري خاص من 4:00 م إلى 7:00 م"
-            },
+              name: "للشخص",
+              price: "300 ريال للشخص",
+              description: "احجز كفرد وانضم إلى مسافرين آخرين",
+              optional: ""
+            }
+          ],
+          addOns: [
             {
-              name: "توقيت خاص - أساسي",
-              price: "400 ريال للشخص",
-              description: "توقيت خاص على طلب العميل"
-            },
-            {
-              name: "توقيت خاص - بريميوم",
-              price: "450 ريال للشخص",
-              description: "توقيت خاص بريميوم مع خدمات محسنة"
-            },
-            {
-              name: "توقيت خاص - مجموعة",
-              price: "3700 ريال",
-              description: "توقيت خاص لمجموعات"
+              name: "وجبة تقليدية",
+              price: "ادفع في المطعم",
+              description: "سنأخذك إلى مطعم تقليدي حيث يمكنك تذوق المأكولات السعودية الأصيلة. تدفع ثمن وجبتك مباشرة في المطعم."
             }
           ],
           notes: [
             "ينصح بارتداء ملابس وأحذية مريحة للمشي",
             "الحجز المسبق مطلوب لتأكيد المشاركة",
-            "رحلة الصبح: من 4:00 ص إلى 8:00 ص",
-            "رحلة العصر: من 4:00 م إلى 7:00 م",
-            "توقيت خاص متاح على طلب العميل"
+            "احجز كفرد أو مجموعة صغيرة، وانضم إلى مسافرين آخرين"
           ]
         },
         {
@@ -1550,21 +1538,6 @@ const JourneyContent = () => {
               name: "الغداء/العشاء",
               price: "ادفع في المطعم",
               description: "سنأخذك إلى مطعم تقليدي حيث يمكنك الاستمتاع بمأكولات محلية لذيذة. تدفع ثمن وجبتك مباشرة في المطعم."
-            },
-            {
-              name: "توقيت خاص - أساسي",
-              price: "400 ريال للشخص",
-              description: "توقيت خاص على طلب العميل"
-            },
-            {
-              name: "توقيت خاص - بريميوم",
-              price: "450 ريال للشخص",
-              description: "توقيت خاص بريميوم مع خدمات محسنة"
-            },
-            {
-              name: "توقيت خاص - مجموعة",
-              price: "3700 ريال",
-              description: "توقيت خاص لمجموعات"
             }
           ],
           pricing: [
@@ -1703,26 +1676,6 @@ const JourneyContent = () => {
               name: "وجبة تقليدية",
               price: "ادفع في المطعم",
               description: "سنأخذك إلى مطعم تقليدي حيث يمكنك تذوق المأكولات السعودية الأصيلة. تدفع ثمن وجبتك مباشرة في المطعم."
-            },
-            {
-              name: "باقة VIP",
-              price: "700 ريال للشخص",
-              description: "سيارة خاصة + مرشد شخصي + تصوير + هدايا (تحل محل الباقة القياسية)"
-            },
-            {
-              name: "توقيت خاص - أساسي",
-              price: "400 ريال للشخص",
-              description: "توقيت خاص على طلب العميل"
-            },
-            {
-              name: "توقيت خاص - بريميوم",
-              price: "450 ريال للشخص",
-              description: "توقيت خاص بريميوم مع خدمات محسنة"
-            },
-            {
-              name: "توقيت خاص - مجموعة",
-              price: "3700 ريال",
-              description: "توقيت خاص لمجموعات"
             }
           ],
           pricing: [
@@ -1794,21 +1747,6 @@ const JourneyContent = () => {
               name: "وجبة تقليدية",
               price: "ادفع في المطعم",
               description: "سنأخذك إلى مطعم تقليدي حيث يمكنك تذوق المأكولات السعودية الأصيلة. تدفع ثمن وجبتك مباشرة في المطعم."
-            },
-            {
-              name: "توقيت خاص - أساسي",
-              price: "400 ريال للشخص",
-              description: "توقيت خاص على طلب العميل"
-            },
-            {
-              name: "توقيت خاص - بريميوم",
-              price: "450 ريال للشخص",
-              description: "توقيت خاص بريميوم مع خدمات محسنة"
-            },
-            {
-              name: "توقيت خاص - مجموعة",
-              price: "3700 ريال",
-              description: "توقيت خاص لمجموعات"
             }
           ],
           pricing: [
@@ -2108,7 +2046,7 @@ const JourneyContent = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 justify-items-center">
-              {content[language].trips.filter(trip => [2].includes(trip.id)).map((trip) => (
+              {content[language].trips.filter(trip => [2, 7].includes(trip.id)).map((trip) => (
                 <Card key={trip.id} className="card-premium animate-scale-in hover:shadow-glow transition-all duration-300 h-full flex flex-col">
                   <CardHeader className="pb-3 md:pb-4 px-4 md:px-6">
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
