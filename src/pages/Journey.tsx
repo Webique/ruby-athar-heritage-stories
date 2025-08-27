@@ -995,13 +995,7 @@ const JourneyContent = () => {
               optional: ""
             }
           ],
-          addOns: [
-            {
-              name: "Traditional Meal",
-              price: "Pay at restaurant",
-              description: "We'll take you to a traditional restaurant where you can taste authentic Saudi cuisine. You pay for your meal directly at the restaurant."
-            }
-          ],
+          addOns: [],
           notes: [
             "Comfortable clothing and shoes recommended for walking",
             "Advance booking required to confirm participation"
@@ -1051,13 +1045,7 @@ const JourneyContent = () => {
               optional: ""
             }
           ],
-          addOns: [
-            {
-              name: "Traditional Meal",
-              price: "Pay at restaurant",
-              description: "We'll take you to a traditional restaurant where you can taste authentic Saudi cuisine. You pay for your meal directly at the restaurant."
-            }
-          ],
+          addOns: [],
           notes: [
             "Comfortable clothing and shoes recommended for walking",
             "Advance booking required to confirm participation",
@@ -1439,13 +1427,7 @@ const JourneyContent = () => {
               optional: ""
             }
           ],
-          addOns: [
-            {
-              name: "وجبة تقليدية",
-              price: "ادفع في المطعم",
-              description: "سنأخذك إلى مطعم تقليدي حيث يمكنك تذوق المأكولات السعودية الأصيلة. تدفع ثمن وجبتك مباشرة في المطعم."
-            }
-          ],
+          addOns: [],
           notes: [
             "ينصح بارتداء ملابس وأحذية مريحة للمشي",
             "الحجز المسبق مطلوب لتأكيد المشاركة"
@@ -1495,13 +1477,7 @@ const JourneyContent = () => {
               optional: ""
             }
           ],
-          addOns: [
-            {
-              name: "وجبة تقليدية",
-              price: "ادفع في المطعم",
-              description: "سنأخذك إلى مطعم تقليدي حيث يمكنك تذوق المأكولات السعودية الأصيلة. تدفع ثمن وجبتك مباشرة في المطعم."
-            }
-          ],
+          addOns: [],
           notes: [
             "ينصح بارتداء ملابس وأحذية مريحة للمشي",
             "الحجز المسبق مطلوب لتأكيد المشاركة",
