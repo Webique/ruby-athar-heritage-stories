@@ -1057,8 +1057,8 @@ const JourneyContent = () => {
           addOns: [
             {
               name: "Lunch/Dinner",
-              price: "150 SAR per person",
-              description: "Delicious local cuisine at a traditional restaurant"
+              price: "Pay at restaurant",
+              description: "We'll take you to a traditional restaurant where you can enjoy delicious local cuisine. You pay for your meal directly at the restaurant."
             },
             {
               name: "Custom Timing - Basic",
@@ -1210,8 +1210,8 @@ const JourneyContent = () => {
           addOns: [
             {
               name: "Traditional Meal",
-              price: "150 SAR per person",
-              description: "Taste authentic Saudi cuisine at a traditional restaurant"
+              price: "Pay at restaurant",
+              description: "We'll take you to a traditional restaurant where you can taste authentic Saudi cuisine. You pay for your meal directly at the restaurant."
             },
             {
               name: "VIP Package",
@@ -1301,8 +1301,8 @@ const JourneyContent = () => {
           addOns: [
             {
               name: "Traditional Meal",
-              price: "150 SAR per person",
-              description: "Taste authentic Saudi cuisine at a traditional restaurant"
+              price: "Pay at restaurant",
+              description: "We'll take you to a traditional restaurant where you can taste authentic Saudi cuisine. You pay for your meal directly at the restaurant."
             },
             {
               name: "Custom Timing - Basic",
@@ -1536,8 +1536,8 @@ const JourneyContent = () => {
           addOns: [
             {
               name: "الغداء/العشاء",
-              price: "150 ريال للشخص",
-              description: "مأكولات محلية لذيذة في مطعم تقليدي"
+              price: "ادفع في المطعم",
+              description: "سنأخذك إلى مطعم تقليدي حيث يمكنك الاستمتاع بمأكولات محلية لذيذة. تدفع ثمن وجبتك مباشرة في المطعم."
             },
             {
               name: "توقيت خاص - أساسي",
@@ -1689,8 +1689,8 @@ const JourneyContent = () => {
           addOns: [
             {
               name: "وجبة تقليدية",
-              price: "150 ريال للشخص",
-              description: "تذوق المأكولات السعودية الأصيلة في مطعم تقليدي"
+              price: "ادفع في المطعم",
+              description: "سنأخذك إلى مطعم تقليدي حيث يمكنك تذوق المأكولات السعودية الأصيلة. تدفع ثمن وجبتك مباشرة في المطعم."
             },
             {
               name: "باقة VIP",
@@ -1780,8 +1780,8 @@ const JourneyContent = () => {
           addOns: [
             {
               name: "وجبة تقليدية",
-              price: "150 ريال للشخص",
-              description: "تذوق المأكولات السعودية الأصيلة في مطعم تقليدي"
+              price: "ادفع في المطعم",
+              description: "سنأخذك إلى مطعم تقليدي حيث يمكنك تذوق المأكولات السعودية الأصيلة. تدفع ثمن وجبتك مباشرة في المطعم."
             },
             {
               name: "توقيت خاص - أساسي",
