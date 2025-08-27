@@ -246,6 +246,70 @@ const Footer = () => {
                   </p>
                 </CardContent>
               </Card>
+
+              {/* Photography and Documentation Policy */}
+              <Card className="card-premium hover:shadow-lg transition-all duration-300">
+                <CardHeader className="pb-3 md:pb-4">
+                  <div className={`flex items-center gap-2 md:gap-3 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+                    <div className="w-8 h-8 md:w-10 md:h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <svg className="w-4 h-4 md:w-5 md:w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                    </div>
+                    <CardTitle className={`text-base md:text-lg font-bold text-primary ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                      {language === 'en' ? 'Photography and Documentation Policy' : 'سياسة التوثيق والتصوير'}
+                    </CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3 md:space-y-4">
+                  <div className="flex items-start gap-2 md:gap-3">
+                    <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <p className={`text-xs md:text-sm text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                      {language === 'en' 
+                        ? 'Athar Ruby may document some tours through photography and video for documentation and marketing purposes.'
+                        : 'قد تقوم أثر روبي بتوثيق بعض الجولات بالتصوير الفوتوغرافي والفيديو لأغراض التوثيق والتسويق.'
+                      }
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-2 md:gap-3">
+                    <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <p className={`text-xs md:text-sm text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                      {language === 'en' 
+                        ? 'No individual client will be photographed or have photos containing their features published without their consent.'
+                        : 'لن يتم تصوير أي عميل بشكل فردي أو نشر صور تحتوي على ملامحه إلا بعد أخذ موافقته.'
+                      }
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-2 md:gap-3">
+                    <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <p className={`text-xs md:text-sm text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                      {language === 'en' 
+                        ? 'Group photos or clips may be used without focusing on any specific individual.'
+                        : 'قد يتم استخدام صور أو مقاطع جماعية دون التركيز على أي شخص بعينه.'
+                      }
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-2 md:gap-3">
+                    <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <p className={`text-xs md:text-sm text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                      {language === 'en' 
+                        ? 'Clients have the right to request not to appear in any photography, and their wishes will be fully respected.'
+                        : 'يحق للعميل طلب عدم ظهوره في أي تصوير، وسيتم احترام رغبته بشكل كامل.'
+                      }
+                    </p>
+                  </div>
+                  <div className="flex items-start gap-2 md:gap-3">
+                    <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <p className={`text-xs md:text-sm text-muted-foreground leading-relaxed ${isRTL ? 'font-arabic' : 'font-english'}`}>
+                      {language === 'en' 
+                        ? 'All photographed materials are used only for company purposes (documentation – marketing – service development) and are not sold or used for other purposes.'
+                        : 'جميع المواد المصورة تُستخدم فقط لأغراض الشركة (التوثيق – التسويق – تطوير الخدمات)، ولا يتم بيعها أو استخدامها لأغراض أخرى.'
+                      }
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </DialogContent>
