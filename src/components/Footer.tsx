@@ -84,6 +84,15 @@ const Footer = () => {
                 <Instagram className="h-5 w-5" />
               </a>
               <a 
+                href="https://x.com/atharruby?s=11" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="p-2 bg-primary-foreground/10 hover:bg-secondary/20 rounded-full transition-colors"
+                aria-label="X (Twitter)"
+              >
+                <X className="h-5 w-5" />
+              </a>
+              <a 
                 href="https://www.tiktok.com/@athar.ruby?_t=ZS-8z2f3I5Lo2e&_r=1" 
                 target="_blank" 
                 rel="noopener noreferrer"

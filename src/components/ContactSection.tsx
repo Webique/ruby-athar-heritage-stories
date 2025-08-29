@@ -55,7 +55,7 @@ const ContactSection = () => {
         </div>
 
         {/* Quick Contact Cards */}
-        <div className="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {/* Phone */}
           <Card className="card-premium">
             <CardContent className="p-6">
@@ -127,20 +127,28 @@ const ContactSection = () => {
             </CardContent>
           </Card>
 
-          {/* Location */}
+          {/* X (Twitter) */}
           <Card className="card-premium">
             <CardContent className="p-6">
               <div className={`flex items-start gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <div className="p-3 bg-gradient-gold rounded-lg flex-shrink-0 mt-1">
-                  <MapPin className="h-6 w-6 text-secondary-foreground" />
+                <div className="p-3 bg-gradient-primary rounded-lg flex-shrink-0 mt-1">
+                  <svg className="h-6 w-6 text-primary-foreground" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
                 </div>
                 <div className={`${isRTL ? 'text-right' : 'text-left'} flex-1`}>
                   <h3 className={`font-semibold text-primary mb-1 ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                    {content[language].contact.location}
+                    {language === 'en' ? 'Follow Us' : 'تابعنا'}
                   </h3>
-                  <p className={`text-muted-foreground ${isRTL ? 'font-arabic' : 'font-english'}`}>
-                    {content[language].contact.location}
-                  </p>
+                  <a 
+                    href="https://x.com/atharruby?s=11"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-primary transition-colors"
+                    dir="ltr"
+                  >
+                    @atharruby
+                  </a>
                 </div>
               </div>
             </CardContent>
