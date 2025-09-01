@@ -11,14 +11,14 @@ const Footer = () => {
 
   const content = {
     en: {
-      tagline: "Heritage Gems of Arabia",
+      tagline: "Athar Ruby",
       phone: "+966 57 360 0158",
       email: "atharruby@outlook.com",
       copyright: "© 2024 Athar Ruby. All rights reserved.",
       developed: "Crafted with passion for Arabian heritage"
     },
     ar: {
-      tagline: "أثر روبي",
+      tagline: "Athar Ruby",
       phone: "+966 57 360 0158",
       email: "atharruby@outlook.com",
       copyright: "© 2024 أثر روبي. جميع الحقوق محفوظة.",
