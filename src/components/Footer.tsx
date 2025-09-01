@@ -18,7 +18,7 @@ const Footer = () => {
       developed: "Crafted with passion for Arabian heritage"
     },
     ar: {
-      tagline: "جواهر التراث العربي",
+      tagline: "أثر روبي",
       phone: "+966 57 360 0158",
       email: "atharruby@outlook.com",
       copyright: "© 2024 أثر روبي. جميع الحقوق محفوظة.",

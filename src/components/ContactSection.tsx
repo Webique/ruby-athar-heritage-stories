@@ -34,7 +34,7 @@ const ContactSection = () => {
     }
   };
 
-  const phoneNumber = '0573600158';
+  const phoneNumber = '+966573600158';
   const email = 'atharruby@outlook.com';
 
   return (
@@ -72,7 +72,7 @@ const ContactSection = () => {
                     className="text-muted-foreground hover:text-primary transition-colors"
                     dir="ltr"
                   >
-                    {phoneNumber}
+                    +966 57 360 0158
                   </a>
                 </div>
               </div>
@@ -97,7 +97,7 @@ const ContactSection = () => {
                     className="text-muted-foreground hover:text-primary transition-colors"
                     dir="ltr"
                   >
-                    {phoneNumber}
+                    +966 57 360 0158
                   </a>
                 </div>
               </div>
